@@ -7,6 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CHAIN RUNNER">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
 <title>CHAIN RUNNER // MA Studio</title>
 <style>
   :root {
@@ -1868,56 +1871,9 @@
   let deferredInstallPrompt = null;
 
   function setupPWA() {
-    try {
-      const iconSvg = encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
-          <rect width="192" height="192" rx="42" fill="#050811"/>
-          <circle cx="96" cy="96" r="64" fill="none" stroke="#38bdf8" stroke-width="8"/>
-          <path d="M52 128 L96 54 L140 128 Z" fill="#a855f7"/>
-          <circle cx="96" cy="54" r="12" fill="#fbbf24"/>
-        </svg>`
-      );
-      const manifestObj = {
-        name: 'CHAIN RUNNER • MA',
-        short_name: 'ChainRunner',
-        start_url: './',
-        display: 'standalone',
-        orientation: 'any',
-        background_color: '#050811',
-        theme_color: '#050811',
-        icons: [
-          { src: `data:image/svg+xml,${iconSvg}`, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' }
-        ]
-      };
-      const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
-      const manifestUrl = URL.createObjectURL(blob);
-      const linkEl = document.createElement('link');
-      linkEl.rel = 'manifest';
-      linkEl.href = manifestUrl;
-      document.head.appendChild(linkEl);
-    } catch (e) {}
-
     if ('serviceWorker' in navigator && window.isSecureContext) {
       try {
-        const swCode = `
-          const CACHE_NAME = 'chain-runner-ma-v27';
-          self.addEventListener('install', (e) => {
-            e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(['./'])).catch(() => {}));
-            self.skipWaiting();
-          });
-          self.addEventListener('activate', (e) => {
-            e.waitUntil(self.clients.claim());
-          });
-          self.addEventListener('fetch', (e) => {
-            if (e.request.method !== 'GET') return;
-            e.respondWith(
-              fetch(e.request).catch(() => caches.match(e.request))
-            );
-          });
-        `;
-        const swBlob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(swBlob);
-        navigator.serviceWorker.register(swUrl).catch(() => {});
+        navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
       } catch (e) {}
     }
   }
@@ -2066,7 +2022,6 @@
       }
     } catch (e) {}
 
-    // فحص أي نسخ سابقة من اللعبة لحفظ الفلوس واللقب والصورة
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
