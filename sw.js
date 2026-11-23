@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chain-runner-ma-v8';
+const CACHE_NAME = 'chain-runner-ma-v9';
 const ASSETS = [
   './',
   './index.html',
