@@ -215,6 +215,15 @@
     color: #a7f3d0;
   }
 
+  #chain-timer-pill {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    border-color: rgba(251, 191, 36, 0.7);
+    background: rgba(120, 53, 15, 0.45);
+    color: #fde047;
+  }
+
   #instant-howto-banner {
     position: absolute;
     top: 112px;
@@ -1319,6 +1328,9 @@
 
   <div id="top-banners" class="hidden">
     <div class="banner-pill" id="toast">القفز: Space / W / ↑ • الخطاف: E / F / ضغط مطول</div>
+    <div class="banner-pill" id="chain-timer-pill">
+      مهلة الحبل التالي: <strong id="chain-timer-val">1.7s</strong>
+    </div>
     <div class="banner-pill banner-mission" id="mission-tag">المهمة: جاهزة</div>
   </div>
 
@@ -1420,7 +1432,7 @@
           <div class="howto-steps-row">
             <div class="howto-step">1) <strong>اقفز</strong><br>زر قفز أو Space / W / ↑</div>
             <div class="howto-step">2) <strong>تعلق بالخطاف</strong><br>E / F أو ضغط مطول</div>
-            <div class="howto-step">3) <strong>أفلت وانطلق</strong><br>اندفاع: Shift / D</div>
+            <div class="howto-step">3) <strong>أفلت وواصل الحبل</strong><br>اندفاع: Shift / D</div>
           </div>
         </div>
 
@@ -1617,6 +1629,14 @@
       <div class="settings-list">
         <div class="setting-row">
           <div>
+            <strong>سلسلة الحبل الإلزامية بعد القفز</strong>
+            <small>أول ما تقفز تبدأ بالحبل وتواصل ربط الحبال قبل السقوط</small>
+          </div>
+          <button type="button" class="toggle-pill" id="toggle-chain-btn">مفعل</button>
+        </div>
+
+        <div class="setting-row">
+          <div>
             <strong>الصوت والموسيقى الخلفية</strong>
             <small>مؤثرات الخطاف والشدّ والقفز وموسيقى الخلفية</small>
           </div>
@@ -1649,8 +1669,8 @@
   const MAX_LEVEL_AI = 20;
   const MAX_LEVEL_FRIENDS = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v24';
-  const SAVE_KEY = 'chain_runner_ma_clean_v24';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v25';
+  const SAVE_KEY = 'chain_runner_ma_clean_v25';
 
   const FIREBASE_DB_URL = 'https://apdowebsite-99ed7-default-rtdb.europe-west1.firebasedatabase.app';
   const ROOMS_ROOT_PATH = 'chain_runner_rooms';
@@ -1668,6 +1688,8 @@
 
   const hud = document.getElementById('hud');
   const topBanners = document.getElementById('top-banners');
+  const chainTimerPill = document.getElementById('chain-timer-pill');
+  const chainTimerVal = document.getElementById('chain-timer-val');
   const instantHowtoBanner = document.getElementById('instant-howto-banner');
   const mobileControls = document.getElementById('mobile-controls');
   const activePowersEl = document.getElementById('active-powers');
@@ -1776,6 +1798,7 @@
   const btnOpenSettings = document.getElementById('btn-open-settings');
   const hudRestartBtn = document.getElementById('hud-restart-btn');
   const hudHomeBtn = document.getElementById('hud-home-btn');
+  const toggleChainBtn = document.getElementById('toggle-chain-btn');
   const toggleSoundBtn = document.getElementById('toggle-sound-btn');
   const toggleShakeBtn = document.getElementById('toggle-shake-btn');
 
@@ -1794,6 +1817,11 @@
 
   const hasFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
   const localPeerId = `peer_${Math.random().toString(36).slice(2, 8)}`;
+
+  const NEXT_ROPE_WINDOW = 1.65;
+  let chainModeRequired = true;
+  let chainStartedThisJump = false;
+  let nextRopeDeadline = 0;
 
   const ACHIEVEMENTS = [
     { id: 'starter', title: 'مبتدئ السلاسل', desc: 'خض 3 جولات أو اعبر 15 منصة', check: (d) => (d.stats.totalRuns || 0) >= 3 || getBestScore(d) >= 15 },
@@ -1829,7 +1857,7 @@
     unlockedSkins: ['cyan'],
     selectedSkin: 'cyan',
     upgrades: { rangeLvl: 0, magnetLvl: 0, startShieldLvl: 0 },
-    settings: { soundOn: true, shakeOn: true },
+    settings: { soundOn: true, shakeOn: true, chainMode: true },
     stats: { totalCoinsEarned: 0, maxCombo: 1, totalRuns: 0 },
     scores: [],
     friendMatches: {}
@@ -1851,9 +1879,11 @@
         };
       }
     } catch (e) {}
+    chainModeRequired = saveData.settings.chainMode !== false;
   }
 
   function persistSave() {
+    saveData.settings.chainMode = chainModeRequired;
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(saveData)); } catch (e) {}
   }
 
@@ -2852,11 +2882,15 @@
     instantHowtoBanner.classList.toggle('hidden', !gameRunning);
     if (!gameRunning) return;
     if (hero.grounded) {
-      instantHowtoBanner.textContent = 'الخطوة 1: اضغط "قفز" أو Space / W / ↑ للانطلاق';
+      instantHowtoBanner.textContent = chainModeRequired
+        ? 'الخطوة 1: اقفز (Space / W / ↑) ➜ ثم اشبك بالحبل فوراً وواصل الحبال قبل السقوط'
+        : 'الخطوة 1: اضغط "قفز" أو Space / W / ↑ للانطلاق';
     } else if (!hero.anchor) {
-      instantHowtoBanner.textContent = 'الخطوة 2: اضغط مطولاً على "خطاف" أو E / F للتعلق بالنقطة';
+      instantHowtoBanner.textContent = chainModeRequired
+        ? 'اشبك بالحبل الآن (E / F / زر خطاف / لمس) قبل انتهاء المهلة أو السقوط'
+        : 'الخطوة 2: اضغط مطولاً على "خطاف" أو E / F للتعلق بالنقطة';
     } else {
-      instantHowtoBanner.textContent = 'الخطوة 3: استمر بالضغط للشدّ ثم أفلت للانطلاق';
+      instantHowtoBanner.textContent = 'الخطوة 3: استمر بالضغط للشدّ ثم أفلت واشبك بالحبل التالي';
     }
   }
 
@@ -2876,6 +2910,7 @@
     syncActiveModeHudVisibility(playing);
     keyboardHintBar.classList.toggle('hidden', !(playing && hasFinePointer));
     updateInstantHowtoBanner();
+    if (!playing && chainTimerPill) chainTimerPill.style.display = 'none';
     if (!playing) {
       chaseVignette.style.opacity = '0';
       levelFlashOverlay.style.opacity = '0';
@@ -2942,6 +2977,9 @@
 
     const skin = getActiveSkin();
     hudAccentDot.style.background = skin.primary;
+
+    toggleChainBtn.textContent = chainModeRequired ? 'مفعل' : 'متوقف';
+    toggleChainBtn.classList.toggle('off', !chainModeRequired);
 
     toggleSoundBtn.textContent = saveData.settings.soundOn ? 'مفعل' : 'مكتوم';
     toggleSoundBtn.classList.toggle('off', !saveData.settings.soundOn);
@@ -3027,6 +3065,12 @@
       ? scores.slice(0, 3).map((s, i) => `<li><span>#${i + 1} • ${s.date}</span><strong>${s.score} منصة</strong></li>`).join('')
       : '<li><span>لا توجد نتائج بعد</span><span>0</span></li>';
   }
+
+  toggleChainBtn.addEventListener('click', () => {
+    chainModeRequired = !chainModeRequired;
+    persistSave();
+    renderAllUI();
+  });
 
   toggleSoundBtn.addEventListener('click', () => {
     saveData.settings.soundOn = !saveData.settings.soundOn;
@@ -3395,6 +3439,9 @@
     speedLinesTimer = 0;
     sonarPulseTimer = 0;
     releaseHangTimer = 0;
+    chainStartedThisJump = false;
+    nextRopeDeadline = 0;
+    if (chainTimerPill) chainTimerPill.style.display = 'none';
 
     aiModeActive = selectedGameMode === 'ai';
     aiProgress = 0;
@@ -3437,7 +3484,9 @@
     } else if (chaseActive) {
       toastEl.textContent = 'موجة المطاردة نشطة — تحرك بسرعة';
     } else {
-      toastEl.textContent = 'القفز: Space / W / ↑ • الخطاف: E / F / ضغط مطول';
+      toastEl.textContent = chainModeRequired
+        ? 'اقفز وابدأ سلسلة الحبال ثم واصل الحبل قبل السقوط'
+        : 'القفز: Space / W / ↑ • الخطاف: E / F / ضغط مطول';
     }
 
     isHoldingGrapple = false;
@@ -3565,7 +3614,7 @@
 
     const chosen = targetAnchor || findBestAnchorInAir();
     if (!chosen || chosen.broken || Math.hypot(chosen.x - hero.x, chosen.y - hero.y) > maxRange) {
-      toastEl.textContent = 'خارج نطاق الخطاف.';
+      toastEl.textContent = 'خارج نطاق الخطاف — قرّب أو استعمل الحبل التالي.';
       return;
     }
 
@@ -3576,6 +3625,8 @@
     hero.grounded = false;
     hero.standingOn = null;
     swungThisAir = true;
+    chainStartedThisJump = true;
+    nextRopeDeadline = NEXT_ROPE_WINDOW;
     if (hero.vx < 3.7) hero.vx += 2.2;
     syncDashButtonUI();
     updateInstantHowtoBanner();
@@ -3585,8 +3636,8 @@
     playSFX('grapple', combo);
 
     if (chosen.kind === 'slingshot') toastEl.textContent = 'قاذف طاقة — اضغط "قذف" أو أفلت بعد الشحن.';
-    else if (chosen.kind === 'timed') toastEl.textContent = 'نقطة مؤقتة — أفلت قبل انهيارها.';
-    else toastEl.textContent = 'استمر بالضغط للشدّ ثم أفلت للانطلاق.';
+    else if (chosen.kind === 'timed') toastEl.textContent = 'نقطة مؤقتة — أفلت واشبك بالحبل التالي.';
+    else toastEl.textContent = 'مربوط بالحبل — أفلت واشبك بالحبل التالي قبل السقوط.';
   }
 
   function triggerSlingshotLaunch() {
@@ -3594,6 +3645,8 @@
     hero.anchor = null;
     isHoldingGrapple = false;
     releaseHangTimer = 0.08;
+    chainStartedThisJump = true;
+    nextRopeDeadline = NEXT_ROPE_WINDOW;
     syncDashButtonUI();
     hero.vx = Math.max(hero.vx + 6.5, 11.4);
     hero.vy = Math.min(hero.vy - 4.5, -6.8);
@@ -3601,7 +3654,8 @@
     makeBurst(hero.x, hero.y, '#a855f7', 16);
     triggerShake(6, 0.14);
     playSFX('slingshot', combo);
-    toastEl.textContent = 'قذف سريع.';
+    updateInstantHowtoBanner();
+    toastEl.textContent = 'قذف سريع — استعمل الحبل التالي قبل السقوط.';
   }
 
   function detachAnchor() {
@@ -3613,12 +3667,16 @@
     makeBurst(hero.x, hero.y, '#fbbf24', 10);
     hero.anchor = null;
     releaseHangTimer = 0.08;
+    chainStartedThisJump = true;
+    nextRopeDeadline = NEXT_ROPE_WINDOW;
     syncDashButtonUI();
     updateInstantHowtoBanner();
     hero.vy -= 2.35;
     hero.vx *= 1.09;
     playSFX('release', combo);
-    toastEl.textContent = 'تم الإفلات — اضغط الخطاف لنقطة أخرى.';
+    toastEl.textContent = chainModeRequired
+      ? 'أفلتّ! اشبك بالحبل التالي قبل انتهاء المهلة والسقوط.'
+      : 'تم الإفلات — اضغط الخطاف لنقطة أخرى.';
   }
 
   function jump() {
@@ -3629,6 +3687,8 @@
       hero.grounded = false;
       hero.standingOn = null;
       swungThisAir = false;
+      chainStartedThisJump = false;
+      nextRopeDeadline = chainModeRequired ? NEXT_ROPE_WINDOW : 0;
       hero.dashAvailable = true;
       syncDashButtonUI();
       updateInstantHowtoBanner();
@@ -3638,12 +3698,14 @@
         triggerSpeedLines('#10b981', 0.25);
         makeBurst(hero.x, hero.y + 18, '#10b981', 14);
         playSFX('boost', combo);
-        toastEl.textContent = 'انطلاقة زنبرك.';
+        toastEl.textContent = chainModeRequired ? 'قفزة زنبرك! اشبك بالحبل فوراً وواصل الحبال.' : 'انطلاقة زنبرك.';
       } else {
         hero.vy = -10.5; hero.vx = 5.7;
         makeBurst(hero.x, hero.y + 18, skin.primary, 10);
         playSFX('jump', combo);
-        toastEl.textContent = 'في الهواء — اضغط مطولاً على الخطاف أو E / F للتعلق.';
+        toastEl.textContent = chainModeRequired
+          ? 'قفزت! استعمل الحبل فوراً وواصل الحبال قبل ما تقع.'
+          : 'في الهواء — اضغط مطولاً على الخطاف أو E / F للتعلق.';
       }
       publishProgress(score, level, false, true).catch(() => {});
     }
@@ -3674,6 +3736,7 @@
     hero.vx = Math.max(hero.vx, 6.5);
     hero.anchor = null;
     hero.dashAvailable = true;
+    nextRopeDeadline = NEXT_ROPE_WINDOW;
     syncDashButtonUI();
     makeBurst(hero.x, hero.y, '#10b981', 16);
     triggerShake(7, 0.2);
@@ -3686,6 +3749,7 @@
     gameRunning = false;
     isHoldingGrapple = false;
     hero.anchor = null;
+    if (chainTimerPill) chainTimerPill.style.display = 'none';
     updateInstantHowtoBanner();
     syncDashButtonUI();
     chaseVignette.style.opacity = '0';
@@ -3908,9 +3972,11 @@
         p.crackedTimer += rawDt;
         if (p.crackedTimer >= 0.5) {
           p.falling = true; hero.grounded = false; hero.standingOn = null; hero.dashAvailable = true;
+          chainStartedThisJump = false;
+          nextRopeDeadline = chainModeRequired ? NEXT_ROPE_WINDOW : 0;
           syncDashButtonUI();
           makeBurst(hero.x, p.y, '#f59e0b', 10); triggerShake(4, 0.12);
-          toastEl.textContent = 'انهارت المنصة الهشة.';
+          toastEl.textContent = 'انهارت المنصة الهشة — اشبك بالحبل قبل السقوط.';
         }
       }
       if (p.falling) p.y += 5.5;
@@ -3924,9 +3990,11 @@
           a.holdTime += rawDt;
           if (a.holdTime >= a.maxHold) {
             a.broken = true; hero.anchor = null; isHoldingGrapple = false;
+            chainStartedThisJump = true;
+            nextRopeDeadline = NEXT_ROPE_WINDOW;
             syncDashButtonUI();
             makeBurst(a.x, a.y, '#f43f5e', 12); triggerShake(5, 0.12);
-            playSFX('error', 1); toastEl.textContent = 'انهارت نقطة التثبيت المؤقتة.';
+            playSFX('error', 1); toastEl.textContent = 'انهارت نقطة التثبيت المؤقتة — اشبك بالحبل التالي.';
           }
         } else if (a.kind === 'slingshot') {
           a.charge = Math.min(1, a.charge + rawDt * 1.45);
@@ -3959,10 +4027,47 @@
 
     if (hero.grounded && hero.standingOn) {
       hero.y = hero.standingOn.y - 22;
+      chainStartedThisJump = false;
+      nextRopeDeadline = 0;
+      if (chainTimerPill) chainTimerPill.style.display = 'none';
       const edgeX = hero.standingOn.x + hero.standingOn.w - 18;
       if (hero.x < edgeX) { hero.x += 2.3; hero.runCycle += 0.26; }
       else { hero.runCycle = 0; }
     } else {
+      if (chainModeRequired) {
+        if (!hero.anchor) {
+          nextRopeDeadline = Math.max(0, nextRopeDeadline - rawDt);
+        } else {
+          nextRopeDeadline = NEXT_ROPE_WINDOW;
+        }
+        if (chainTimerPill && chainTimerVal) {
+          chainTimerPill.style.display = 'inline-flex';
+          chainTimerVal.textContent = `${nextRopeDeadline.toFixed(1)}s`;
+        }
+        if (chainStartedThisJump && !hero.anchor && nextRopeDeadline <= 0) {
+          const nearPlatform = platforms.some(p =>
+            !p.falling &&
+            hero.x >= p.x - 16 &&
+            hero.x <= p.x + p.w + 16 &&
+            Math.abs((hero.y + 22) - p.y) < 38
+          );
+          if (!nearPlatform) {
+            if (shieldActive) {
+              rescueFromFall();
+            } else {
+              finishMatch({
+                won: false,
+                reason: 'تأخرت في استعمال الحبل التالي قبل السقوط',
+                isRaceFinish: false
+              });
+              return;
+            }
+          }
+        }
+      } else if (chainTimerPill) {
+        chainTimerPill.style.display = 'none';
+      }
+
       const gravScale = releaseHangTimer > 0 ? 0.55 : 1;
       hero.vy += GRAVITY * gravScale;
       if (level >= 7) hero.vx += 0.035;
@@ -3997,6 +4102,9 @@
           if (withinX && feetY >= p.y && feetY <= p.y + p.h + 14) {
             hero.grounded = true; hero.standingOn = p; hero.y = p.y - 22; hero.vx = 0; hero.vy = 0;
             releaseHangTimer = 0;
+            chainStartedThisJump = false;
+            nextRopeDeadline = 0;
+            if (chainTimerPill) chainTimerPill.style.display = 'none';
             if (hero.anchor) { hero.anchor = null; isHoldingGrapple = false; }
             syncDashButtonUI();
             let landColor = skin.primary;
