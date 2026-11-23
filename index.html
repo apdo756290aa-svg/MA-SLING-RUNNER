@@ -25,13 +25,19 @@
     padding: 0;
     user-select: none;
     -webkit-user-select: none;
+  }
+
+  canvas#gameCanvas, #mobile-controls, #mobile-controls * {
     touch-action: none;
+  }
+
+  button, input, label, .screen-layer, .screen-layer * {
+    touch-action: manipulation;
   }
 
   input.room-input, input[type="file"] {
     user-select: text;
     -webkit-user-select: text;
-    touch-action: manipulation;
   }
 
   body, html {
@@ -1252,8 +1258,8 @@
         <span class="lbl">المنصات</span>
         <span id="hud-score">0</span>
       </div>
-      <button class="hud-icon-btn" id="hud-restart-btn" title="إعادة لعب">🔄</button>
-      <button class="hud-icon-btn" id="hud-home-btn" title="القائمة الرئيسية">🏠</button>
+      <button type="button" class="hud-icon-btn" id="hud-restart-btn" title="إعادة لعب">🔄</button>
+      <button type="button" class="hud-icon-btn" id="hud-home-btn" title="القائمة الرئيسية">🏠</button>
     </div>
   </div>
 
@@ -1278,16 +1284,16 @@
   </div>
 
   <div id="mobile-controls" class="hidden">
-    <button class="pad-btn jump-pad" id="btn-jump">
+    <button type="button" class="pad-btn jump-pad" id="btn-jump">
       <span>قفز</span>
       <small>Space / W / ↑</small>
     </button>
     <div class="ctrl-pair">
-      <button class="pad-btn dash-pad" id="btn-dash">
+      <button type="button" class="pad-btn dash-pad" id="btn-dash">
         <span id="dash-btn-label">اندفاع</span>
         <small id="dash-btn-sub">Shift / D</small>
       </button>
-      <button class="pad-btn grapple-pad" id="btn-grapple">
+      <button type="button" class="pad-btn grapple-pad" id="btn-grapple">
         <span>خطاف</span>
         <small>E / F / مطول</small>
       </button>
@@ -1305,7 +1311,7 @@
         </div>
       </div>
       <div style="display:flex; gap:6px; align-items:center;">
-        <button class="profile-pill-btn" id="btn-toggle-profile">
+        <button type="button" class="profile-pill-btn" id="btn-toggle-profile">
           <span id="header-avatar-preview" class="mini-avatar">⚡</span>
           <span id="header-nick-preview">صقر السلاسل</span>
         </button>
@@ -1316,11 +1322,10 @@
       </div>
     </div>
 
-    <!-- لوحة إنشاء حساب سريع (لقب فقط + صورة) -->
     <div class="profile-card hidden" id="profile-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <strong style="font-size:12px; color:#7dd3fc;">حسابك السريع (لقب فقط بدون اسم حقيقي + صورة)</strong>
-        <button class="mini-action-btn" id="btn-close-profile">إغلاق</button>
+        <button type="button" class="mini-action-btn" id="btn-close-profile">إغلاق</button>
       </div>
 
       <div class="profile-top-row">
@@ -1332,7 +1337,7 @@
               رفع صورة من الجهاز
               <input type="file" id="avatar-file-input" accept="image/*" style="display:none;">
             </label>
-            <button class="mini-action-btn" id="btn-save-profile">حفظ اللقب والصورة</button>
+            <button type="button" class="mini-action-btn" id="btn-save-profile">حفظ اللقب والصورة</button>
           </div>
         </div>
       </div>
@@ -1375,33 +1380,33 @@
       </div>
 
       <div class="home-actions-panel">
-        <button class="start-game-btn" id="btn-start-play">العب الآن</button>
+        <button type="button" class="start-game-btn" id="btn-start-play">العب الآن</button>
 
         <div class="nav-grid-2">
-          <button class="nav-page-btn" id="btn-open-shop">المتجر</button>
-          <button class="nav-page-btn settings-btn" id="btn-open-settings">الإعدادات</button>
+          <button type="button" class="nav-page-btn" id="btn-open-shop">المتجر</button>
+          <button type="button" class="nav-page-btn settings-btn" id="btn-open-settings">الإعدادات</button>
         </div>
 
-        <button class="secondary-bar-btn" id="btn-toggle-modes-drawer">
+        <button type="button" class="secondary-bar-btn" id="btn-toggle-modes-drawer">
           <span>أوضاع اللعب والغرف (<strong id="selected-mode-label" style="color:#38bdf8">عادي</strong>)</span>
           <span id="modes-drawer-chevron">▲</span>
         </button>
 
         <div class="modes-drawer" id="modes-drawer">
           <div class="mode-selector-4">
-            <button class="mode-btn active" id="mode-classic-btn">عادي</button>
-            <button class="mode-btn chase-mode" id="mode-chase-btn">مطاردة</button>
-            <button class="mode-btn ai-mode" id="mode-ai-btn">ضد AI</button>
-            <button class="mode-btn friends-mode" id="mode-friends-btn">أصدقاء</button>
+            <button type="button" class="mode-btn active" id="mode-classic-btn">عادي</button>
+            <button type="button" class="mode-btn chase-mode" id="mode-chase-btn">مطاردة</button>
+            <button type="button" class="mode-btn ai-mode" id="mode-ai-btn">ضد AI</button>
+            <button type="button" class="mode-btn friends-mode" id="mode-friends-btn">أصدقاء</button>
           </div>
 
           <div class="ai-diff-box hidden" id="ai-diff-box">
             <span>مستوى الذكاء الاصطناعي (20 مستوى مقسمة على 4 فئات):</span>
             <div class="diff-pills-4">
-              <button class="diff-btn" data-diff="easy">سهل<small>م 1–5</small></button>
-              <button class="diff-btn active" data-diff="medium">متوسط<small>م 6–10</small></button>
-              <button class="diff-btn" data-diff="fast">سريع<small>م 11–15</small></button>
-              <button class="diff-btn" data-diff="hard">صعب<small>م 16–20</small></button>
+              <button type="button" class="diff-btn" data-diff="easy">سهل<small>م 1–5</small></button>
+              <button type="button" class="diff-btn active" data-diff="medium">متوسط<small>م 6–10</small></button>
+              <button type="button" class="diff-btn" data-diff="fast">سريع<small>م 11–15</small></button>
+              <button type="button" class="diff-btn" data-diff="hard">صعب<small>م 16–20</small></button>
             </div>
             <div class="ai-tier-note" id="ai-tier-note">متوسط (المستويات 6–10): سرعة متوازنة في التقدم نحو القمة.</div>
           </div>
@@ -1413,12 +1418,11 @@
             </div>
 
             <div class="friends-three-btns">
-              <button class="friend-choice-btn active" id="btn-choice-create">إنشاء غرفة + QR</button>
-              <button class="friend-choice-btn" id="btn-choice-join">قارئ QR / إدخال</button>
-              <button class="friend-choice-btn" id="btn-choice-search">غرف نشطة</button>
+              <button type="button" class="friend-choice-btn active" id="btn-choice-create">إنشاء غرفة + QR</button>
+              <button type="button" class="friend-choice-btn" id="btn-choice-join">قارئ QR / إدخال</button>
+              <button type="button" class="friend-choice-btn" id="btn-choice-search">غرف نشطة</button>
             </div>
 
-            <!-- إشعار طلب الانضمام لصاحب الغرفة -->
             <div class="approval-box hidden" id="approval-box">
               <div class="approval-requester">
                 <span id="req-avatar" class="mini-avatar">⚡</span>
@@ -1430,13 +1434,12 @@
               </div>
             </div>
 
-            <!-- لوحة إنشاء الغرفة + عرض QR -->
             <div class="friend-sub-panel" id="panel-create-room">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
                 <span style="font-size:11.5px; color:#d1fae5;">رمز الغرفة: <span class="room-code-badge" id="room-code-badge">MA-1000</span></span>
                 <div style="display:flex; gap:5px;">
-                  <button class="mini-action-btn" id="btn-copy-room">نسخ الرمز</button>
-                  <button class="mini-action-btn" id="btn-gen-room">توليد رمز</button>
+                  <button type="button" class="mini-action-btn" id="btn-copy-room">نسخ الرمز</button>
+                  <button type="button" class="mini-action-btn" id="btn-gen-room">توليد رمز</button>
                 </div>
               </div>
 
@@ -1448,7 +1451,6 @@
               </div>
             </div>
 
-            <!-- لوحة قارئ QR بالكاميرا + إدخال يدوي -->
             <div class="friend-sub-panel hidden" id="panel-join-room">
               <div class="qr-scanner-box">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
@@ -1465,20 +1467,19 @@
               <div style="font-size:10.5px; color:#d1fae5; font-weight:700;">إدخال رمز الغرفة أو لصق بيانات QR يدوياً:</div>
               <div class="room-join-row">
                 <input type="text" class="room-input" id="room-code-input" placeholder="مثال: MA-1024 أو الصق نص الـ QR هنا...">
-                <button class="mini-action-btn" id="btn-join-room">طلب دخول</button>
+                <button type="button" class="mini-action-btn" id="btn-join-room">طلب دخول</button>
               </div>
             </div>
 
-            <!-- لوحة الغرف النشطة -->
             <div class="friend-sub-panel hidden" id="panel-search-room">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
                 <span style="font-size:11.5px; color:#d1fae5;">غرف حديثة (Firebase / احتياطي / محلي):</span>
-                <button class="mini-action-btn" id="btn-refresh-rooms">تحديث</button>
+                <button type="button" class="mini-action-btn" id="btn-refresh-rooms">تحديث</button>
               </div>
               <div class="found-rooms-list" id="found-rooms-list"></div>
             </div>
 
-            <div id="room-status-msg" style="font-size:10.5px; font-weight:700; color:#a7f3d0;">جاري فحص الاتصال بـ Firebase مع تفعيل وضع QR الاحتياطي تلقائياً عند الحاجة.</div>
+            <div id="room-status-msg" style="font-size:10.5px; font-weight:700; color:#a7f3d0;">جاهز للربط عبر Firebase أو وضع QR والرمز الاحتياطي.</div>
           </div>
         </div>
       </div>
@@ -1489,7 +1490,6 @@
     </div>
   </section>
 
-  <!-- صفحة 2: المتجر -->
   <section id="screen-shop" class="screen-layer hidden">
     <div class="screen-header">
       <div class="screen-title-box">
@@ -1501,7 +1501,7 @@
           <span class="coin-dot"></span>
           <span id="shop-coins">0</span>
         </div>
-        <button class="back-btn" data-back="screen-home">← رجوع</button>
+        <button type="button" class="back-btn" data-back="screen-home">← رجوع</button>
       </div>
     </div>
 
@@ -1514,14 +1514,13 @@
     </div>
   </section>
 
-  <!-- صفحة 3: الإعدادات والإحصائيات والألقاب والمصمم (MA) -->
   <section id="screen-settings" class="screen-layer hidden">
     <div class="screen-header">
       <div class="screen-title-box">
         <h2>الإعدادات والإحصائيات</h2>
         <p>سجل إنجازاتك، ألقابك، خيارات اللعب، وفريق التصميم</p>
       </div>
-      <button class="back-btn" data-back="screen-home">← رجوع</button>
+      <button type="button" class="back-btn" data-back="screen-home">← رجوع</button>
     </div>
 
     <div class="page-content-box">
@@ -1550,7 +1549,7 @@
             <strong>الصوت والموسيقى الخلفية</strong>
             <small>مؤثرات الخطاف والشدّ والقفز وموسيقى الخلفية</small>
           </div>
-          <button class="toggle-pill" id="toggle-sound-btn">مفعل</button>
+          <button type="button" class="toggle-pill" id="toggle-sound-btn">مفعل</button>
         </div>
 
         <div class="setting-row">
@@ -1558,7 +1557,7 @@
             <strong>اهتزاز الشاشة</strong>
             <small>إحساس الحركة عند الهبوط القوي والاصطدام</small>
           </div>
-          <button class="toggle-pill" id="toggle-shake-btn">مفعل</button>
+          <button type="button" class="toggle-pill" id="toggle-shake-btn">مفعل</button>
         </div>
       </div>
 
@@ -1578,8 +1577,8 @@
   const MAX_LEVEL_CLASSIC = 100;
   const MAX_LEVEL_AI = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v20';
-  const SAVE_KEY = 'chain_runner_ma_clean_v20';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v21';
+  const SAVE_KEY = 'chain_runner_ma_clean_v21';
 
   const FIREBASE_DB_URL = 'https://apdowebsite-99ed7-default-rtdb.europe-west1.firebasedatabase.app';
   const ROOMS_ROOT_PATH = 'chain_runner_rooms';
@@ -1857,11 +1856,9 @@
     profileStatusMsg.textContent = `تم حفظ اللقب "${cleanNick}" وصورتك.`;
   });
 
-  syncProfileUI();
-
   function scrollRoomSectionIntoView() {
     setTimeout(() => {
-      friendsBox.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      try { friendsBox.scrollIntoView({ behavior: 'smooth', block: 'end' }); } catch (e) {}
     }, 60);
   }
 
@@ -1871,7 +1868,7 @@
     modesDrawerChevron.textContent = opening ? '▲' : '▼';
     if (opening) {
       setTimeout(() => {
-        modesDrawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        try { modesDrawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {}
       }, 60);
     }
   });
@@ -1895,8 +1892,7 @@
     try { localStorage.setItem(LOCAL_ROOMS_KEY, JSON.stringify(list.slice(0, 8))); } catch (e) {}
   }
 
-  // Firebase REST + Automatic Fallback test
-  let firebaseReachable = true;
+  let firebaseReachable = false;
 
   function dbUrl(subPath) {
     const base = FIREBASE_DB_URL.replace(/\/+$/, '');
@@ -1915,19 +1911,21 @@
   }
 
   async function testFirebaseReachability() {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 1800);
     try {
-      const res = await fetch(dbUrl('_ping'), { signal: controller.signal, cache: 'no-store' });
-      clearTimeout(timer);
-      firebaseReachable = res.ok;
+      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = controller ? setTimeout(() => controller.abort(), 1500) : null;
+      const res = await fetch(dbUrl('_ping'), {
+        signal: controller ? controller.signal : undefined,
+        cache: 'no-store'
+      });
+      if (timer) clearTimeout(timer);
+      firebaseReachable = Boolean(res && res.ok);
     } catch (e) {
-      clearTimeout(timer);
       firebaseReachable = false;
     }
     updateConnectionBadgeUI();
     if (!firebaseReachable) {
-      roomStatusMsg.textContent = 'تعذر الوصول المباشر لـ Firebase — تم التحويل تلقائياً لوضع QR والرمز اليدوي.';
+      roomStatusMsg.textContent = 'وضع QR والرمز الاحتياطي نشط وجاهز للربط المباشر.';
     } else {
       roomStatusMsg.textContent = 'الاتصال بـ Firebase نشط — ومعه QR ورمز يدوي جاهزان دائماً.';
     }
@@ -1936,24 +1934,23 @@
 
   btnRecheckConn.addEventListener('click', () => {
     connModeBadge.textContent = 'جاري الفحص...';
-    testFirebaseReachability();
+    testFirebaseReachability().catch(() => {});
   });
 
   async function fbPut(subPath, data) {
     if (!firebaseReachable) return false;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 1800);
     try {
+      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = controller ? setTimeout(() => controller.abort(), 1500) : null;
       const res = await fetch(dbUrl(subPath), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-        signal: controller.signal
+        signal: controller ? controller.signal : undefined
       });
-      clearTimeout(timer);
-      return res.ok;
+      if (timer) clearTimeout(timer);
+      return Boolean(res && res.ok);
     } catch (e) {
-      clearTimeout(timer);
       firebaseReachable = false;
       updateConnectionBadgeUI();
       return false;
@@ -1962,19 +1959,18 @@
 
   async function fbPatch(subPath, data) {
     if (!firebaseReachable) return false;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 1800);
     try {
+      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = controller ? setTimeout(() => controller.abort(), 1500) : null;
       const res = await fetch(dbUrl(subPath), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-        signal: controller.signal
+        signal: controller ? controller.signal : undefined
       });
-      clearTimeout(timer);
-      return res.ok;
+      if (timer) clearTimeout(timer);
+      return Boolean(res && res.ok);
     } catch (e) {
-      clearTimeout(timer);
       firebaseReachable = false;
       updateConnectionBadgeUI();
       return false;
@@ -1983,15 +1979,17 @@
 
   async function fbGet(subPath) {
     if (!firebaseReachable) return null;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 1800);
     try {
-      const res = await fetch(dbUrl(subPath), { signal: controller.signal, cache: 'no-store' });
-      clearTimeout(timer);
-      if (!res.ok) return null;
+      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = controller ? setTimeout(() => controller.abort(), 1500) : null;
+      const res = await fetch(dbUrl(subPath), {
+        signal: controller ? controller.signal : undefined,
+        cache: 'no-store'
+      });
+      if (timer) clearTimeout(timer);
+      if (!res || !res.ok) return null;
       return await res.json();
     } catch (e) {
-      clearTimeout(timer);
       firebaseReachable = false;
       updateConnectionBadgeUI();
       return null;
@@ -2014,67 +2012,70 @@
     return `CHAINRUNNER|ROOM=${activeRoomCode}|HOST=${safeNick}|PEER=${localPeerId}`;
   }
 
-  // Deterministic matrix QR-style visual drawer on canvas so it works offline without external CDN
   function drawMatrixQR(targetCanvas, text) {
-    if (!targetCanvas) return;
-    const c = targetCanvas.getContext('2d');
-    const size = targetCanvas.width;
-    const cells = 21;
-    const margin = 10;
-    const cellSize = (size - margin * 2) / cells;
+    try {
+      if (!targetCanvas) return;
+      const c = targetCanvas.getContext('2d');
+      if (!c) return;
+      const str = String(text || 'CHAINRUNNER');
+      const size = targetCanvas.width || 124;
+      const cells = 21;
+      const margin = 10;
+      const cellSize = (size - margin * 2) / cells;
 
-    c.fillStyle = '#ffffff';
-    c.fillRect(0, 0, size, size);
+      c.fillStyle = '#ffffff';
+      c.fillRect(0, 0, size, size);
 
-    const grid = Array.from({ length: cells }, () => Array(cells).fill(false));
+      const grid = Array.from({ length: cells }, () => Array(cells).fill(false));
 
-    function drawFinder(r0, c0) {
-      for (let r = -1; r <= 7; r++) {
-        for (let col = -1; col <= 7; col++) {
-          const rr = r0 + r;
-          const cc = c0 + col;
-          if (rr < 0 || rr >= cells || cc < 0 || cc >= cells) continue;
-          const inBorder = r === 0 || r === 6 || col === 0 || col === 6;
-          const inCenter = r >= 2 && r <= 4 && col >= 2 && col <= 4;
-          grid[rr][cc] = inBorder || inCenter;
+      function drawFinder(r0, c0) {
+        for (let r = -1; r <= 7; r++) {
+          for (let col = -1; col <= 7; col++) {
+            const rr = r0 + r;
+            const cc = c0 + col;
+            if (rr < 0 || rr >= cells || cc < 0 || cc >= cells) continue;
+            const inBorder = r === 0 || r === 6 || col === 0 || col === 6;
+            const inCenter = r >= 2 && r <= 4 && col >= 2 && col <= 4;
+            grid[rr][cc] = inBorder || inCenter;
+          }
         }
       }
-    }
 
-    drawFinder(0, 0);
-    drawFinder(0, cells - 7);
-    drawFinder(cells - 7, 0);
+      drawFinder(0, 0);
+      drawFinder(0, cells - 7);
+      drawFinder(cells - 7, 0);
 
-    let hash = 2166136261;
-    for (let i = 0; i < text.length; i++) {
-      hash ^= text.charCodeAt(i);
-      hash = Math.imul(hash, 16777619);
-    }
-
-    for (let r = 0; r < cells; r++) {
-      for (let col = 0; col < cells; col++) {
-        const isFinderA = r < 8 && col < 8;
-        const isFinderB = r < 8 && col >= cells - 8;
-        const isFinderC = r >= cells - 8 && col < 8;
-        if (isFinderA || isFinderB || isFinderC) continue;
-        const mix = (hash ^ (r * 37 + col * 17 + text.charCodeAt(col % text.length))) >>> 0;
-        grid[r][col] = (mix % 3) === 0;
+      let hash = 2166136261;
+      for (let i = 0; i < str.length; i++) {
+        hash ^= str.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
       }
-    }
 
-    c.fillStyle = '#050811';
-    for (let r = 0; r < cells; r++) {
-      for (let col = 0; col < cells; col++) {
-        if (grid[r][col]) {
-          c.fillRect(
-            Math.round(margin + col * cellSize),
-            Math.round(margin + r * cellSize),
-            Math.ceil(cellSize),
-            Math.ceil(cellSize)
-          );
+      for (let r = 0; r < cells; r++) {
+        for (let col = 0; col < cells; col++) {
+          const isFinderA = r < 8 && col < 8;
+          const isFinderB = r < 8 && col >= cells - 8;
+          const isFinderC = r >= cells - 8 && col < 8;
+          if (isFinderA || isFinderB || isFinderC) continue;
+          const mix = (hash ^ (r * 37 + col * 17 + str.charCodeAt(col % str.length))) >>> 0;
+          grid[r][col] = (mix % 3) === 0;
         }
       }
-    }
+
+      c.fillStyle = '#050811';
+      for (let r = 0; r < cells; r++) {
+        for (let col = 0; col < cells; col++) {
+          if (grid[r][col]) {
+            c.fillRect(
+              Math.round(margin + col * cellSize),
+              Math.round(margin + r * cellSize),
+              Math.ceil(cellSize),
+              Math.ceil(cellSize)
+            );
+          }
+        }
+      }
+    } catch (e) {}
   }
 
   function updateRoomQRCode() {
@@ -2118,7 +2119,6 @@
     return { code: str.toUpperCase(), hostNick: '' };
   }
 
-  // QR Camera Scanner
   let qrStream = null;
   let qrScanInterval = null;
 
@@ -2128,14 +2128,14 @@
       qrScanInterval = null;
     }
     if (qrStream) {
-      qrStream.getTracks().forEach(t => t.stop());
+      try { qrStream.getTracks().forEach(t => t.stop()); } catch (e) {}
       qrStream = null;
     }
     qrVideo.classList.add('hidden');
   }
 
   btnStopQrCam.addEventListener('click', () => {
-    stopQrCamera();
+    stopQrCamera().catch(() => {});
     qrCamStatus.textContent = 'تم إيقاف الكاميرا.';
   });
 
@@ -2184,17 +2184,17 @@
 
   function broadcastFriendEvent(payload, targetCode = activeRoomCode) {
     if ('BroadcastChannel' in window) {
-      const ch = (targetCode === activeRoomCode && roomChannel)
-        ? roomChannel
-        : new BroadcastChannel(`chain_runner_ma_room_${targetCode}`);
       try {
+        const ch = (targetCode === activeRoomCode && roomChannel)
+          ? roomChannel
+          : new BroadcastChannel(`chain_runner_ma_room_${targetCode}`);
         ch.postMessage({
           ...payload,
           senderId: localPeerId,
           roomCode: targetCode
         });
+        if (ch !== roomChannel) ch.close();
       } catch (e) {}
-      if (ch !== roomChannel) ch.close();
     }
   }
 
@@ -2356,43 +2356,47 @@
     roomCodeBadge.textContent = activeRoomCode;
     updateRoomQRCode();
 
-    if (roomChannel) roomChannel.close();
+    if (roomChannel) {
+      try { roomChannel.close(); } catch (e) {}
+    }
     if ('BroadcastChannel' in window) {
-      roomChannel = new BroadcastChannel(`chain_runner_ma_room_${activeRoomCode}`);
-      roomChannel.onmessage = (ev) => {
-        const data = ev.data;
-        if (!data || data.senderId === localPeerId) return;
+      try {
+        roomChannel = new BroadcastChannel(`chain_runner_ma_room_${activeRoomCode}`);
+        roomChannel.onmessage = (ev) => {
+          const data = ev.data;
+          if (!data || data.senderId === localPeerId) return;
 
-        if (data.type === 'join_request' && isRoomHost) {
-          showApprovalRequest({
-            peerId: data.senderId,
-            profile: data.profile
-          });
-        } else if (data.type === 'join_response' && data.targetPeerId === localPeerId) {
-          if (data.accepted) {
-            approvedForCurrentRoom = true;
-            if (data.hostProfile) friendProfile = data.hostProfile;
+          if (data.type === 'join_request' && isRoomHost) {
+            showApprovalRequest({
+              peerId: data.senderId,
+              profile: data.profile
+            });
+          } else if (data.type === 'join_response' && data.targetPeerId === localPeerId) {
+            if (data.accepted) {
+              approvedForCurrentRoom = true;
+              if (data.hostProfile) friendProfile = data.hostProfile;
+              syncFriendProfileUI();
+              roomStatusMsg.textContent = `صاحب الغرفة وافق! يمكنك الآن بدء اللعب مع "${friendProfile.nickname}".`;
+              publishProgress(score, level);
+            } else {
+              approvedForCurrentRoom = false;
+              roomStatusMsg.textContent = 'صاحب الغرفة لم يوافق على طلب الانضمام.';
+            }
+          } else if (data.type === 'live_progress') {
+            if (data.profile) friendProfile = data.profile;
+            friendScore = Number(data.score) || 0;
+            friendLevel = Number(data.level) || 1;
             syncFriendProfileUI();
-            roomStatusMsg.textContent = `صاحب الغرفة وافق! يمكنك الآن بدء اللعب مع "${friendProfile.nickname}".`;
-            publishProgress(score, level);
-          } else {
-            approvedForCurrentRoom = false;
-            roomStatusMsg.textContent = 'صاحب الغرفة لم يوافق على طلب الانضمام.';
+            roomStatusMsg.textContent = `"${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${friendScore} منصة (المستوى ${friendLevel})`;
+          } else if (data.type === 'score_update') {
+            if (data.profile) friendProfile = data.profile;
+            friendScore = Math.max(friendScore, Number(data.score) || 0);
+            friendLevel = Math.max(friendLevel, computeLevel(friendScore));
+            syncFriendProfileUI();
+            roomStatusMsg.textContent = `سجل "${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${data.score} منصة`;
           }
-        } else if (data.type === 'live_progress') {
-          if (data.profile) friendProfile = data.profile;
-          friendScore = Number(data.score) || 0;
-          friendLevel = Number(data.level) || 1;
-          syncFriendProfileUI();
-          roomStatusMsg.textContent = `"${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${friendScore} منصة (المستوى ${friendLevel})`;
-        } else if (data.type === 'score_update') {
-          if (data.profile) friendProfile = data.profile;
-          friendScore = Math.max(friendScore, Number(data.score) || 0);
-          friendLevel = Math.max(friendLevel, computeLevel(friendScore));
-          syncFriendProfileUI();
-          roomStatusMsg.textContent = `سجل "${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${data.score} منصة`;
-        }
-      };
+        };
+      } catch (e) {}
     }
 
     if (asHost) {
@@ -2424,19 +2428,16 @@
         status: 'pending',
         createdAt: Date.now()
       });
-      // In fallback QR/manual mode, allow instant ready start while still sending request over channel/Firebase
       if (!firebaseReachable) {
         approvedForCurrentRoom = true;
       }
     }
 
     if (roomPollTimer) clearInterval(roomPollTimer);
-    roomPollTimer = setInterval(syncRoomStateFromFirebase, 1600);
-    syncRoomStateFromFirebase();
+    roomPollTimer = setInterval(() => {
+      syncRoomStateFromFirebase().catch(() => {});
+    }, 2000);
   }
-
-  connectRoom(activeRoomCode, true, false);
-  testFirebaseReachability();
 
   function setFriendSubTab(tab) {
     btnChoiceCreate.classList.toggle('active', tab === 'create');
@@ -2447,15 +2448,15 @@
     panelJoinRoom.classList.toggle('hidden', tab !== 'join');
     panelSearchRoom.classList.toggle('hidden', tab !== 'search');
 
-    if (tab !== 'join') stopQrCamera();
+    if (tab !== 'join') stopQrCamera().catch(() => {});
     if (tab === 'create') updateRoomQRCode();
-    if (tab === 'search') renderFoundRooms();
+    if (tab === 'search') renderFoundRooms().catch(() => {});
     scrollRoomSectionIntoView();
   }
 
   btnChoiceCreate.addEventListener('click', () => {
     setFriendSubTab('create');
-    connectRoom(activeRoomCode, true, false);
+    connectRoom(activeRoomCode, true, false).catch(() => {});
     roomStatusMsg.textContent = `أنت منشئ الغرفة ${activeRoomCode} — شارك الـ QR أو الرمز مع صديقك.`;
   });
 
@@ -2493,8 +2494,8 @@
 
   btnGenRoom.addEventListener('click', () => {
     const generated = `MA-${Math.floor(1000 + Math.random() * 9000)}`;
-    connectRoom(generated, true, false);
-    renderFoundRooms();
+    connectRoom(generated, true, false).catch(() => {});
+    renderFoundRooms().catch(() => {});
     roomStatusMsg.textContent = `تم إنشاء الغرفة ${generated} وتحديث الـ QR الخاص بها.`;
   });
 
@@ -2504,8 +2505,8 @@
       roomStatusMsg.textContent = 'اكتب رمز الغرفة أو الصق نص الـ QR أولاً.';
       return;
     }
-    connectRoom(parsed.code, false, true, parsed.hostNick);
-    renderFoundRooms();
+    connectRoom(parsed.code, false, true, parsed.hostNick).catch(() => {});
+    renderFoundRooms().catch(() => {});
     if (firebaseReachable) {
       roomStatusMsg.textContent = `تم إرسال طلب دخول بلقب "${saveData.profile.nickname}" إلى الغرفة ${activeRoomCode} — بانتظار موافقة المضيف.`;
     } else {
@@ -2538,7 +2539,7 @@
     foundRoomsList.innerHTML = rooms.map(r => `
       <div class="found-room-item">
         <span><strong>${r.code}</strong> • <small style="color:#a7f3d0">${r.hostNick} (${r.source})</small></span>
-        <button class="mini-action-btn join-found-btn" data-code="${r.code}">طلب دخول</button>
+        <button type="button" class="mini-action-btn join-found-btn" data-code="${r.code}">طلب دخول</button>
       </div>
     `).join('');
 
@@ -2546,7 +2547,7 @@
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
         roomCodeInput.value = code;
-        connectRoom(code, false, true);
+        connectRoom(code, false, true).catch(() => {});
         roomStatusMsg.textContent = `تم إرسال طلب دخول بلقب "${saveData.profile.nickname}" إلى الغرفة ${code}.`;
       });
     });
@@ -2554,7 +2555,7 @@
 
   btnRefreshRooms.addEventListener('click', async () => {
     await testFirebaseReachability();
-    renderFoundRooms();
+    await renderFoundRooms();
     roomStatusMsg.textContent = 'تم تحديث حالة الاتصال وقائمة الغرف.';
   });
 
@@ -2625,12 +2626,12 @@
 
     if (m === 'ai') updateAiTierNote();
     if (m === 'friends') {
-      testFirebaseReachability();
+      testFirebaseReachability().catch(() => {});
       updateRoomQRCode();
-      renderFoundRooms();
+      renderFoundRooms().catch(() => {});
       scrollRoomSectionIntoView();
     } else {
-      stopQrCamera();
+      stopQrCamera().catch(() => {});
     }
     syncActiveModeHudVisibility(gameRunning);
   }
@@ -2683,7 +2684,7 @@
     }
 
     const playing = !screenId;
-    if (playing) stopQrCamera();
+    if (playing) stopQrCamera().catch(() => {});
     hud.classList.toggle('hidden', !playing);
     topBanners.classList.toggle('hidden', !playing);
     mobileControls.classList.toggle('hidden', !playing);
@@ -2815,7 +2816,7 @@
             <strong>${u.title} (${lvl}/${u.max})</strong>
             <small>${u.desc}</small>
           </div>
-          <button class="upg-btn ${isMax ? 'maxed' : ''}" data-upg="${u.key}" data-cost="${cost}" ${isMax ? 'disabled' : ''}>
+          <button type="button" class="upg-btn ${isMax ? 'maxed' : ''}" data-upg="${u.key}" data-cost="${cost}" ${isMax ? 'disabled' : ''}>
             ${isMax ? 'مكتمل' : `${cost} عملة`}
           </button>
         </div>
@@ -2859,17 +2860,19 @@
   let bgmStep = 0;
 
   function initAudio() {
+    if (!AudioCtx) return;
     if (!audioCtx) audioCtx = new AudioCtx();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
   }
 
   function startBGM() {
-    if (bgmTimer) return;
+    if (bgmTimer || !AudioCtx) return;
     const notes = [130.81, 164.81, 196.00, 246.94, 261.63, 246.94, 196.00, 164.81];
     bgmTimer = setInterval(() => {
       if (!saveData.settings.soundOn || !gameRunning) return;
       try {
         initAudio();
+        if (!audioCtx) return;
         const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -2889,9 +2892,10 @@
   }
 
   function playSFX(type, tensionOrCombo = 1) {
-    if (!saveData.settings.soundOn) return;
+    if (!saveData.settings.soundOn || !AudioCtx) return;
     try {
       initAudio();
+      if (!audioCtx) return;
       const now = audioCtx.currentTime;
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
@@ -2951,8 +2955,8 @@
     } catch (e) {}
   }
 
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+  let width = canvas.width = window.innerWidth || 360;
+  let height = canvas.height = window.innerHeight || 640;
   function syncPreviewSize() {
     const r = previewCanvas.getBoundingClientRect();
     if (r.width > 0 && r.height > 0) {
@@ -2961,8 +2965,8 @@
     }
   }
   window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    width = canvas.width = window.innerWidth || 360;
+    height = canvas.height = window.innerHeight || 640;
     syncPreviewSize();
   });
   syncPreviewSize();
@@ -3227,7 +3231,7 @@
       toastEl.textContent = `مبارزة AI (${getAiDiffLabel()}) • الأول للمستوى 20 يفوز`;
     } else if (selectedGameMode === 'friends') {
       toastEl.textContent = `غرفة ${activeRoomCode} • اللعب مع "${friendProfile.nickname}"`;
-      publishProgress(0, 1);
+      publishProgress(0, 1).catch(() => {});
     } else if (chaseActive) {
       toastEl.textContent = 'موجة المطاردة نشطة — تحرك بسرعة';
     } else {
@@ -3497,7 +3501,7 @@
       saveData.scores.sort((a, b) => b.score - a.score);
       saveData.scores = saveData.scores.slice(0, 5);
       broadcastFriendEvent({ type: 'score_update', score, level, profile: saveData.profile });
-      publishProgress(score, level);
+      publishProgress(score, level).catch(() => {});
     }
     persistSave();
 
@@ -3789,7 +3793,7 @@
               updateInstantHowtoBanner();
 
               if (selectedGameMode === 'friends') {
-                publishProgress(score, level);
+                publishProgress(score, level).catch(() => {});
               }
 
               if (aiModeActive && score >= MAX_LEVEL_AI * PLATFORMS_PER_LEVEL) {
@@ -4169,15 +4173,22 @@
   }
 
   function loop(now) {
-    update(now);
-    draw();
-    drawPreview(now);
+    try {
+      update(now);
+      draw();
+      drawPreview(now);
+    } catch (e) {}
     requestAnimationFrame(loop);
   }
 
-  renderAllUI();
-  resetGame();
+  try { renderAllUI(); } catch (e) {}
+  try { resetGame(); } catch (e) {}
   requestAnimationFrame(loop);
+
+  setTimeout(() => {
+    connectRoom(activeRoomCode, true, false).catch(() => {});
+    testFirebaseReachability().catch(() => {});
+  }, 150);
 })();
 </script>
 </body>
