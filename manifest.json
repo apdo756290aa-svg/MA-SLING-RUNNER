@@ -1,21 +1,25 @@
 {
-  "name": "CHAIN RUNNER • MA",
-  "short_name": "ChainRunner",
+  "name": "CHAIN RUNNER - MA Studio",
+  "short_name": "CHAIN RUNNER",
+  "description": "ركض وخطاف سريع - لعبة MA Studio",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#050811",
   "theme_color": "#050811",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
