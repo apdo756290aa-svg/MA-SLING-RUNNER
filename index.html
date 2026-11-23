@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#050811">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CHAIN RUNNER">
 <title>CHAIN RUNNER // MA Studio</title>
 <style>
   :root {
@@ -430,6 +434,17 @@
     gap: 5px;
   }
 
+  .install-app-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: 1px solid rgba(110, 231, 183, 0.65);
+    color: #ecfdf5;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
   .back-btn {
     background: rgba(56, 189, 248, 0.16);
     border: 1px solid rgba(56, 189, 248, 0.45);
@@ -499,6 +514,15 @@
   .preset-avatar-btn.active {
     border-color: var(--accent);
     background: rgba(56, 189, 248, 0.25);
+  }
+
+  .backup-actions-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .approval-box {
@@ -1288,7 +1312,7 @@
     <div class="hud-chip">
       <span id="hud-accent-dot" style="width:9px;height:9px;border-radius:50%;background:#38bdf8;display:inline-block;"></span>
       <span id="hud-my-avatar" class="mini-avatar">⚡</span>
-      <strong id="hud-my-nickname">صقر السلاسل</strong>
+      <strong id="hud-my-nickname">النينجا الصغير</strong>
     </div>
 
     <div class="hud-group">
@@ -1372,14 +1396,15 @@
       <div class="screen-title-box">
         <h2 id="home-title">CHAIN RUNNER • MA</h2>
         <div class="title-badge-row">
-          <p id="home-subtitle">ركض وخطاف سريع • كل الأقسام ظاهرة بالكامل</p>
+          <p id="home-subtitle">ركض وخطاف سريع • حفظ دائم وقابل للتثبيت على التليفون</p>
           <span class="rank-pill" id="home-rank-badge">مبتدئ السلاسل</span>
         </div>
       </div>
-      <div style="display:flex; gap:6px; align-items:center;">
+      <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
+        <button type="button" class="install-app-btn" id="btn-install-app">تنزيل على التليفون</button>
         <button type="button" class="profile-pill-btn" id="btn-toggle-profile">
           <span id="header-avatar-preview" class="mini-avatar">⚡</span>
-          <span id="header-nick-preview">صقر السلاسل</span>
+          <span id="header-nick-preview">النينجا الصغير</span>
         </button>
         <div class="hud-chip">
           <span class="coin-dot"></span>
@@ -1390,14 +1415,14 @@
 
     <div class="profile-card hidden" id="profile-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <strong style="font-size:12px; color:#7dd3fc;">حسابك السريع (لقب فقط بدون اسم حقيقي + صورة)</strong>
+        <strong style="font-size:12px; color:#7dd3fc;">حسابك المحفوظ دائماً (اللقب + الصورة + الفلوس)</strong>
         <button type="button" class="mini-action-btn" id="btn-close-profile">إغلاق</button>
       </div>
 
       <div class="profile-top-row">
         <div id="profile-big-avatar" class="profile-preview-avatar">⚡</div>
         <div style="flex:1; display:flex; flex-direction:column; gap:5px;">
-          <input type="text" class="room-input" id="nickname-input" maxlength="20" placeholder="اكتب لقبك هنا (مثال: نجم_الليل)...">
+          <input type="text" class="room-input" id="nickname-input" maxlength="24" placeholder="اكتب لقبك هنا (مثال: النينجا الصغير)...">
           <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
             <label class="mini-action-btn" style="cursor:pointer;">
               رفع صورة من الجهاز
@@ -1410,6 +1435,7 @@
 
       <div class="preset-avatars-row">
         <span style="font-size:10.5px; color:#94a3b8;">أو اختر رمزاً سريعاً:</span>
+        <button type="button" class="preset-avatar-btn" data-emoji="🥷">🥷</button>
         <button type="button" class="preset-avatar-btn" data-emoji="⚡">⚡</button>
         <button type="button" class="preset-avatar-btn" data-emoji="🦅">🦅</button>
         <button type="button" class="preset-avatar-btn" data-emoji="🔥">🔥</button>
@@ -1417,6 +1443,16 @@
         <button type="button" class="preset-avatar-btn" data-emoji="🚀">🚀</button>
         <button type="button" class="preset-avatar-btn" data-emoji="🎯">🎯</button>
       </div>
+
+      <div class="backup-actions-row">
+        <button type="button" class="mini-action-btn" id="btn-export-save">حفظ نسخة احتياطية</button>
+        <label class="mini-action-btn" style="cursor:pointer;">
+          استعادة نسخة
+          <input type="file" id="import-save-input" accept="application/json,.json" style="display:none;">
+        </label>
+        <span style="font-size:10px; color:#94a3b8;">يتم الحفظ تلقائياً في المتصفح و IndexedDB</span>
+      </div>
+
       <div id="profile-status-msg" style="font-size:10.5px; color:#a7f3d0; font-weight:700;"></div>
     </div>
 
@@ -1669,8 +1705,11 @@
   const MAX_LEVEL_AI = 20;
   const MAX_LEVEL_FRIENDS = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v26';
-  const SAVE_KEY = 'chain_runner_ma_clean_v26';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v27';
+  const SAVE_KEY = 'chain_runner_ma_clean_v27';
+  const WALLET_VAULT_KEY = 'chain_runner_ma_wallet_vault_v1';
+  const IDB_NAME = 'ChainRunnerMA_DB';
+  const IDB_STORE = 'PersistentState';
 
   const FIREBASE_DB_URL = 'https://apdowebsite-99ed7-default-rtdb.europe-west1.firebasedatabase.app';
   const ROOMS_ROOT_PATH = 'chain_runner_rooms';
@@ -1718,12 +1757,15 @@
   const friendScoreInput = document.getElementById('friend-score-input');
   const btnSaveFriendScore = document.getElementById('btn-save-friend-score');
 
+  const btnInstallApp = document.getElementById('btn-install-app');
   const btnToggleProfile = document.getElementById('btn-toggle-profile');
   const btnCloseProfile = document.getElementById('btn-close-profile');
   const profileCard = document.getElementById('profile-card');
   const nicknameInput = document.getElementById('nickname-input');
   const avatarFileInput = document.getElementById('avatar-file-input');
   const btnSaveProfile = document.getElementById('btn-save-profile');
+  const btnExportSave = document.getElementById('btn-export-save');
+  const importSaveInput = document.getElementById('import-save-input');
   const profileBigAvatar = document.getElementById('profile-big-avatar');
   const headerAvatarPreview = document.getElementById('header-avatar-preview');
   const headerNickPreview = document.getElementById('header-nick-preview');
@@ -1823,6 +1865,86 @@
   let chainStartedThisJump = false;
   let nextRopeDeadline = 0;
 
+  let deferredInstallPrompt = null;
+
+  function setupPWA() {
+    try {
+      const iconSvg = encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+          <rect width="192" height="192" rx="42" fill="#050811"/>
+          <circle cx="96" cy="96" r="64" fill="none" stroke="#38bdf8" stroke-width="8"/>
+          <path d="M52 128 L96 54 L140 128 Z" fill="#a855f7"/>
+          <circle cx="96" cy="54" r="12" fill="#fbbf24"/>
+        </svg>`
+      );
+      const manifestObj = {
+        name: 'CHAIN RUNNER • MA',
+        short_name: 'ChainRunner',
+        start_url: './',
+        display: 'standalone',
+        orientation: 'any',
+        background_color: '#050811',
+        theme_color: '#050811',
+        icons: [
+          { src: `data:image/svg+xml,${iconSvg}`, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' }
+        ]
+      };
+      const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+      const manifestUrl = URL.createObjectURL(blob);
+      const linkEl = document.createElement('link');
+      linkEl.rel = 'manifest';
+      linkEl.href = manifestUrl;
+      document.head.appendChild(linkEl);
+    } catch (e) {}
+
+    if ('serviceWorker' in navigator && window.isSecureContext) {
+      try {
+        const swCode = `
+          const CACHE_NAME = 'chain-runner-ma-v27';
+          self.addEventListener('install', (e) => {
+            e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(['./'])).catch(() => {}));
+            self.skipWaiting();
+          });
+          self.addEventListener('activate', (e) => {
+            e.waitUntil(self.clients.claim());
+          });
+          self.addEventListener('fetch', (e) => {
+            if (e.request.method !== 'GET') return;
+            e.respondWith(
+              fetch(e.request).catch(() => caches.match(e.request))
+            );
+          });
+        `;
+        const swBlob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(swBlob);
+        navigator.serviceWorker.register(swUrl).catch(() => {});
+      } catch (e) {}
+    }
+  }
+  setupPWA();
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    btnInstallApp.textContent = 'تثبيت التطبيق';
+  });
+
+  btnInstallApp.addEventListener('click', async () => {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice.catch(() => null);
+      deferredInstallPrompt = null;
+      if (choice && choice.outcome === 'accepted') {
+        toastEl.textContent = 'تم تثبيت اللعبة على التليفون.';
+      }
+      return;
+    }
+    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    toastEl.textContent = isIos
+      ? 'في Safari: اضغط زر المشاركة (Share) ثم اختر "إضافة إلى الشاشة الرئيسية".'
+      : 'من قائمة المتصفح (⋮) اختر "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية".';
+  });
+
   const ACHIEVEMENTS = [
     { id: 'starter', title: 'مبتدئ السلاسل', desc: 'خض 3 جولات أو اعبر 15 منصة', check: (d) => (d.stats.totalRuns || 0) >= 3 || getBestScore(d) >= 15 },
     { id: 'collector', title: 'صائد العملات', desc: 'اجمع 50 عملة إجمالاً', check: (d) => (d.stats.totalCoinsEarned || 0) >= 50 },
@@ -1852,7 +1974,7 @@
   ];
 
   let saveData = {
-    profile: { nickname: 'صقر السلاسل', avatar: '⚡', avatarType: 'emoji' },
+    profile: { nickname: 'النينجا الصغير', avatar: '🥷', avatarType: 'emoji' },
     coins: 0,
     unlockedSkins: ['cyan'],
     selectedSkin: 'cyan',
@@ -1863,31 +1985,128 @@
     friendMatches: {}
   };
 
+  function openIDB() {
+    return new Promise((resolve) => {
+      if (!('indexedDB' in window)) return resolve(null);
+      try {
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => resolve(null);
+      } catch (e) {
+        resolve(null);
+      }
+    });
+  }
+
+  async function writeIDBBackup(payload) {
+    const db = await openIDB();
+    if (!db) return;
+    try {
+      const tx = db.transaction(IDB_STORE, 'readwrite');
+      tx.objectStore(IDB_STORE).put(payload, 'full_save');
+    } catch (e) {}
+  }
+
+  async function readIDBBackup() {
+    const db = await openIDB();
+    if (!db) return null;
+    return new Promise((resolve) => {
+      try {
+        const tx = db.transaction(IDB_STORE, 'readonly');
+        const req = tx.objectStore(IDB_STORE).get('full_save');
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      } catch (e) {
+        resolve(null);
+      }
+    });
+  }
+
+  function mergeSaveCandidate(target, candidate) {
+    if (!candidate || typeof candidate !== 'object') return target;
+    return {
+      ...target,
+      ...candidate,
+      profile: { ...target.profile, ...(candidate.profile || {}) },
+      coins: Math.max(Number(target.coins) || 0, Number(candidate.coins) || 0),
+      unlockedSkins: Array.from(new Set([...(target.unlockedSkins || ['cyan']), ...(candidate.unlockedSkins || [])])),
+      selectedSkin: candidate.selectedSkin || target.selectedSkin || 'cyan',
+      upgrades: {
+        rangeLvl: Math.max(Number(target.upgrades?.rangeLvl) || 0, Number(candidate.upgrades?.rangeLvl) || 0),
+        magnetLvl: Math.max(Number(target.upgrades?.magnetLvl) || 0, Number(candidate.upgrades?.magnetLvl) || 0),
+        startShieldLvl: Math.max(Number(target.upgrades?.startShieldLvl) || 0, Number(candidate.upgrades?.startShieldLvl) || 0)
+      },
+      settings: { ...target.settings, ...(candidate.settings || {}) },
+      stats: {
+        totalCoinsEarned: Math.max(Number(target.stats?.totalCoinsEarned) || 0, Number(candidate.stats?.totalCoinsEarned) || 0),
+        maxCombo: Math.max(Number(target.stats?.maxCombo) || 1, Number(candidate.stats?.maxCombo) || 1),
+        totalRuns: Math.max(Number(target.stats?.totalRuns) || 0, Number(candidate.stats?.totalRuns) || 0)
+      },
+      scores: (candidate.scores && candidate.scores.length >= (target.scores || []).length) ? candidate.scores : (target.scores || []),
+      friendMatches: { ...(target.friendMatches || {}), ...(candidate.friendMatches || {}) }
+    };
+  }
+
   function loadSave() {
     try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (raw) {
-        const p = JSON.parse(raw);
-        saveData = {
-          ...saveData,
-          ...p,
-          profile: { ...saveData.profile, ...(p.profile || {}) },
-          upgrades: { ...saveData.upgrades, ...(p.upgrades || {}) },
-          settings: { ...saveData.settings, ...(p.settings || {}) },
-          stats: { ...saveData.stats, ...(p.stats || {}) },
-          friendMatches: { ...(p.friendMatches || {}) }
-        };
+      const rawVault = localStorage.getItem(WALLET_VAULT_KEY);
+      if (rawVault) {
+        saveData = mergeSaveCandidate(saveData, JSON.parse(rawVault));
       }
     } catch (e) {}
+
+    try {
+      const rawMain = localStorage.getItem(SAVE_KEY);
+      if (rawMain) {
+        saveData = mergeSaveCandidate(saveData, JSON.parse(rawMain));
+      }
+    } catch (e) {}
+
+    // فحص أي نسخ سابقة من اللعبة لحفظ الفلوس واللقب والصورة
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k || !k.startsWith('chain_runner_ma_clean_v')) continue;
+        const parsed = JSON.parse(localStorage.getItem(k) || 'null');
+        if (parsed) saveData = mergeSaveCandidate(saveData, parsed);
+      }
+    } catch (e) {}
+
     chainModeRequired = saveData.settings.chainMode !== false;
   }
 
   function persistSave() {
     saveData.settings.chainMode = chainModeRequired;
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(saveData)); } catch (e) {}
+    const serialized = JSON.stringify(saveData);
+    const vaultSerialized = JSON.stringify({
+      profile: saveData.profile,
+      coins: saveData.coins,
+      unlockedSkins: saveData.unlockedSkins,
+      selectedSkin: saveData.selectedSkin,
+      upgrades: saveData.upgrades,
+      stats: saveData.stats,
+      scores: saveData.scores,
+      friendMatches: saveData.friendMatches
+    });
+    try {
+      localStorage.setItem(SAVE_KEY, serialized);
+      localStorage.setItem(WALLET_VAULT_KEY, vaultSerialized);
+    } catch (e) {}
+    writeIDBBackup(saveData).catch(() => {});
   }
 
   loadSave();
+  readIDBBackup().then((idbData) => {
+    if (idbData) {
+      saveData = mergeSaveCandidate(saveData, idbData);
+      chainModeRequired = saveData.settings.chainMode !== false;
+      renderAllUI();
+    }
+  }).catch(() => {});
 
   let activeRoomCode = `MA-${Math.floor(1000 + Math.random() * 9000)}`;
   let roomChannel = null;
@@ -2086,12 +2305,12 @@
     if (p && p.avatarType === 'image' && p.avatar) {
       el.innerHTML = `<img src="${p.avatar}" alt="${p.nickname || 'صورة'}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
     } else {
-      el.textContent = (p && p.avatar) || '⚡';
+      el.textContent = (p && p.avatar) || '🥷';
     }
   }
 
   function syncProfileUI() {
-    const nick = saveData.profile.nickname || 'صقر السلاسل';
+    const nick = saveData.profile.nickname || 'النينجا الصغير';
     nicknameInput.value = nick;
     headerNickPreview.textContent = nick;
     hudMyNickname.textContent = nick;
@@ -2122,38 +2341,91 @@
       saveData.profile.avatar = btn.dataset.emoji;
       persistSave();
       syncProfileUI();
-      profileStatusMsg.textContent = `تم اختيار الرمز ${btn.dataset.emoji} لحسابك.`;
+      profileStatusMsg.textContent = `تم اختيار الرمز ${btn.dataset.emoji} وحفظه دائماً.`;
     });
   });
 
-  avatarFileInput.addEventListener('change', (e) => {
+  function compressImageToDataUrl(file, maxSize = 220) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, maxSize / Math.max(img.width || 1, img.height || 1));
+          const c = document.createElement('canvas');
+          c.width = Math.max(32, Math.round((img.width || 120) * scale));
+          c.height = Math.max(32, Math.round((img.height || 120) * scale));
+          const cctx = c.getContext('2d');
+          cctx.drawImage(img, 0, 0, c.width, c.height);
+          resolve(c.toDataURL('image/jpeg', 0.82));
+        };
+        img.onerror = () => resolve(String(reader.result || ''));
+        img.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  avatarFileInput.addEventListener('change', async (e) => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
-    if (file.size > 900000) {
-      profileStatusMsg.textContent = 'اختر صورة أصغر من 900 كيلوبايت للمزامنة السريعة.';
+    const compressed = await compressImageToDataUrl(file, 220);
+    if (!compressed) {
+      profileStatusMsg.textContent = 'تعذر قراءة الصورة، جرب صورة أخرى.';
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      saveData.profile.avatarType = 'image';
-      saveData.profile.avatar = String(reader.result || '');
-      persistSave();
-      syncProfileUI();
-      profileStatusMsg.textContent = 'تم تحميل صورتك على حسابك.';
-    };
-    reader.readAsDataURL(file);
+    saveData.profile.avatarType = 'image';
+    saveData.profile.avatar = compressed;
+    persistSave();
+    syncProfileUI();
+    profileStatusMsg.textContent = 'تم حفظ صورتك وربطها بحسابك وفلوسك.';
   });
 
   btnSaveProfile.addEventListener('click', () => {
     const cleanNick = nicknameInput.value.trim();
     if (!cleanNick) {
-      profileStatusMsg.textContent = 'اكتب لقباً أولاً.';
+      profileStatusMsg.textContent = 'اكتب لقباً أولاً (مثال: النينجا الصغير).';
       return;
     }
     saveData.profile.nickname = cleanNick;
     persistSave();
     syncProfileUI();
-    profileStatusMsg.textContent = `تم حفظ اللقب "${cleanNick}" وصورتك.`;
+    profileStatusMsg.textContent = `تم حفظ اللقب "${cleanNick}" والصورة وفلوسك (${saveData.coins} عملة).`;
+  });
+
+  btnExportSave.addEventListener('click', () => {
+    try {
+      const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `chain-runner-save-${(saveData.profile.nickname || 'player').replace(/\s+/g, '_')}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      profileStatusMsg.textContent = 'تم تنزيل ملف النسخة الاحتياطية بنجاح.';
+    } catch (e) {
+      profileStatusMsg.textContent = 'تعذر إنشاء ملف النسخة الاحتياطية على هذا الجهاز.';
+    }
+  });
+
+  importSaveInput.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result || ''));
+        saveData = mergeSaveCandidate(saveData, parsed);
+        persistSave();
+        renderAllUI();
+        profileStatusMsg.textContent = `تمت استعادة البيانات: ${saveData.profile.nickname} • ${saveData.coins} عملة.`;
+      } catch (err) {
+        profileStatusMsg.textContent = 'الملف المختار غير صالح.';
+      }
+    };
+    reader.readAsText(file);
   });
 
   function scrollRoomSectionIntoView() {
@@ -4018,7 +4290,6 @@
     for (const c of coins) c.spin += 0.08;
     for (const pw of powerups) pw.bob += 0.06;
 
-    // في بداية اللعبة قبل أول قفزة فقط: يقف اللاعب على المنصة الأولى حتى ينط انطلاقته الأولى
     if (hero.grounded && hero.standingOn && !chainStartedThisJump) {
       hero.y = hero.standingOn.y - 22;
       if (chainTimerPill) chainTimerPill.style.display = 'none';
@@ -4081,7 +4352,6 @@
         }
       }
 
-      // لمس المنصات: بدون توقف! لو لم يكن ضاغطاً/ممسكاً بحبل أو خطاف، لا تقف به المنصة بل تنزل به/توقعه
       if (hero.vy >= 0) {
         for (const p of platforms) {
           if (p.falling) continue;
@@ -4111,7 +4381,6 @@
               continue;
             }
 
-            // لو كان متمسكاً بحبل/خطاف أو وضع السلسلة غير مفعل: يأخذ دفعة مرور بدون توقف طويل
             hero.y = p.y - 22;
             hero.dashAvailable = true;
             syncDashButtonUI();
