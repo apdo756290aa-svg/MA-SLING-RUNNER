@@ -56,7 +56,6 @@
     color: var(--text-main);
   }
 
-  /* شاشة الترحيب الأولى بالصورة المربعة */
   #splash-screen {
     position: fixed;
     inset: 0;
@@ -512,12 +511,45 @@
     color: #fecdd3;
   }
 
-  /* صندوق التعليمات الإلزامي لأول دخول في الإعدادات */
+  /* شريط صفحات الإعدادات */
+  .settings-subnav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 5px;
+    border-radius: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .settings-tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    padding: 7px 4px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .settings-tab-btn.active {
+    background: rgba(56, 189, 248, 0.22);
+    border-color: rgba(56, 189, 248, 0.55);
+    color: #fff;
+  }
+
+  .settings-subpage.hidden {
+    display: none;
+  }
+
   .mandatory-guide-card {
     background: linear-gradient(145deg, rgba(16, 185, 129, 0.16), rgba(14, 165, 233, 0.12));
     border: 1.5px solid rgba(56, 189, 248, 0.65);
     border-radius: 15px;
-    padding: 11px 12px;
+    padding: 12px;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
@@ -530,7 +562,7 @@
   }
 
   .mandatory-guide-card h3 {
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 900;
     color: #7dd3fc;
   }
@@ -539,10 +571,10 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    font-size: 11.5px;
+    gap: 6px;
+    font-size: 12px;
     color: #f1f5f9;
-    line-height: 1.45;
+    line-height: 1.5;
   }
 
   .guide-confirm-row {
@@ -551,7 +583,7 @@
     justify-content: space-between;
     gap: 8px;
     flex-wrap: wrap;
-    padding-top: 4px;
+    padding-top: 6px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
@@ -559,7 +591,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 800;
     color: #fde047;
     cursor: pointer;
@@ -1405,7 +1437,7 @@
     background: linear-gradient(145deg, rgba(20, 32, 60, 0.92), rgba(10, 16, 32, 0.96));
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 16px;
-    padding: 12px;
+    padding: 14px;
     text-align: center;
   }
 
@@ -1428,7 +1460,6 @@
 </head>
 <body>
 
-  <!-- شاشة البداية الأولى بالصورة المربعة -->
   <div id="splash-screen">
     <div class="splash-img-wrap">
       <img src="./start-banner.jpg" alt="MA-SLING-RUNNER" onerror="this.style.display='none'">
@@ -1704,26 +1735,23 @@
               </div>
 
               <div class="invite-link-box">
-                <div style="font-size:10.5px; color:#7dd3fc; font-weight:800;">رابط دعوة مباشر لصاحبك (بدون الحاجة لقارئ QR):</div>
+                <div style="font-size:10.5px; color:#7dd3fc; font-weight:800;">رابط دعوة مباشر لصاحبك:</div>
                 <div class="invite-link-text" id="invite-link-text"></div>
                 <button type="button" class="mini-action-btn" id="btn-copy-invite-link">نسخ رابط الدعوة وإرساله لصاحبك</button>
               </div>
             </div>
 
             <div class="friend-sub-panel hidden" id="panel-join-room">
-              <div style="font-size:10.5px; color:#d1fae5; font-weight:700;">اكتب رمز الغرفة (مثال: MA-1024) أو الصق رابط الدعوة هنا:</div>
+              <div style="font-size:10.5px; color:#d1fae5; font-weight:700;">اكتب رمز الغرفة أو الصق رابط الدعوة هنا:</div>
               <div class="room-join-row">
                 <input type="text" class="room-input" id="room-code-input" placeholder="مثال: MA-1024 أو رابط الغرفة...">
                 <button type="button" class="mini-action-btn" id="btn-join-room">دخول الغرفة</button>
-              </div>
-              <div style="font-size:10px; color:#94a3b8;">
-                لو صاحبك فتح رابط الدعوة أو أدخل الرمز وبدأ اللعب، هيظهر جسمه بلونه ولقبه ونتيجته في السباق فوراً.
               </div>
             </div>
 
             <div class="friend-sub-panel hidden" id="panel-search-room">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
-                <span style="font-size:11.5px; color:#d1fae5;">غرف حديثة (Firebase / قناة فورية / محلي):</span>
+                <span style="font-size:11.5px; color:#d1fae5;">غرف حديثة:</span>
                 <button type="button" class="mini-action-btn" id="btn-refresh-rooms">تحديث</button>
               </div>
               <div class="found-rooms-list" id="found-rooms-list"></div>
@@ -1740,6 +1768,7 @@
     </div>
   </section>
 
+  <!-- صفحة المتجر -->
   <section id="screen-shop" class="screen-layer hidden">
     <div class="screen-header">
       <div class="screen-title-box">
@@ -1764,85 +1793,117 @@
     </div>
   </section>
 
+  <!-- صفحة الإعدادات وفيها الصفحات الـ 5 -->
   <section id="screen-settings" class="screen-layer hidden">
     <div class="screen-header">
       <div class="screen-title-box">
-        <h2>الإعدادات وتعليمات اللعب</h2>
-        <p>اقرأ التعليمات، اضبط الإعدادات، وتابع إحصائياتك</p>
+        <h2>الإعدادات</h2>
+        <p>طريقة اللعب • الإحصائيات • الألقاب • الأصوات • المصمم</p>
       </div>
       <button type="button" class="back-btn" id="settings-back-btn" data-back="screen-home">← رجوع</button>
     </div>
 
     <div class="page-content-box">
-      <!-- تعليمات اللعب الإلزامية لأول مرة -->
-      <div class="mandatory-guide-card" id="mandatory-guide-card">
-        <h3>تعليمات اللعب — كيف تلعب CHAIN RUNNER؟</h3>
-        <ul class="guide-rules-list">
-          <li><strong>1. البداية والقفز:</strong> اضغط زر <strong>قفز</strong> (أو Space / W / ↑) للانطلاق من المنصة الأولى.</li>
-          <li><strong>2. الحبل والخطاف:</strong> اضغط زر <strong>خطاف</strong> (أو E / F أو ضغط مطول على الشاشة) للتعلق بنقاط التثبيت والمرور بين المنصات.</li>
-          <li><strong>3. بدون توقف:</strong> المنصة لا توقفك بدون حبل/خطاف؛ واصل ربط الحبال قبل انتهاء المهلة أو السقوط في الفراغ.</li>
-          <li><strong>4. الاندفاع والقذف:</strong> استعمل <strong>اندفاع</strong> (أو Shift / D / →) في الجو أو للقذف من نقاط الطاقة البنفسجية.</li>
-        </ul>
-        <div class="guide-confirm-row">
-          <label class="guide-check-label">
-            <input type="checkbox" id="guide-ack-checkbox">
-            <span>قرأت التعليمات وفهمت طريقة اللعب</span>
-          </label>
-          <button type="button" class="guide-proceed-btn" id="guide-proceed-btn" disabled>متابعة إلى اللعبة</button>
+      <div class="settings-subnav" id="settings-subnav">
+        <button type="button" class="settings-tab-btn active" data-tab="howto">طريقة اللعب</button>
+        <button type="button" class="settings-tab-btn" data-tab="stats">الإحصائيات</button>
+        <button type="button" class="settings-tab-btn" data-tab="titles">الألقاب</button>
+        <button type="button" class="settings-tab-btn" data-tab="sound">الأصوات</button>
+        <button type="button" class="settings-tab-btn" data-tab="designer">المصمم</button>
+      </div>
+
+      <!-- 1. صفحة طريقة اللعب -->
+      <div class="settings-subpage" id="subpage-howto">
+        <div class="mandatory-guide-card" id="mandatory-guide-card">
+          <h3>تعليمات اللعب — كيف تلعب CHAIN RUNNER؟</h3>
+          <ul class="guide-rules-list">
+            <li><strong>1. البداية والقفز:</strong> اقفز في البداية بـ <strong>قفز</strong> (أو Space / W / ↑) للانطلاق.</li>
+            <li><strong>2. الحبل والخطاف:</strong> اضغط <strong>خطاف</strong> (أو E / F أو ضغط مطول على الشاشة) للتعلق بنقاط التثبيت والمرور بين المنصات.</li>
+            <li><strong>3. بدون توقف:</strong> المنصة لا توقفك بدون حبل/خطاف؛ واصل ربط الحبال قبل انتهاء المهلة أو السقوط.</li>
+            <li><strong>4. الاندفاع والقذف:</strong> استعمل <strong>اندفاع</strong> (أو Shift / D / →) في الجو أو للقذف من نقاط الطاقة البنفسجية، و<strong>Q</strong> للسونار.</li>
+          </ul>
+          <div class="guide-confirm-row">
+            <label class="guide-check-label">
+              <input type="checkbox" id="guide-ack-checkbox">
+              <span>قرأت التعليمات وفهمت طريقة اللعب</span>
+            </label>
+            <button type="button" class="guide-proceed-btn" id="guide-proceed-btn" disabled>متابعة إلى اللعبة</button>
+          </div>
         </div>
       </div>
 
-      <div class="section-hdr"><span>إحصائياتك طويلة المدى</span></div>
-      <div class="stats-grid-3">
-        <div class="stat-tile">
-          <strong id="stat-total-coins">0</strong>
-          <span>إجمالي العملات المجمعة</span>
+      <!-- 2. صفحة الإحصائيات -->
+      <div class="settings-subpage hidden" id="subpage-stats">
+        <div class="section-hdr"><span>إحصائياتك طويلة المدى</span></div>
+        <div class="stats-grid-3">
+          <div class="stat-tile">
+            <strong id="stat-total-coins">0</strong>
+            <span>إجمالي العملات المجمعة</span>
+          </div>
+          <div class="stat-tile">
+            <strong id="stat-max-combo">x1</strong>
+            <span>أعلى كومبو</span>
+          </div>
+          <div class="stat-tile">
+            <strong id="stat-total-runs">0</strong>
+            <span>عدد الجولات</span>
+          </div>
         </div>
-        <div class="stat-tile">
-          <strong id="stat-max-combo">x1</strong>
-          <span>أعلى كومبو</span>
-        </div>
-        <div class="stat-tile">
-          <strong id="stat-total-runs">0</strong>
-          <span>عدد الجولات</span>
+
+        <div class="top-scores-card">
+          <h4>
+            <span>أفضل النتائج المسجلة</span>
+            <span>الأعلى: <strong id="stats-best-val" style="color:#38bdf8">0</strong></span>
+          </h4>
+          <ul id="stats-scores-list"></ul>
         </div>
       </div>
 
-      <div class="section-hdr"><span>الألقاب والإنجازات</span></div>
-      <div class="achievements-grid" id="achievements-grid"></div>
+      <!-- 3. صفحة الألقاب -->
+      <div class="settings-subpage hidden" id="subpage-titles">
+        <div class="section-hdr"><span>الألقاب والإنجازات</span></div>
+        <div class="achievements-grid" id="achievements-grid"></div>
+      </div>
 
-      <div class="settings-list">
-        <div class="setting-row">
-          <div>
-            <strong>سلسلة الحبل الإلزامية بعد القفز</strong>
-            <small>أول ما تقفز تبدأ بالحبل والمنصة لا توقفك بدون حبل/خطاف</small>
+      <!-- 4. صفحة الأصوات والتحكم -->
+      <div class="settings-subpage hidden" id="subpage-sound">
+        <div class="section-hdr"><span>إعدادات الصوت والحركة</span></div>
+        <div class="settings-list">
+          <div class="setting-row">
+            <div>
+              <strong>الصوت والموسيقى الخلفية</strong>
+              <small>مؤثرات الخطاف والشدّ والقفز وموسيقى الخلفية</small>
+            </div>
+            <button type="button" class="toggle-pill" id="toggle-sound-btn">مفعل</button>
           </div>
-          <button type="button" class="toggle-pill" id="toggle-chain-btn">مفعل</button>
-        </div>
 
-        <div class="setting-row">
-          <div>
-            <strong>الصوت والموسيقى الخلفية</strong>
-            <small>مؤثرات الخطاف والشدّ والقفز وموسيقى الخلفية</small>
+          <div class="setting-row">
+            <div>
+              <strong>اهتزاز الشاشة</strong>
+              <small>إحساس الحركة عند الهبوط القوي والاصطدام</small>
+            </div>
+            <button type="button" class="toggle-pill" id="toggle-shake-btn">مفعل</button>
           </div>
-          <button type="button" class="toggle-pill" id="toggle-sound-btn">مفعل</button>
-        </div>
 
-        <div class="setting-row">
-          <div>
-            <strong>اهتزاز الشاشة</strong>
-            <small>إحساس الحركة عند الهبوط القوي والاصطدام</small>
+          <div class="setting-row">
+            <div>
+              <strong>سلسلة الحبل الإلزامية بعد القفز</strong>
+              <small>أول ما تقفز تبدأ بالحبل والمنصة لا توقفك بدون حبل/خطاف</small>
+            </div>
+            <button type="button" class="toggle-pill" id="toggle-chain-btn">مفعل</button>
           </div>
-          <button type="button" class="toggle-pill" id="toggle-shake-btn">مفعل</button>
         </div>
       </div>
 
-      <div class="designer-box">
-        <div class="ma-logo">MA</div>
-        <div class="caption">تصميم اللعبة</div>
-        <div class="names">
-          <div>عبد الرحمن السيد محمود حسن علي عبد الحليم</div>
-          <div>محمود عماد محمد مبروك</div>
+      <!-- 5. صفحة المصمم -->
+      <div class="settings-subpage hidden" id="subpage-designer">
+        <div class="designer-box">
+          <div class="ma-logo">MA</div>
+          <div class="caption">تصميم اللعبة</div>
+          <div class="names">
+            <div>عبد الرحمن السيد محمود حسن علي عبد الحليم</div>
+            <div>محمود عماد محمد مبروك</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1877,6 +1938,15 @@
   const screenShop = document.getElementById('screen-shop');
   const screenSettings = document.getElementById('screen-settings');
 
+  const settingsTabBtns = document.querySelectorAll('.settings-tab-btn');
+  const settingsSubpages = {
+    howto: document.getElementById('subpage-howto'),
+    stats: document.getElementById('subpage-stats'),
+    titles: document.getElementById('subpage-titles'),
+    sound: document.getElementById('subpage-sound'),
+    designer: document.getElementById('subpage-designer')
+  };
+
   const mandatoryGuideCard = document.getElementById('mandatory-guide-card');
   const guideAckCheckbox = document.getElementById('guide-ack-checkbox');
   const guideProceedBtn = document.getElementById('guide-proceed-btn');
@@ -1902,6 +1972,8 @@
   const hudCoinsEl = document.getElementById('hud-coins');
   const homeBestEl = document.getElementById('home-best');
   const homeScoresList = document.getElementById('home-scores-list');
+  const statsBestValEl = document.getElementById('stats-best-val');
+  const statsScoresListEl = document.getElementById('stats-scores-list');
 
   const h2hScoreboard = document.getElementById('h2h-scoreboard');
   const h2hFriendName = document.getElementById('h2h-friend-name');
@@ -2070,6 +2142,20 @@
     friendMatches: {}
   };
 
+  function setSettingsTab(tabName) {
+    if (!isTutorialCompleted() && tabName !== 'howto') {
+      tabName = 'howto';
+    }
+    settingsTabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabName));
+    Object.entries(settingsSubpages).forEach(([key, el]) => {
+      if (el) el.classList.toggle('hidden', key !== tabName);
+    });
+  }
+
+  settingsTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => setSettingsTab(btn.dataset.tab));
+  });
+
   function isTutorialCompleted() {
     return Boolean(saveData.settings && saveData.settings.tutorialDone);
   }
@@ -2080,6 +2166,7 @@
     guideAckCheckbox.checked = done;
     guideProceedBtn.disabled = !guideAckCheckbox.checked;
     settingsBackBtn.classList.toggle('locked-guide', !done);
+    if (!done) setSettingsTab('howto');
   }
 
   guideAckCheckbox.addEventListener('change', () => {
@@ -2099,6 +2186,7 @@
       splashScreen.classList.add('hidden');
       if (!isTutorialCompleted()) {
         showScreen('screen-settings');
+        setSettingsTab('howto');
       }
     });
   }
@@ -2598,7 +2686,7 @@
       connModeBadge.textContent = 'Firebase متصل';
       connModeBadge.classList.remove('fallback');
     } else {
-      connModeBadge.textContent = 'Firebase محجوب/بطيء — وضع الرابط والرمز السريع نشط';
+      connModeBadge.textContent = 'وضع الرابط والرمز السريع نشط';
       connModeBadge.classList.add('fallback');
     }
   }
@@ -3318,11 +3406,15 @@
   });
 
   btnOpenShop.addEventListener('click', () => showScreen('screen-shop'));
-  btnOpenSettings.addEventListener('click', () => showScreen('screen-settings'));
+  btnOpenSettings.addEventListener('click', () => {
+    showScreen('screen-settings');
+    if (!isTutorialCompleted()) setSettingsTab('howto');
+  });
 
   function startMatchNow() {
     if (!isTutorialCompleted()) {
       showScreen('screen-settings');
+      setSettingsTab('howto');
       return;
     }
     initAudio();
@@ -3460,10 +3552,14 @@
     });
 
     const scores = saveData.scores || [];
-    homeBestEl.textContent = scores.length ? scores[0].score : 0;
-    homeScoresList.innerHTML = scores.length
-      ? scores.slice(0, 3).map((s, i) => `<li><span>#${i + 1} • ${s.date}</span><strong>${s.score} منصة</strong></li>`).join('')
+    const bestVal = scores.length ? scores[0].score : 0;
+    homeBestEl.textContent = bestVal;
+    if (statsBestValEl) statsBestValEl.textContent = bestVal;
+    const scoreRowsHtml = scores.length
+      ? scores.slice(0, 5).map((s, i) => `<li><span>#${i + 1} • ${s.date}</span><strong>${s.score} منصة</strong></li>`).join('')
       : '<li><span>لا توجد نتائج بعد</span><span>0</span></li>';
+    homeScoresList.innerHTML = scoreRowsHtml;
+    if (statsScoresListEl) statsScoresListEl.innerHTML = scoreRowsHtml;
   }
 
   toggleChainBtn.addEventListener('click', () => {
