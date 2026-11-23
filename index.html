@@ -516,7 +516,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     background: rgba(0, 0, 0, 0.35);
     padding: 5px;
     border-radius: 13px;
@@ -527,7 +527,7 @@
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-muted);
-    padding: 7px 4px;
+    padding: 8px 4px;
     border-radius: 9px;
     font-size: 11px;
     font-weight: 800;
@@ -545,71 +545,167 @@
     display: none;
   }
 
+  /* كارت طريقة اللعب المرتب داخل الإعدادات */
   .mandatory-guide-card {
-    background: linear-gradient(145deg, rgba(16, 185, 129, 0.16), rgba(14, 165, 233, 0.12));
-    border: 1.5px solid rgba(56, 189, 248, 0.65);
-    border-radius: 15px;
-    padding: 12px;
-    margin-bottom: 10px;
+    background: linear-gradient(155deg, rgba(15, 27, 54, 0.96), rgba(8, 14, 30, 0.98));
+    border: 1.5px solid rgba(56, 189, 248, 0.5);
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
   }
 
   .mandatory-guide-card.completed {
     border-color: rgba(16, 185, 129, 0.45);
-    background: rgba(16, 185, 129, 0.08);
   }
 
-  .mandatory-guide-card h3 {
-    font-size: 13.5px;
+  .guide-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  }
+
+  .guide-header-row h3 {
+    font-size: 14.5px;
     font-weight: 900;
     color: #7dd3fc;
   }
 
-  .guide-rules-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 12px;
-    color: #f1f5f9;
-    line-height: 1.5;
+  .guide-status-pill {
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(251, 191, 36, 0.16);
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    color: #fde047;
   }
 
-  .guide-confirm-row {
+  .mandatory-guide-card.completed .guide-status-pill {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: rgba(16, 185, 129, 0.5);
+    color: #6ee7b7;
+  }
+
+  .guide-steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  @media (min-width: 640px) {
+    .guide-steps-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .guide-step-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 13px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .step-num-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    color: #04131c;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .guide-step-content strong {
+    display: block;
+    font-size: 12.5px;
+    color: #f8fafc;
+    margin-bottom: 2px;
+  }
+
+  .guide-step-content p {
+    font-size: 11px;
+    color: #cbd5e1;
+    line-height: 1.45;
+  }
+
+  /* زرار تأكيد قراءة التعليمات الواضح */
+  .guide-confirm-panel {
+    background: rgba(5, 10, 24, 0.78);
+    border: 1.5px solid rgba(251, 191, 36, 0.45);
+    border-radius: 15px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .guide-big-check-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(251, 191, 36, 0.55);
+    border-radius: 13px;
+    padding: 12px 14px;
+    color: #fef08a;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 10px;
+    transition: all 0.15s ease;
   }
 
-  .guide-check-label {
-    display: flex;
+  .guide-big-check-btn.checked {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #34d399;
+    color: #a7f3d0;
+  }
+
+  .check-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    border: 2px solid currentColor;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 11.5px;
-    font-weight: 800;
-    color: #fde047;
-    cursor: pointer;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    flex-shrink: 0;
   }
 
   .guide-proceed-btn {
+    width: 100%;
     background: linear-gradient(135deg, #10b981, #0ea5e9);
     border: none;
     color: #04131c;
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-size: 11.5px;
+    padding: 12px 16px;
+    border-radius: 13px;
+    font-size: 13.5px;
     font-weight: 900;
     cursor: pointer;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.28);
   }
 
   .guide-proceed-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.38;
+    box-shadow: none;
     cursor: not-allowed;
   }
 
@@ -835,7 +931,7 @@
   .showcase-canvas-wrap {
     position: relative;
     width: 100%;
-    height: 92px;
+    height: 112px;
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -856,38 +952,6 @@
     border-radius: 99px;
   }
 
-  .instant-howto-card {
-    margin-top: 6px;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    border-radius: 12px;
-    padding: 6px 8px;
-  }
-
-  .instant-howto-card strong {
-    display: block;
-    font-size: 10px;
-    color: #7dd3fc;
-    margin-bottom: 4px;
-  }
-
-  .howto-steps-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-  }
-
-  .howto-step {
-    background: rgba(5, 8, 17, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    padding: 4px;
-    text-align: center;
-    font-size: 9.5px;
-    color: #e2e8f0;
-    line-height: 1.3;
-  }
-
   .home-actions-panel {
     display: flex;
     flex-direction: column;
@@ -899,7 +963,7 @@
     background: linear-gradient(135deg, #0ea5e9, #6366f1);
     color: #fff;
     border: none;
-    padding: 12px 18px;
+    padding: 13px 18px;
     border-radius: 14px;
     font-size: 17px;
     font-weight: 900;
@@ -1247,7 +1311,7 @@
   @media (min-width: 768px) {
     .screen-layer { padding: 16px 22px 48px; }
     .home-main { grid-template-columns: 1fr 1fr; gap: 16px; }
-    .showcase-canvas-wrap { height: 150px; }
+    .showcase-canvas-wrap { height: 160px; }
     .mode-selector-4 { grid-template-columns: repeat(4, 1fr); }
     .pad-btn { width: 76px; height: 76px; border-radius: 22px; }
     #top-banners { top: 54px; left: 16px; right: 16px; }
@@ -1625,16 +1689,7 @@
           <div class="showcase-badge">معاينة حية</div>
         </div>
 
-        <div class="instant-howto-card">
-          <strong>طريقة اللعب (3 خطوات):</strong>
-          <div class="howto-steps-row">
-            <div class="howto-step">1) <strong>اقفز في البداية</strong><br>زر قفز أو Space / W / ↑</div>
-            <div class="howto-step">2) <strong>اشبك بالحبل/الخطاف</strong><br>E / F أو ضغط مطول</div>
-            <div class="howto-step">3) <strong>بدون توقف على المنصة</strong><br>واصل الحبل قبل السقوط</div>
-          </div>
-        </div>
-
-        <div class="top-scores-card" style="margin-top:6px;">
+        <div class="top-scores-card" style="margin-top:8px;">
           <h4>
             <span>أفضل النتائج</span>
             <span>الأعلى: <strong id="home-best" style="color:#38bdf8">0</strong></span>
@@ -1744,7 +1799,7 @@
             <div class="friend-sub-panel hidden" id="panel-join-room">
               <div style="font-size:10.5px; color:#d1fae5; font-weight:700;">اكتب رمز الغرفة أو الصق رابط الدعوة هنا:</div>
               <div class="room-join-row">
-                <input type="text" class="room-input" id="room-code-input" placeholder="مثال: MA-1024 أو رابط الغرفة...">
+                <input type="text" class="room-input" id="room-code-input" placeholder="مثال: MA-1024 أو رابط الدعوة...">
                 <button type="button" class="mini-action-btn" id="btn-join-room">دخول الغرفة</button>
               </div>
             </div>
@@ -1812,22 +1867,54 @@
         <button type="button" class="settings-tab-btn" data-tab="designer">المصمم</button>
       </div>
 
-      <!-- 1. صفحة طريقة اللعب -->
+      <!-- 1. صفحة طريقة اللعب المرتبة -->
       <div class="settings-subpage" id="subpage-howto">
         <div class="mandatory-guide-card" id="mandatory-guide-card">
-          <h3>تعليمات اللعب — كيف تلعب CHAIN RUNNER؟</h3>
-          <ul class="guide-rules-list">
-            <li><strong>1. البداية والقفز:</strong> اقفز في البداية بـ <strong>قفز</strong> (أو Space / W / ↑) للانطلاق.</li>
-            <li><strong>2. الحبل والخطاف:</strong> اضغط <strong>خطاف</strong> (أو E / F أو ضغط مطول على الشاشة) للتعلق بنقاط التثبيت والمرور بين المنصات.</li>
-            <li><strong>3. بدون توقف:</strong> المنصة لا توقفك بدون حبل/خطاف؛ واصل ربط الحبال قبل انتهاء المهلة أو السقوط.</li>
-            <li><strong>4. الاندفاع والقذف:</strong> استعمل <strong>اندفاع</strong> (أو Shift / D / →) في الجو أو للقذف من نقاط الطاقة البنفسجية، و<strong>Q</strong> للسونار.</li>
-          </ul>
-          <div class="guide-confirm-row">
-            <label class="guide-check-label">
-              <input type="checkbox" id="guide-ack-checkbox">
-              <span>قرأت التعليمات وفهمت طريقة اللعب</span>
-            </label>
-            <button type="button" class="guide-proceed-btn" id="guide-proceed-btn" disabled>متابعة إلى اللعبة</button>
+          <div class="guide-header-row">
+            <h3>شرح طريقة اللعب خطوة بخطوة</h3>
+            <span class="guide-status-pill" id="guide-status-pill">مطلوب لأول مرة فقط</span>
+          </div>
+
+          <div class="guide-steps-grid">
+            <div class="guide-step-box">
+              <div class="step-num-badge">1</div>
+              <div class="guide-step-content">
+                <strong>انطلاقة البداية</strong>
+                <p>اضغط <strong>قفز</strong> (أو <code>Space</code> / <code>W</code> / <code>↑</code>) للانطلاق من منصة البداية.</p>
+              </div>
+            </div>
+
+            <div class="guide-step-box">
+              <div class="step-num-badge">2</div>
+              <div class="guide-step-content">
+                <strong>الربط بالحبل / الخطاف</strong>
+                <p>اضغط <strong>خطاف</strong> (أو <code>E</code> / <code>F</code> أو ضغط مطول على الشاشة) للتعلق بنقاط التثبيت.</p>
+              </div>
+            </div>
+
+            <div class="guide-step-box">
+              <div class="step-num-badge">3</div>
+              <div class="guide-step-content">
+                <strong>استمرار السلسلة بدون توقف</strong>
+                <p>المنصة لا توقفك بدون حبل/خطاف؛ واصل ربط الحبال قبل انتهاء المهلة أو السقوط.</p>
+              </div>
+            </div>
+
+            <div class="guide-step-box">
+              <div class="step-num-badge">4</div>
+              <div class="guide-step-content">
+                <strong>الاندفاع والقذف والسونار</strong>
+                <p>استخدم <strong>اندفاع / قذف</strong> بـ <code>Shift</code> / <code>D</code> / <code>→</code>، و<strong>السونار</strong> بـ <code>Q</code>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-confirm-panel">
+            <button type="button" class="guide-big-check-btn" id="guide-ack-btn">
+              <span id="guide-ack-text">تأكيد: قرأت التعليمات وفهمت طريقة اللعب</span>
+              <span class="check-indicator" id="guide-check-icon"></span>
+            </button>
+            <button type="button" class="guide-proceed-btn" id="guide-proceed-btn" disabled>حفظ ومتابعة إلى اللعبة</button>
           </div>
         </div>
       </div>
@@ -1918,8 +2005,8 @@
   const MAX_LEVEL_AI = 20;
   const MAX_LEVEL_FRIENDS = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v27';
-  const SAVE_KEY = 'chain_runner_ma_clean_v27';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v28';
+  const SAVE_KEY = 'chain_runner_ma_clean_v28';
   const WALLET_VAULT_KEY = 'chain_runner_ma_wallet_vault_v1';
   const IDB_NAME = 'ChainRunnerMA_DB';
   const IDB_STORE = 'PersistentState';
@@ -1948,7 +2035,10 @@
   };
 
   const mandatoryGuideCard = document.getElementById('mandatory-guide-card');
-  const guideAckCheckbox = document.getElementById('guide-ack-checkbox');
+  const guideStatusPill = document.getElementById('guide-status-pill');
+  const guideAckBtn = document.getElementById('guide-ack-btn');
+  const guideAckText = document.getElementById('guide-ack-text');
+  const guideCheckIcon = document.getElementById('guide-check-icon');
   const guideProceedBtn = document.getElementById('guide-proceed-btn');
   const settingsBackBtn = document.getElementById('settings-back-btn');
 
@@ -2142,8 +2232,15 @@
     friendMatches: {}
   };
 
+  let guideCheckedState = false;
+  let forceFirstTimeGate = false;
+
+  function isTutorialCompleted() {
+    return Boolean(saveData.settings && saveData.settings.tutorialDone);
+  }
+
   function setSettingsTab(tabName) {
-    if (!isTutorialCompleted() && tabName !== 'howto') {
+    if (forceFirstTimeGate && !isTutorialCompleted()) {
       tabName = 'howto';
     }
     settingsTabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabName));
@@ -2156,26 +2253,32 @@
     btn.addEventListener('click', () => setSettingsTab(btn.dataset.tab));
   });
 
-  function isTutorialCompleted() {
-    return Boolean(saveData.settings && saveData.settings.tutorialDone);
-  }
-
   function syncTutorialLockUI() {
     const done = isTutorialCompleted();
+    const lockedNow = forceFirstTimeGate && !done;
+    guideCheckedState = done || guideCheckedState;
+
     mandatoryGuideCard.classList.toggle('completed', done);
-    guideAckCheckbox.checked = done;
-    guideProceedBtn.disabled = !guideAckCheckbox.checked;
-    settingsBackBtn.classList.toggle('locked-guide', !done);
-    if (!done) setSettingsTab('howto');
+    guideStatusPill.textContent = done ? 'تم التأكيد' : (lockedNow ? 'مطلوب لأول مرة' : 'شرح الإعدادات');
+    guideAckBtn.classList.toggle('checked', guideCheckedState);
+    guideCheckIcon.textContent = guideCheckedState ? '✓' : '';
+    guideAckText.textContent = guideCheckedState
+      ? 'تم التأكيد: قرأت التعليمات وفهمت طريقة اللعب'
+      : 'اضغط هنا لتأكيد: قرأت التعليمات وفهمت طريقة اللعب';
+    guideProceedBtn.disabled = !guideCheckedState;
+    settingsBackBtn.classList.toggle('locked-guide', lockedNow);
+    if (lockedNow) setSettingsTab('howto');
   }
 
-  guideAckCheckbox.addEventListener('change', () => {
-    guideProceedBtn.disabled = !guideAckCheckbox.checked;
+  guideAckBtn.addEventListener('click', () => {
+    guideCheckedState = !guideCheckedState;
+    syncTutorialLockUI();
   });
 
   guideProceedBtn.addEventListener('click', () => {
-    if (!guideAckCheckbox.checked) return;
+    if (!guideCheckedState) return;
     saveData.settings.tutorialDone = true;
+    forceFirstTimeGate = false;
     persistSave();
     syncTutorialLockUI();
     showScreen('screen-home');
@@ -2185,8 +2288,12 @@
     btnEnterGame.addEventListener('click', () => {
       splashScreen.classList.add('hidden');
       if (!isTutorialCompleted()) {
+        forceFirstTimeGate = true;
         showScreen('screen-settings');
         setSettingsTab('howto');
+      } else {
+        forceFirstTimeGate = false;
+        showScreen('screen-home');
       }
     });
   }
@@ -2286,6 +2393,7 @@
     } catch (e) {}
 
     chainModeRequired = saveData.settings.chainMode !== false;
+    guideCheckedState = Boolean(saveData.settings.tutorialDone);
   }
 
   function persistSave() {
@@ -3374,7 +3482,7 @@
   }
 
   function showScreen(screenId) {
-    if (screenId === 'screen-home' && !isTutorialCompleted()) {
+    if (screenId === 'screen-home' && forceFirstTimeGate && !isTutorialCompleted()) {
       screenId = 'screen-settings';
     }
 
@@ -3408,15 +3516,9 @@
   btnOpenShop.addEventListener('click', () => showScreen('screen-shop'));
   btnOpenSettings.addEventListener('click', () => {
     showScreen('screen-settings');
-    if (!isTutorialCompleted()) setSettingsTab('howto');
   });
 
   function startMatchNow() {
-    if (!isTutorialCompleted()) {
-      showScreen('screen-settings');
-      setSettingsTab('howto');
-      return;
-    }
     initAudio();
     startBGM();
     resetGame();
