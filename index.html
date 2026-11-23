@@ -195,29 +195,30 @@
     color: #a7f3d0;
   }
 
-  #lvl1-tutorial-pill {
+  #instant-howto-banner {
     position: absolute;
-    bottom: 104px;
+    top: 122px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 12;
+    z-index: 13;
     pointer-events: none;
-    background: rgba(14, 25, 52, 0.92);
-    border: 1px solid rgba(56, 189, 248, 0.55);
-    color: #bae6fd;
-    padding: 6px 14px;
-    border-radius: 999px;
+    background: rgba(12, 24, 52, 0.94);
+    border: 1.5px solid rgba(56, 189, 248, 0.7);
+    color: #e0f2fe;
+    padding: 8px 14px;
+    border-radius: 14px;
     font-size: 11px;
     font-weight: 800;
-    white-space: nowrap;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    text-align: center;
+    max-width: calc(100% - 24px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
   }
 
-  #lvl1-tutorial-pill.hidden { display: none; }
+  #instant-howto-banner.hidden { display: none; }
 
   #ai-radar-indicator {
     position: absolute;
-    top: 118px;
+    top: 162px;
     right: 12px;
     z-index: 10;
     pointer-events: none;
@@ -237,7 +238,7 @@
 
   .active-powers {
     position: absolute;
-    top: 118px;
+    top: 162px;
     left: 12px;
     display: flex;
     flex-direction: column;
@@ -416,7 +417,7 @@
   .showcase-canvas-wrap {
     position: relative;
     width: 100%;
-    height: 124px;
+    height: 120px;
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -435,6 +436,38 @@
     font-weight: 700;
     padding: 3px 9px;
     border-radius: 99px;
+  }
+
+  .instant-howto-card {
+    margin-top: 8px;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    border-radius: 13px;
+    padding: 8px 10px;
+  }
+
+  .instant-howto-card strong {
+    display: block;
+    font-size: 11px;
+    color: #7dd3fc;
+    margin-bottom: 4px;
+  }
+
+  .howto-steps-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+
+  .howto-step {
+    background: rgba(5, 8, 17, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 9px;
+    padding: 5px 4px;
+    text-align: center;
+    font-size: 10px;
+    color: #e2e8f0;
+    line-height: 1.35;
   }
 
   .home-actions-panel {
@@ -731,12 +764,13 @@
   @media (min-width: 768px) {
     .screen-layer { padding: 18px 24px; }
     .home-main { grid-template-columns: 1fr 1fr; gap: 18px; }
-    .showcase-canvas-wrap { height: 180px; }
+    .showcase-canvas-wrap { height: 170px; }
     .mode-selector-4 { grid-template-columns: repeat(4, 1fr); }
     .pad-btn { width: 76px; height: 76px; border-radius: 22px; }
     #top-banners { top: 58px; left: 16px; right: 16px; }
-    #ai-radar-indicator { top: 94px; right: 16px; font-size: 11px; padding: 5px 12px; }
-    .active-powers { top: 94px; left: 16px; }
+    #instant-howto-banner { top: 96px; font-size: 12px; padding: 8px 16px; }
+    #ai-radar-indicator { top: 138px; right: 16px; font-size: 11px; padding: 5px 12px; }
+    .active-powers { top: 138px; left: 16px; }
     .hud-chip { padding: 6px 11px; font-size: 12px; border-radius: 12px; }
   }
 
@@ -991,8 +1025,8 @@
     <div class="banner-pill banner-mission" id="mission-tag">المهمة نشطة</div>
   </div>
 
-  <div id="lvl1-tutorial-pill" class="hidden">
-    المستوى 1: اقفز (Space / W) ثم اضغط مطولاً للتعلق بالخطاف (E / F أو لمس) وأفلت للانطلاق!
+  <div id="instant-howto-banner" class="hidden">
+    إزاي تلعب فوراً: 1) اقفز (قفز / Space) ➜ 2) اضغط مطولاً للتعلق بالخطاف (خطاف / E / لمس) ➜ 3) أفلت للانطلاق!
   </div>
 
   <div id="ai-radar-indicator" class="hidden">
@@ -1023,7 +1057,7 @@
     </div>
   </div>
 
-  <!-- صفحة 1: القائمة الرئيسية المبسطة -->
+  <!-- صفحة 1: القائمة الرئيسية مع شرح فوري -->
   <section id="screen-home" class="screen-layer">
     <div class="screen-header">
       <div class="screen-title-box">
@@ -1045,6 +1079,16 @@
           <canvas id="previewCanvas"></canvas>
           <div class="showcase-badge">تأقلم ذكي • معاينة حية</div>
         </div>
+
+        <div class="instant-howto-card">
+          <strong>طريقة اللعب على طول (3 خطوات):</strong>
+          <div class="howto-steps-row">
+            <div class="howto-step">1️⃣ <strong>اقفز</strong><br>زر قفز / Space</div>
+            <div class="howto-step">2️⃣ <strong>تعلق بالخطاف</strong><br>اضغط مطولاً E / F أو لمس</div>
+            <div class="howto-step">3️⃣ <strong>أفلت وانطلق</strong><br>اندفاع: Shift / D</div>
+          </div>
+        </div>
+
         <div class="top-scores-card" style="margin-top:8px;">
           <h4>
             <span>أفضل النتائج</span>
@@ -1231,7 +1275,7 @@
 
   const hud = document.getElementById('hud');
   const topBanners = document.getElementById('top-banners');
-  const lvl1TutorialPill = document.getElementById('lvl1-tutorial-pill');
+  const instantHowtoBanner = document.getElementById('instant-howto-banner');
   const mobileControls = document.getElementById('mobile-controls');
   const activePowersEl = document.getElementById('active-powers');
   const aiRadarIndicator = document.getElementById('ai-radar-indicator');
@@ -1492,7 +1536,7 @@
     return current;
   }
 
-  const SAVE_KEY = 'chain_runner_ma_feel_v13';
+  const SAVE_KEY = 'chain_runner_ma_instant_howto_v14';
   const SKINS = [
     { id: 'cyan', name: 'سماوي نيون', primary: '#38bdf8', glow: 'rgba(56, 189, 248, 0.65)', rope: '#7dd3fc', price: 0 },
     { id: 'gold', name: 'ذهبي ملكي', primary: '#fbbf24', glow: 'rgba(251, 191, 36, 0.65)', rope: '#fde047', price: 15 },
@@ -1614,16 +1658,16 @@
     return { id: 'storm', label: 'عاصفة النيون', colors: ['#050c14', '#0b1d2e', '#143347'] };
   }
 
-  function updateTutorialPill() {
+  function updateInstantHowtoBanner() {
     const show = gameRunning && level === 1 && score < 3;
-    lvl1TutorialPill.classList.toggle('hidden', !show);
+    instantHowtoBanner.classList.toggle('hidden', !show);
     if (!show) return;
     if (hero.grounded) {
-      lvl1TutorialPill.textContent = 'المستوى 1: اضغط قفز (Space / W) للانطلاق نحو الفجوة';
+      instantHowtoBanner.textContent = 'الخطوة 1: اضغط "قفز" (أو Space / W / ↑) للانطلاق نحو الفجوة';
     } else if (!hero.anchor) {
-      lvl1TutorialPill.textContent = 'في الهواء: اضغط مطولاً للخطاف (E / F أو لمس) للتعلق بالنقطة';
+      instantHowtoBanner.textContent = 'الخطوة 2: وأنت في الهواء اضغط مطولاً على "خطاف" (أو E / F / لمس) للتعلق بالنقطة';
     } else {
-      lvl1TutorialPill.textContent = 'ممتاز! استمر بالضغط للشدّ ثم أفلت للانطلاق للمنصة التالية';
+      instantHowtoBanner.textContent = 'الخطوة 3: استمر بالضغط للشدّ ثم أفلت للانطلاق نحو المنصة التالية!';
     }
   }
 
@@ -1640,7 +1684,7 @@
     aiRadarIndicator.classList.toggle('hidden', !(playing && aiModeActive));
     friendChip.style.display = (playing && selectedGameMode === 'friends') ? 'flex' : 'none';
     keyboardHintBar.classList.toggle('hidden', !(playing && hasFinePointer));
-    updateTutorialPill();
+    updateInstantHowtoBanner();
     if (!playing) {
       chaseVignette.style.opacity = '0';
       levelFlashOverlay.style.opacity = '0';
@@ -1670,7 +1714,7 @@
 
   hudHomeBtn.addEventListener('click', () => {
     gameRunning = false;
-    updateTutorialPill();
+    updateInstantHowtoBanner();
     homeTitle.textContent = 'توقف مؤقت / القائمة';
     homeSubtitle.textContent = `آخر جولة: المستوى ${level}/${getActiveMaxLevel()} • ${score} منصة`;
     showScreen('screen-home');
@@ -2201,7 +2245,7 @@
     };
     aiRacer = { x: 145, y: startY - 46, bob: 0 };
     syncDashButtonUI();
-    updateTutorialPill();
+    updateInstantHowtoBanner();
 
     cameraX = 0;
     initEnvironment();
@@ -2315,7 +2359,7 @@
     swungThisAir = true;
     if (hero.vx < 3.7) hero.vx += 2.2;
     syncDashButtonUI();
-    updateTutorialPill();
+    updateInstantHowtoBanner();
 
     makeBurst(chosen.x, chosen.y, chosen.kind === 'slingshot' ? '#a855f7' : skin.primary, 12);
     playSFX('grapple', combo);
@@ -2350,7 +2394,7 @@
     hero.anchor = null;
     releaseHangTimer = 0.08;
     syncDashButtonUI();
-    updateTutorialPill();
+    updateInstantHowtoBanner();
     hero.vy -= 2.35;
     hero.vx *= 1.09;
     playSFX('release', combo);
@@ -2367,7 +2411,7 @@
       swungThisAir = false;
       hero.dashAvailable = true;
       syncDashButtonUI();
-      updateTutorialPill();
+      updateInstantHowtoBanner();
 
       if (plat && plat.type === 'boost') {
         hero.vy = -14.2; hero.vx = 7.6;
@@ -2421,7 +2465,7 @@
     gameRunning = false;
     isHoldingGrapple = false;
     hero.anchor = null;
-    updateTutorialPill();
+    updateInstantHowtoBanner();
     syncDashButtonUI();
     chaseVignette.style.opacity = '0';
     levelFlashOverlay.style.opacity = '0';
@@ -2729,7 +2773,7 @@
               hudLevelEl.textContent = level;
               advanceMission('platforms', 1);
               updateAiRadarUI();
-              updateTutorialPill();
+              updateInstantHowtoBanner();
 
               if (selectedGameMode === 'friends') {
                 broadcastFriendEvent({ type: 'live_progress', score, level });
@@ -2765,7 +2809,7 @@
               }
               spawnNextSegment();
             } else {
-              combo = 1; updateComboUI(); updateTutorialPill(); toastEl.textContent = 'اضغط قفز للمتابعة';
+              combo = 1; updateComboUI(); updateInstantHowtoBanner(); toastEl.textContent = 'اضغط قفز للمتابعة';
             }
             break;
           }
