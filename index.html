@@ -28,7 +28,7 @@
     touch-action: none;
   }
 
-  input.room-input {
+  input.room-input, input[type="file"] {
     user-select: text;
     -webkit-user-select: text;
     touch-action: manipulation;
@@ -101,7 +101,7 @@
     padding: 5px 8px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     font-size: 11px;
     font-weight: 700;
   }
@@ -110,6 +110,20 @@
     font-size: 9px;
     color: var(--text-muted);
     font-weight: 500;
+  }
+
+  .mini-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--accent);
+    background: rgba(56, 189, 248, 0.18);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
   }
 
   .combo-chip {
@@ -387,6 +401,20 @@
     font-weight: 800;
   }
 
+  .profile-pill-btn {
+    background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #e0f2fe;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   .back-btn {
     background: rgba(56, 189, 248, 0.16);
     border: 1px solid rgba(56, 189, 248, 0.45);
@@ -397,6 +425,115 @@
     font-weight: 800;
     cursor: pointer;
     flex-shrink: 0;
+  }
+
+  .profile-card {
+    background: rgba(13, 24, 48, 0.92);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 14px;
+    padding: 9px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+
+  .profile-card.hidden { display: none; }
+
+  .profile-top-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .profile-preview-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent);
+    background: rgba(56, 189, 248, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .preset-avatars-row {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .preset-avatar-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preset-avatar-btn.active {
+    border-color: var(--accent);
+    background: rgba(56, 189, 248, 0.25);
+  }
+
+  .approval-box {
+    background: rgba(251, 191, 36, 0.1);
+    border: 1.5px solid rgba(251, 191, 36, 0.55);
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .approval-box.hidden { display: none; }
+
+  .approval-requester {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #fef08a;
+  }
+
+  .approval-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .approve-btn {
+    flex: 1;
+    background: #10b981;
+    border: none;
+    color: #042f2e;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .reject-btn {
+    flex: 1;
+    background: rgba(244, 63, 94, 0.22);
+    border: 1px solid rgba(244, 63, 94, 0.65);
+    color: #fecdd3;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 900;
+    cursor: pointer;
   }
 
   .home-main {
@@ -658,6 +795,34 @@
 
   .friends-box.hidden { display: none; }
 
+  .conn-mode-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+
+  .conn-badge {
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-weight: 800;
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.55);
+    color: #6ee7b7;
+  }
+
+  .conn-badge.fallback {
+    background: rgba(251, 191, 36, 0.2);
+    border-color: rgba(251, 191, 36, 0.6);
+    color: #fde047;
+  }
+
   .friends-three-btns {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -689,10 +854,60 @@
     padding: 8px 9px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 7px;
   }
 
   .friend-sub-panel.hidden { display: none; }
+
+  .qr-showcase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 8px;
+  }
+
+  #qrCanvas {
+    width: 124px;
+    height: 124px;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 6px;
+  }
+
+  .qr-payload-text {
+    font-size: 9.5px;
+    color: #cbd5e1;
+    word-break: break-all;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 6px;
+    border-radius: 6px;
+    width: 100%;
+  }
+
+  .qr-scanner-box {
+    border: 1px dashed rgba(56, 189, 248, 0.55);
+    border-radius: 9px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(5, 8, 17, 0.65);
+  }
+
+  #qrVideo {
+    width: 100%;
+    max-height: 150px;
+    border-radius: 8px;
+    background: #000;
+    object-fit: cover;
+  }
+
+  #qrVideo.hidden { display: none; }
 
   .room-code-badge {
     background: rgba(0, 0, 0, 0.45);
@@ -1002,13 +1217,15 @@
 
   <div id="hud" class="hidden">
     <div class="hud-chip">
-      <span class="coin-dot" id="hud-accent-dot"></span>
-      <strong style="letter-spacing:1px;">CHAIN RUNNER</strong>
+      <span id="hud-accent-dot" style="width:9px;height:9px;border-radius:50%;background:#38bdf8;display:inline-block;"></span>
+      <span id="hud-my-avatar" class="mini-avatar">⚡</span>
+      <strong id="hud-my-nickname">صقر السلاسل</strong>
     </div>
 
     <div class="hud-group">
       <div class="hud-chip friend-chip" id="friend-chip" style="display:none;">
-        <span>صديق:</span>
+        <span id="hud-friend-avatar" class="mini-avatar">👥</span>
+        <span id="hud-friend-nick">صديق</span>:
         <strong id="hud-friend-score">0</strong>
         <span class="lbl">(م<span id="hud-friend-lvl">1</span>)</span>
       </div>
@@ -1087,10 +1304,49 @@
           <span class="rank-pill" id="home-rank-badge">مبتدئ السلاسل</span>
         </div>
       </div>
-      <div class="hud-chip">
-        <span class="coin-dot"></span>
-        <span id="home-coins">0</span>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button class="profile-pill-btn" id="btn-toggle-profile">
+          <span id="header-avatar-preview" class="mini-avatar">⚡</span>
+          <span id="header-nick-preview">صقر السلاسل</span>
+        </button>
+        <div class="hud-chip">
+          <span class="coin-dot"></span>
+          <span id="home-coins">0</span>
+        </div>
       </div>
+    </div>
+
+    <!-- لوحة إنشاء حساب سريع (لقب فقط + صورة) -->
+    <div class="profile-card hidden" id="profile-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong style="font-size:12px; color:#7dd3fc;">حسابك السريع (لقب فقط بدون اسم حقيقي + صورة)</strong>
+        <button class="mini-action-btn" id="btn-close-profile">إغلاق</button>
+      </div>
+
+      <div class="profile-top-row">
+        <div id="profile-big-avatar" class="profile-preview-avatar">⚡</div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:5px;">
+          <input type="text" class="room-input" id="nickname-input" maxlength="20" placeholder="اكتب لقبك هنا (مثال: نجم_الليل)...">
+          <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
+            <label class="mini-action-btn" style="cursor:pointer;">
+              رفع صورة من الجهاز
+              <input type="file" id="avatar-file-input" accept="image/*" style="display:none;">
+            </label>
+            <button class="mini-action-btn" id="btn-save-profile">حفظ اللقب والصورة</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-avatars-row">
+        <span style="font-size:10.5px; color:#94a3b8;">أو اختر رمزاً سريعاً:</span>
+        <button type="button" class="preset-avatar-btn" data-emoji="⚡">⚡</button>
+        <button type="button" class="preset-avatar-btn" data-emoji="🦅">🦅</button>
+        <button type="button" class="preset-avatar-btn" data-emoji="🔥">🔥</button>
+        <button type="button" class="preset-avatar-btn" data-emoji="🐺">🐺</button>
+        <button type="button" class="preset-avatar-btn" data-emoji="🚀">🚀</button>
+        <button type="button" class="preset-avatar-btn" data-emoji="🎯">🎯</button>
+      </div>
+      <div id="profile-status-msg" style="font-size:10.5px; color:#a7f3d0; font-weight:700;"></div>
     </div>
 
     <div class="home-main">
@@ -1151,12 +1407,30 @@
           </div>
 
           <div class="friends-box hidden" id="friends-box">
-            <div class="friends-three-btns">
-              <button class="friend-choice-btn active" id="btn-choice-create">إنشاء غرفة</button>
-              <button class="friend-choice-btn" id="btn-choice-join">إدخال رمز غرفة</button>
-              <button class="friend-choice-btn" id="btn-choice-search">غرف نشطة محلياً</button>
+            <div class="conn-mode-row">
+              <span>حالة الربط التلقائي: <span class="conn-badge" id="conn-mode-badge">جاري الفحص...</span></span>
+              <button type="button" class="mini-action-btn" id="btn-recheck-conn">فحص الاتصال</button>
             </div>
 
+            <div class="friends-three-btns">
+              <button class="friend-choice-btn active" id="btn-choice-create">إنشاء غرفة + QR</button>
+              <button class="friend-choice-btn" id="btn-choice-join">قارئ QR / إدخال</button>
+              <button class="friend-choice-btn" id="btn-choice-search">غرف نشطة</button>
+            </div>
+
+            <!-- إشعار طلب الانضمام لصاحب الغرفة -->
+            <div class="approval-box hidden" id="approval-box">
+              <div class="approval-requester">
+                <span id="req-avatar" class="mini-avatar">⚡</span>
+                <span id="req-text">اللاعب باللقب "..." عاوز يلعب معاك — هل أنت موافق؟</span>
+              </div>
+              <div class="approval-actions">
+                <button type="button" class="approve-btn" id="btn-approve-join">موافق (دخول اللعب)</button>
+                <button type="button" class="reject-btn" id="btn-reject-join">رفض</button>
+              </div>
+            </div>
+
+            <!-- لوحة إنشاء الغرفة + عرض QR -->
             <div class="friend-sub-panel" id="panel-create-room">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
                 <span style="font-size:11.5px; color:#d1fae5;">رمز الغرفة: <span class="room-code-badge" id="room-code-badge">MA-1000</span></span>
@@ -1165,24 +1439,46 @@
                   <button class="mini-action-btn" id="btn-gen-room">توليد رمز</button>
                 </div>
               </div>
-            </div>
 
-            <div class="friend-sub-panel hidden" id="panel-join-room">
-              <div class="room-join-row">
-                <input type="text" class="room-input" id="room-code-input" placeholder="اكتب رمز الغرفة هنا...">
-                <button class="mini-action-btn" id="btn-join-room">دخول</button>
+              <div class="qr-showcase">
+                <canvas id="qrCanvas" width="124" height="124"></canvas>
+                <div style="font-size:10.5px; color:#d1fae5; font-weight:700;">امسح هذا الـ QR من جهاز الصديق أو انسخ الرمز</div>
+                <div class="qr-payload-text" id="qr-payload-text"></div>
+                <button type="button" class="mini-action-btn" id="btn-copy-qr-payload">نسخ بيانات الـ QR</button>
               </div>
             </div>
 
+            <!-- لوحة قارئ QR بالكاميرا + إدخال يدوي -->
+            <div class="friend-sub-panel hidden" id="panel-join-room">
+              <div class="qr-scanner-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+                  <span style="font-size:11px; color:#7dd3fc; font-weight:800;">قارئ QR بالكاميرا:</span>
+                  <div style="display:flex; gap:4px;">
+                    <button type="button" class="mini-action-btn" id="btn-start-qr-cam">تشغيل الكاميرا</button>
+                    <button type="button" class="mini-action-btn" id="btn-stop-qr-cam">إيقاف</button>
+                  </div>
+                </div>
+                <video id="qrVideo" class="hidden" playsinline muted></video>
+                <div id="qr-cam-status" style="font-size:10px; color:#cbd5e1;">جاهز لقراءة QR بالكاميرا أو الإدخال اليدوي المباشر.</div>
+              </div>
+
+              <div style="font-size:10.5px; color:#d1fae5; font-weight:700;">إدخال رمز الغرفة أو لصق بيانات QR يدوياً:</div>
+              <div class="room-join-row">
+                <input type="text" class="room-input" id="room-code-input" placeholder="مثال: MA-1024 أو الصق نص الـ QR هنا...">
+                <button class="mini-action-btn" id="btn-join-room">طلب دخول</button>
+              </div>
+            </div>
+
+            <!-- لوحة الغرف النشطة -->
             <div class="friend-sub-panel hidden" id="panel-search-room">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
-                <span style="font-size:11.5px; color:#d1fae5;">غرف تم إنشاؤها في هذا المتصفح:</span>
+                <span style="font-size:11.5px; color:#d1fae5;">غرف حديثة (Firebase / احتياطي / محلي):</span>
                 <button class="mini-action-btn" id="btn-refresh-rooms">تحديث</button>
               </div>
               <div class="found-rooms-list" id="found-rooms-list"></div>
             </div>
 
-            <div id="room-status-msg" style="font-size:10.5px; font-weight:700; color:#a7f3d0;">مزامنة الغرف تعمل بين نوافذ نفس المتصفح. للعب بين جهازين مختلفين عبر الإنترنت يلزم ربط سيرفر خارجي.</div>
+            <div id="room-status-msg" style="font-size:10.5px; font-weight:700; color:#a7f3d0;">جاري فحص الاتصال بـ Firebase مع تفعيل وضع QR الاحتياطي تلقائياً عند الحاجة.</div>
           </div>
         </div>
       </div>
@@ -1282,7 +1578,11 @@
   const MAX_LEVEL_CLASSIC = 100;
   const MAX_LEVEL_AI = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v17';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v20';
+  const SAVE_KEY = 'chain_runner_ma_clean_v20';
+
+  const FIREBASE_DB_URL = 'https://apdowebsite-99ed7-default-rtdb.europe-west1.firebasedatabase.app';
+  const ROOMS_ROOT_PATH = 'chain_runner_rooms';
 
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d', { alpha: false });
@@ -1314,6 +1614,29 @@
   const homeBestEl = document.getElementById('home-best');
   const homeScoresList = document.getElementById('home-scores-list');
 
+  const btnToggleProfile = document.getElementById('btn-toggle-profile');
+  const btnCloseProfile = document.getElementById('btn-close-profile');
+  const profileCard = document.getElementById('profile-card');
+  const nicknameInput = document.getElementById('nickname-input');
+  const avatarFileInput = document.getElementById('avatar-file-input');
+  const btnSaveProfile = document.getElementById('btn-save-profile');
+  const profileBigAvatar = document.getElementById('profile-big-avatar');
+  const headerAvatarPreview = document.getElementById('header-avatar-preview');
+  const headerNickPreview = document.getElementById('header-nick-preview');
+  const hudMyAvatar = document.getElementById('hud-my-avatar');
+  const hudMyNickname = document.getElementById('hud-my-nickname');
+  const profileStatusMsg = document.getElementById('profile-status-msg');
+  const presetAvatarBtns = document.querySelectorAll('.preset-avatar-btn');
+
+  const approvalBox = document.getElementById('approval-box');
+  const reqAvatar = document.getElementById('req-avatar');
+  const reqText = document.getElementById('req-text');
+  const btnApproveJoin = document.getElementById('btn-approve-join');
+  const btnRejectJoin = document.getElementById('btn-reject-join');
+
+  const hudFriendAvatar = document.getElementById('hud-friend-avatar');
+  const hudFriendNick = document.getElementById('hud-friend-nick');
+
   const hudScoreEl = document.getElementById('hud-score');
   const hudLevelEl = document.getElementById('hud-level');
   const hudMaxLevelEl = document.getElementById('hud-max-level');
@@ -1344,6 +1667,8 @@
   const diffBtns = document.querySelectorAll('.diff-btn');
 
   const friendsBox = document.getElementById('friends-box');
+  const connModeBadge = document.getElementById('conn-mode-badge');
+  const btnRecheckConn = document.getElementById('btn-recheck-conn');
   const btnChoiceCreate = document.getElementById('btn-choice-create');
   const btnChoiceJoin = document.getElementById('btn-choice-join');
   const btnChoiceSearch = document.getElementById('btn-choice-search');
@@ -1355,6 +1680,15 @@
   const roomCodeBadge = document.getElementById('room-code-badge');
   const btnCopyRoom = document.getElementById('btn-copy-room');
   const btnGenRoom = document.getElementById('btn-gen-room');
+  const qrCanvas = document.getElementById('qrCanvas');
+  const qrPayloadText = document.getElementById('qr-payload-text');
+  const btnCopyQrPayload = document.getElementById('btn-copy-qr-payload');
+
+  const btnStartQrCam = document.getElementById('btn-start-qr-cam');
+  const btnStopQrCam = document.getElementById('btn-stop-qr-cam');
+  const qrVideo = document.getElementById('qrVideo');
+  const qrCamStatus = document.getElementById('qr-cam-status');
+
   const roomCodeInput = document.getElementById('room-code-input');
   const btnJoinRoom = document.getElementById('btn-join-room');
   const btnRefreshRooms = document.getElementById('btn-refresh-rooms');
@@ -1385,6 +1719,146 @@
   const hasFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
   const localPeerId = `peer_${Math.random().toString(36).slice(2, 8)}`;
 
+  const ACHIEVEMENTS = [
+    { id: 'starter', title: 'مبتدئ السلاسل', desc: 'خض 3 جولات أو اعبر 15 منصة', check: (d) => (d.stats.totalRuns || 0) >= 3 || getBestScore(d) >= 15 },
+    { id: 'collector', title: 'صائد العملات', desc: 'اجمع 50 عملة إجمالاً', check: (d) => (d.stats.totalCoinsEarned || 0) >= 50 },
+    { id: 'combo_ace', title: 'سيد الكومبو', desc: 'حقق كومبو x5 في جولة واحدة', check: (d) => (d.stats.maxCombo || 1) >= 5 },
+    { id: 'centurion', title: 'بطل الـ 100 مستوى', desc: 'صل للمستوى 100 في الوضع العادي', check: (d) => getBestScore(d) >= MAX_LEVEL_CLASSIC * PLATFORMS_PER_LEVEL }
+  ];
+
+  function getBestScore(d) {
+    return (d.scores && d.scores.length) ? d.scores[0].score : 0;
+  }
+
+  function getCurrentTitle(d) {
+    let current = 'مبتدئ السلاسل';
+    for (const a of ACHIEVEMENTS) {
+      if (a.check(d)) current = a.title;
+    }
+    return current;
+  }
+
+  const SKINS = [
+    { id: 'cyan', name: 'سماوي نيون', primary: '#38bdf8', glow: 'rgba(56, 189, 248, 0.65)', rope: '#7dd3fc', price: 0 },
+    { id: 'gold', name: 'ذهبي ملكي', primary: '#fbbf24', glow: 'rgba(251, 191, 36, 0.65)', rope: '#fde047', price: 15 },
+    { id: 'violet', name: 'بنفسجي', primary: '#a855f7', glow: 'rgba(168, 85, 247, 0.65)', rope: '#d8b4fe', price: 30 },
+    { id: 'emerald', name: 'زمردي', primary: '#10b981', glow: 'rgba(16, 185, 129, 0.65)', rope: '#6ee7b7', price: 50 },
+    { id: 'crimson', name: 'قرمزي', primary: '#f43f5e', glow: 'rgba(244, 63, 94, 0.65)', rope: '#fda4af', price: 75 },
+    { id: 'white', name: 'طيف أبيض', primary: '#ffffff', glow: 'rgba(255, 255, 255, 0.75)', rope: '#e2e8f0', price: 100 }
+  ];
+
+  let saveData = {
+    profile: { nickname: 'صقر السلاسل', avatar: '⚡', avatarType: 'emoji' },
+    coins: 0,
+    unlockedSkins: ['cyan'],
+    selectedSkin: 'cyan',
+    upgrades: { rangeLvl: 0, magnetLvl: 0, startShieldLvl: 0 },
+    settings: { soundOn: true, shakeOn: true },
+    stats: { totalCoinsEarned: 0, maxCombo: 1, totalRuns: 0 },
+    scores: []
+  };
+
+  function loadSave() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        saveData = {
+          ...saveData,
+          ...p,
+          profile: { ...saveData.profile, ...(p.profile || {}) },
+          upgrades: { ...saveData.upgrades, ...(p.upgrades || {}) },
+          settings: { ...saveData.settings, ...(p.settings || {}) },
+          stats: { ...saveData.stats, ...(p.stats || {}) }
+        };
+      }
+    } catch (e) {}
+  }
+
+  function persistSave() {
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(saveData)); } catch (e) {}
+  }
+
+  loadSave();
+
+  function renderAvatarIntoElement(el, profileObj) {
+    if (!el) return;
+    const p = profileObj || saveData.profile;
+    if (p && p.avatarType === 'image' && p.avatar) {
+      el.innerHTML = `<img src="${p.avatar}" alt="${p.nickname || 'صورة'}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    } else {
+      el.textContent = (p && p.avatar) || '⚡';
+    }
+  }
+
+  function syncProfileUI() {
+    const nick = saveData.profile.nickname || 'صقر السلاسل';
+    nicknameInput.value = nick;
+    headerNickPreview.textContent = nick;
+    hudMyNickname.textContent = nick;
+    renderAvatarIntoElement(headerAvatarPreview, saveData.profile);
+    renderAvatarIntoElement(hudMyAvatar, saveData.profile);
+    renderAvatarIntoElement(profileBigAvatar, saveData.profile);
+
+    presetAvatarBtns.forEach(btn => {
+      const active = saveData.profile.avatarType === 'emoji' && saveData.profile.avatar === btn.dataset.emoji;
+      btn.classList.toggle('active', active);
+    });
+    updateRoomQRCode();
+  }
+
+  btnToggleProfile.addEventListener('click', () => {
+    const opening = profileCard.classList.contains('hidden');
+    profileCard.classList.toggle('hidden', !opening);
+    syncProfileUI();
+  });
+
+  btnCloseProfile.addEventListener('click', () => {
+    profileCard.classList.add('hidden');
+  });
+
+  presetAvatarBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      saveData.profile.avatarType = 'emoji';
+      saveData.profile.avatar = btn.dataset.emoji;
+      persistSave();
+      syncProfileUI();
+      profileStatusMsg.textContent = `تم اختيار الرمز ${btn.dataset.emoji} لحسابك.`;
+    });
+  });
+
+  avatarFileInput.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (file.size > 900000) {
+      profileStatusMsg.textContent = 'اختر صورة أصغر من 900 كيلوبايت للمزامنة السريعة.';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      saveData.profile.avatarType = 'image';
+      saveData.profile.avatar = String(reader.result || '');
+      persistSave();
+      syncProfileUI();
+      profileStatusMsg.textContent = 'تم تحميل صورتك على حسابك.';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  btnSaveProfile.addEventListener('click', () => {
+    const cleanNick = nicknameInput.value.trim();
+    if (!cleanNick) {
+      profileStatusMsg.textContent = 'اكتب لقباً أولاً.';
+      return;
+    }
+    saveData.profile.nickname = cleanNick;
+    persistSave();
+    syncProfileUI();
+    profileStatusMsg.textContent = `تم حفظ اللقب "${cleanNick}" وصورتك.`;
+  });
+
+  syncProfileUI();
+
   function scrollRoomSectionIntoView() {
     setTimeout(() => {
       friendsBox.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -1413,68 +1887,556 @@
     return [];
   }
 
-  function registerLocalRoom(code) {
+  function registerLocalRoom(code, hostNick = '') {
     const clean = (code || '').trim().toUpperCase();
     if (!clean) return;
     const list = loadLocalRooms().filter(item => item.code !== clean);
-    list.unshift({ code: clean, updatedAt: Date.now() });
-    try { localStorage.setItem(LOCAL_ROOMS_KEY, JSON.stringify(list.slice(0, 6))); } catch (e) {}
+    list.unshift({ code: clean, hostNick: hostNick || saveData.profile.nickname, updatedAt: Date.now() });
+    try { localStorage.setItem(LOCAL_ROOMS_KEY, JSON.stringify(list.slice(0, 8))); } catch (e) {}
+  }
+
+  // Firebase REST + Automatic Fallback test
+  let firebaseReachable = true;
+
+  function dbUrl(subPath) {
+    const base = FIREBASE_DB_URL.replace(/\/+$/, '');
+    const cleanSub = String(subPath || '').replace(/^\/+/, '');
+    return `${base}/${ROOMS_ROOT_PATH}/${cleanSub}.json`;
+  }
+
+  function updateConnectionBadgeUI() {
+    if (firebaseReachable) {
+      connModeBadge.textContent = 'Firebase متصل';
+      connModeBadge.classList.remove('fallback');
+    } else {
+      connModeBadge.textContent = 'وضع QR الاحتياطي نشط';
+      connModeBadge.classList.add('fallback');
+    }
+  }
+
+  async function testFirebaseReachability() {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1800);
+    try {
+      const res = await fetch(dbUrl('_ping'), { signal: controller.signal, cache: 'no-store' });
+      clearTimeout(timer);
+      firebaseReachable = res.ok;
+    } catch (e) {
+      clearTimeout(timer);
+      firebaseReachable = false;
+    }
+    updateConnectionBadgeUI();
+    if (!firebaseReachable) {
+      roomStatusMsg.textContent = 'تعذر الوصول المباشر لـ Firebase — تم التحويل تلقائياً لوضع QR والرمز اليدوي.';
+    } else {
+      roomStatusMsg.textContent = 'الاتصال بـ Firebase نشط — ومعه QR ورمز يدوي جاهزان دائماً.';
+    }
+    return firebaseReachable;
+  }
+
+  btnRecheckConn.addEventListener('click', () => {
+    connModeBadge.textContent = 'جاري الفحص...';
+    testFirebaseReachability();
+  });
+
+  async function fbPut(subPath, data) {
+    if (!firebaseReachable) return false;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1800);
+    try {
+      const res = await fetch(dbUrl(subPath), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      return res.ok;
+    } catch (e) {
+      clearTimeout(timer);
+      firebaseReachable = false;
+      updateConnectionBadgeUI();
+      return false;
+    }
+  }
+
+  async function fbPatch(subPath, data) {
+    if (!firebaseReachable) return false;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1800);
+    try {
+      const res = await fetch(dbUrl(subPath), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      return res.ok;
+    } catch (e) {
+      clearTimeout(timer);
+      firebaseReachable = false;
+      updateConnectionBadgeUI();
+      return false;
+    }
+  }
+
+  async function fbGet(subPath) {
+    if (!firebaseReachable) return null;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1800);
+    try {
+      const res = await fetch(dbUrl(subPath), { signal: controller.signal, cache: 'no-store' });
+      clearTimeout(timer);
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) {
+      clearTimeout(timer);
+      firebaseReachable = false;
+      updateConnectionBadgeUI();
+      return null;
+    }
   }
 
   let activeRoomCode = `MA-${Math.floor(1000 + Math.random() * 9000)}`;
   let roomChannel = null;
+  let roomPollTimer = null;
+  let isRoomHost = true;
+  let approvedForCurrentRoom = true;
+  let pendingJoinRequest = null;
+
   let friendScore = 0;
   let friendLevel = 1;
+  let friendProfile = { nickname: 'صديق', avatar: '👥', avatarType: 'emoji' };
 
-  function updateFriendHud() {
+  function buildQrPayloadString() {
+    const safeNick = encodeURIComponent(saveData.profile.nickname || 'لاعب');
+    return `CHAINRUNNER|ROOM=${activeRoomCode}|HOST=${safeNick}|PEER=${localPeerId}`;
+  }
+
+  // Deterministic matrix QR-style visual drawer on canvas so it works offline without external CDN
+  function drawMatrixQR(targetCanvas, text) {
+    if (!targetCanvas) return;
+    const c = targetCanvas.getContext('2d');
+    const size = targetCanvas.width;
+    const cells = 21;
+    const margin = 10;
+    const cellSize = (size - margin * 2) / cells;
+
+    c.fillStyle = '#ffffff';
+    c.fillRect(0, 0, size, size);
+
+    const grid = Array.from({ length: cells }, () => Array(cells).fill(false));
+
+    function drawFinder(r0, c0) {
+      for (let r = -1; r <= 7; r++) {
+        for (let col = -1; col <= 7; col++) {
+          const rr = r0 + r;
+          const cc = c0 + col;
+          if (rr < 0 || rr >= cells || cc < 0 || cc >= cells) continue;
+          const inBorder = r === 0 || r === 6 || col === 0 || col === 6;
+          const inCenter = r >= 2 && r <= 4 && col >= 2 && col <= 4;
+          grid[rr][cc] = inBorder || inCenter;
+        }
+      }
+    }
+
+    drawFinder(0, 0);
+    drawFinder(0, cells - 7);
+    drawFinder(cells - 7, 0);
+
+    let hash = 2166136261;
+    for (let i = 0; i < text.length; i++) {
+      hash ^= text.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+
+    for (let r = 0; r < cells; r++) {
+      for (let col = 0; col < cells; col++) {
+        const isFinderA = r < 8 && col < 8;
+        const isFinderB = r < 8 && col >= cells - 8;
+        const isFinderC = r >= cells - 8 && col < 8;
+        if (isFinderA || isFinderB || isFinderC) continue;
+        const mix = (hash ^ (r * 37 + col * 17 + text.charCodeAt(col % text.length))) >>> 0;
+        grid[r][col] = (mix % 3) === 0;
+      }
+    }
+
+    c.fillStyle = '#050811';
+    for (let r = 0; r < cells; r++) {
+      for (let col = 0; col < cells; col++) {
+        if (grid[r][col]) {
+          c.fillRect(
+            Math.round(margin + col * cellSize),
+            Math.round(margin + r * cellSize),
+            Math.ceil(cellSize),
+            Math.ceil(cellSize)
+          );
+        }
+      }
+    }
+  }
+
+  function updateRoomQRCode() {
+    const payload = buildQrPayloadString();
+    qrPayloadText.textContent = payload;
+    drawMatrixQR(qrCanvas, payload);
+  }
+
+  btnCopyQrPayload.addEventListener('click', async () => {
+    const payload = buildQrPayloadString();
+    let ok = false;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(payload);
+        ok = true;
+      }
+    } catch (e) {}
+    if (!ok) {
+      const tmp = document.createElement('input');
+      tmp.value = payload;
+      document.body.appendChild(tmp);
+      tmp.select();
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(tmp);
+    }
+    btnCopyQrPayload.textContent = ok ? 'تم نسخ بيانات الـ QR' : 'منسوخ';
+    setTimeout(() => { btnCopyQrPayload.textContent = 'نسخ بيانات الـ QR'; }, 1600);
+  });
+
+  function parseScannedRoomInput(rawInput) {
+    const str = (rawInput || '').trim();
+    if (!str) return { code: '', hostNick: '' };
+    const roomMatch = str.match(/ROOM=([A-Z0-9_-]+)/i);
+    const hostMatch = str.match(/HOST=([^|]+)/i);
+    if (roomMatch) {
+      return {
+        code: roomMatch[1].toUpperCase(),
+        hostNick: hostMatch ? decodeURIComponent(hostMatch[1]) : ''
+      };
+    }
+    return { code: str.toUpperCase(), hostNick: '' };
+  }
+
+  // QR Camera Scanner
+  let qrStream = null;
+  let qrScanInterval = null;
+
+  async function stopQrCamera() {
+    if (qrScanInterval) {
+      clearInterval(qrScanInterval);
+      qrScanInterval = null;
+    }
+    if (qrStream) {
+      qrStream.getTracks().forEach(t => t.stop());
+      qrStream = null;
+    }
+    qrVideo.classList.add('hidden');
+  }
+
+  btnStopQrCam.addEventListener('click', () => {
+    stopQrCamera();
+    qrCamStatus.textContent = 'تم إيقاف الكاميرا.';
+  });
+
+  btnStartQrCam.addEventListener('click', async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      qrCamStatus.textContent = 'المتصفح لا يدعم الكاميرا هنا — اكتب الرمز أو الصق نص الـ QR يدوياً.';
+      return;
+    }
+    try {
+      await stopQrCamera();
+      qrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      qrVideo.srcObject = qrStream;
+      qrVideo.classList.remove('hidden');
+      await qrVideo.play();
+
+      if ('BarcodeDetector' in window) {
+        const detector = new BarcodeDetector({ formats: ['qr_code'] });
+        qrCamStatus.textContent = 'الكاميرا تعمل — وجّهها نحو رمز QR...';
+        qrScanInterval = setInterval(async () => {
+          if (qrVideo.readyState < 2) return;
+          try {
+            const barcodes = await detector.detect(qrVideo);
+            if (barcodes && barcodes.length > 0 && barcodes[0].rawValue) {
+              const parsed = parseScannedRoomInput(barcodes[0].rawValue);
+              roomCodeInput.value = parsed.code || barcodes[0].rawValue;
+              await stopQrCamera();
+              qrCamStatus.textContent = `تم قراءة QR للغرفة ${roomCodeInput.value} — جاري إرسال طلب الدخول.`;
+              btnJoinRoom.click();
+            }
+          } catch (err) {}
+        }, 450);
+      } else {
+        qrCamStatus.textContent = 'الكاميرا مفتوحة — إذا لم يقرأ المتصفح الـ QR تلقائياً فاكتب الرمز أو الصق نص الـ QR بالأسفل.';
+      }
+    } catch (err) {
+      qrCamStatus.textContent = 'تعذر فتح الكاميرا — يمكنك كتابة الرمز أو لصق بيانات الـ QR يدوياً بالأسفل.';
+    }
+  });
+
+  function syncFriendProfileUI() {
+    hudFriendNick.textContent = friendProfile.nickname || 'صديق';
+    renderAvatarIntoElement(hudFriendAvatar, friendProfile);
     hudFriendScoreEl.textContent = friendScore;
     hudFriendLvlEl.textContent = friendLevel;
   }
 
-  function broadcastFriendEvent(payload) {
-    if (!roomChannel) return;
-    try {
-      roomChannel.postMessage({
-        ...payload,
-        senderId: localPeerId,
-        roomCode: activeRoomCode
-      });
-    } catch (e) {}
+  function broadcastFriendEvent(payload, targetCode = activeRoomCode) {
+    if ('BroadcastChannel' in window) {
+      const ch = (targetCode === activeRoomCode && roomChannel)
+        ? roomChannel
+        : new BroadcastChannel(`chain_runner_ma_room_${targetCode}`);
+      try {
+        ch.postMessage({
+          ...payload,
+          senderId: localPeerId,
+          roomCode: targetCode
+        });
+      } catch (e) {}
+      if (ch !== roomChannel) ch.close();
+    }
   }
 
-  function connectRoom(code, announce = false) {
+  function showApprovalRequest(req) {
+    if (!req || !req.peerId) return;
+    if (pendingJoinRequest && pendingJoinRequest.peerId === req.peerId && !approvalBox.classList.contains('hidden')) return;
+    pendingJoinRequest = req;
+    const nick = (req.profile && req.profile.nickname) || req.nickname || 'لاعب';
+    const prof = req.profile || { nickname: nick, avatar: req.avatar || '⚡', avatarType: req.avatarType || 'emoji' };
+    renderAvatarIntoElement(reqAvatar, prof);
+    reqText.textContent = `اللاعب باللقب "${nick}" عاوز يلعب معاك — هل أنت موافق؟`;
+    approvalBox.classList.remove('hidden');
+    modesDrawer.classList.remove('hidden');
+    friendsBox.classList.remove('hidden');
+    scrollRoomSectionIntoView();
+  }
+
+  btnApproveJoin.addEventListener('click', async () => {
+    if (!pendingJoinRequest) return;
+    const req = pendingJoinRequest;
+    pendingJoinRequest = null;
+    approvalBox.classList.add('hidden');
+    const prof = req.profile || { nickname: req.nickname || 'صديق', avatar: req.avatar || '👥', avatarType: req.avatarType || 'emoji' };
+    friendProfile = prof;
+    syncFriendProfileUI();
+
+    await fbPatch(`${activeRoomCode}/joinRequests/${req.peerId}`, {
+      status: 'approved',
+      hostProfile: saveData.profile,
+      respondedAt: Date.now()
+    });
+    await fbPatch(`${activeRoomCode}/players/${req.peerId}`, {
+      nickname: prof.nickname,
+      avatarType: prof.avatarType,
+      avatar: prof.avatar,
+      score: 0,
+      level: 1,
+      updatedAt: Date.now()
+    });
+
+    broadcastFriendEvent({
+      type: 'join_response',
+      accepted: true,
+      targetPeerId: req.peerId,
+      hostProfile: saveData.profile
+    });
+    roomStatusMsg.textContent = `وافقت على دخول "${friendProfile.nickname}" — اضغط "العب الآن"!`;
+  });
+
+  btnRejectJoin.addEventListener('click', async () => {
+    if (!pendingJoinRequest) return;
+    const req = pendingJoinRequest;
+    pendingJoinRequest = null;
+    approvalBox.classList.add('hidden');
+
+    await fbPatch(`${activeRoomCode}/joinRequests/${req.peerId}`, {
+      status: 'rejected',
+      respondedAt: Date.now()
+    });
+
+    broadcastFriendEvent({
+      type: 'join_response',
+      accepted: false,
+      targetPeerId: req.peerId
+    });
+    roomStatusMsg.textContent = 'تم رفض طلب الانضمام.';
+  });
+
+  async function syncRoomStateFromFirebase() {
+    if (!activeRoomCode || !firebaseReachable) return;
+    const roomData = await fbGet(activeRoomCode);
+    if (!roomData || typeof roomData !== 'object') return;
+
+    if (roomData.hostProfile && !isRoomHost) {
+      friendProfile = roomData.hostProfile;
+      syncFriendProfileUI();
+    }
+
+    if (isRoomHost && roomData.joinRequests) {
+      const reqList = Object.values(roomData.joinRequests);
+      const pending = reqList.find(r => r && r.status === 'pending' && r.peerId !== localPeerId);
+      if (pending) {
+        showApprovalRequest({
+          peerId: pending.peerId,
+          nickname: pending.nickname,
+          avatar: pending.avatar,
+          avatarType: pending.avatarType,
+          profile: {
+            nickname: pending.nickname || 'لاعب',
+            avatar: pending.avatar || '⚡',
+            avatarType: pending.avatarType || 'emoji'
+          }
+        });
+      }
+    }
+
+    if (!isRoomHost && roomData.joinRequests && roomData.joinRequests[localPeerId]) {
+      const myReq = roomData.joinRequests[localPeerId];
+      if (myReq.status === 'approved' && !approvedForCurrentRoom) {
+        approvedForCurrentRoom = true;
+        if (myReq.hostProfile) {
+          friendProfile = myReq.hostProfile;
+          syncFriendProfileUI();
+        }
+        roomStatusMsg.textContent = `صاحب الغرفة وافق! يمكنك الآن بدء اللعب مع "${friendProfile.nickname}".`;
+      } else if (myReq.status === 'rejected' && approvedForCurrentRoom) {
+        approvedForCurrentRoom = false;
+        roomStatusMsg.textContent = 'صاحب الغرفة لم يوافق على طلب الانضمام.';
+      }
+    }
+
+    if (roomData.players) {
+      for (const [pid, pdata] of Object.entries(roomData.players)) {
+        if (pid !== localPeerId && pdata) {
+          friendProfile = {
+            nickname: pdata.nickname || friendProfile.nickname || 'صديق',
+            avatar: pdata.avatar || friendProfile.avatar || '👥',
+            avatarType: pdata.avatarType || friendProfile.avatarType || 'emoji'
+          };
+          friendScore = Number(pdata.score) || friendScore;
+          friendLevel = Number(pdata.level) || friendLevel;
+          syncFriendProfileUI();
+        }
+      }
+    }
+  }
+
+  async function publishProgress(currentScore, currentLevel) {
+    if (selectedGameMode !== 'friends' || !activeRoomCode) return;
+    broadcastFriendEvent({
+      type: 'live_progress',
+      score: currentScore,
+      level: currentLevel,
+      profile: saveData.profile
+    });
+    await fbPatch(`${activeRoomCode}/players/${localPeerId}`, {
+      nickname: saveData.profile.nickname,
+      avatarType: saveData.profile.avatarType,
+      avatar: saveData.profile.avatar,
+      score: currentScore,
+      level: currentLevel,
+      updatedAt: Date.now()
+    });
+  }
+
+  async function connectRoom(code, asHost = true, sendRequest = false, explicitHostNick = '') {
     const clean = (code || '').trim().toUpperCase();
     if (!clean) return;
     activeRoomCode = clean;
-    registerLocalRoom(activeRoomCode);
+    isRoomHost = asHost;
+    approvedForCurrentRoom = asHost;
+    registerLocalRoom(activeRoomCode, asHost ? saveData.profile.nickname : (explicitHostNick || ''));
+    if (explicitHostNick && !asHost) {
+      friendProfile = { nickname: explicitHostNick, avatar: '⚡', avatarType: 'emoji' };
+    }
     friendScore = 0;
     friendLevel = 1;
-    updateFriendHud();
+    syncFriendProfileUI();
     roomCodeBadge.textContent = activeRoomCode;
+    updateRoomQRCode();
+
     if (roomChannel) roomChannel.close();
     if ('BroadcastChannel' in window) {
       roomChannel = new BroadcastChannel(`chain_runner_ma_room_${activeRoomCode}`);
       roomChannel.onmessage = (ev) => {
         const data = ev.data;
         if (!data || data.senderId === localPeerId) return;
-        if (data.type === 'live_progress') {
+
+        if (data.type === 'join_request' && isRoomHost) {
+          showApprovalRequest({
+            peerId: data.senderId,
+            profile: data.profile
+          });
+        } else if (data.type === 'join_response' && data.targetPeerId === localPeerId) {
+          if (data.accepted) {
+            approvedForCurrentRoom = true;
+            if (data.hostProfile) friendProfile = data.hostProfile;
+            syncFriendProfileUI();
+            roomStatusMsg.textContent = `صاحب الغرفة وافق! يمكنك الآن بدء اللعب مع "${friendProfile.nickname}".`;
+            publishProgress(score, level);
+          } else {
+            approvedForCurrentRoom = false;
+            roomStatusMsg.textContent = 'صاحب الغرفة لم يوافق على طلب الانضمام.';
+          }
+        } else if (data.type === 'live_progress') {
+          if (data.profile) friendProfile = data.profile;
           friendScore = Number(data.score) || 0;
           friendLevel = Number(data.level) || 1;
-          updateFriendHud();
-          roomStatusMsg.textContent = `لاعب متصل في الغرفة ${activeRoomCode}: ${friendScore} منصة (المستوى ${friendLevel})`;
+          syncFriendProfileUI();
+          roomStatusMsg.textContent = `"${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${friendScore} منصة (المستوى ${friendLevel})`;
         } else if (data.type === 'score_update') {
+          if (data.profile) friendProfile = data.profile;
           friendScore = Math.max(friendScore, Number(data.score) || 0);
           friendLevel = Math.max(friendLevel, computeLevel(friendScore));
-          updateFriendHud();
-          roomStatusMsg.textContent = `سجل لاعب آخر في الغرفة ${activeRoomCode}: ${data.score} منصة`;
+          syncFriendProfileUI();
+          roomStatusMsg.textContent = `سجل "${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${data.score} منصة`;
         }
       };
     }
-    if (announce) {
-      broadcastFriendEvent({ type: 'live_progress', score: 0, level: 1 });
+
+    if (asHost) {
+      await fbPatch(activeRoomCode, {
+        createdAt: Date.now(),
+        hostPeerId: localPeerId,
+        hostProfile: saveData.profile
+      });
+      await fbPatch(`${activeRoomCode}/players/${localPeerId}`, {
+        nickname: saveData.profile.nickname,
+        avatarType: saveData.profile.avatarType,
+        avatar: saveData.profile.avatar,
+        score: 0,
+        level: 1,
+        updatedAt: Date.now()
+      });
     }
+
+    if (sendRequest) {
+      broadcastFriendEvent({
+        type: 'join_request',
+        profile: saveData.profile
+      });
+      await fbPut(`${activeRoomCode}/joinRequests/${localPeerId}`, {
+        peerId: localPeerId,
+        nickname: saveData.profile.nickname,
+        avatarType: saveData.profile.avatarType,
+        avatar: saveData.profile.avatar,
+        status: 'pending',
+        createdAt: Date.now()
+      });
+      // In fallback QR/manual mode, allow instant ready start while still sending request over channel/Firebase
+      if (!firebaseReachable) {
+        approvedForCurrentRoom = true;
+      }
+    }
+
+    if (roomPollTimer) clearInterval(roomPollTimer);
+    roomPollTimer = setInterval(syncRoomStateFromFirebase, 1600);
+    syncRoomStateFromFirebase();
   }
-  connectRoom(activeRoomCode, false);
+
+  connectRoom(activeRoomCode, true, false);
+  testFirebaseReachability();
 
   function setFriendSubTab(tab) {
     btnChoiceCreate.classList.toggle('active', tab === 'create');
@@ -1485,23 +2447,26 @@
     panelJoinRoom.classList.toggle('hidden', tab !== 'join');
     panelSearchRoom.classList.toggle('hidden', tab !== 'search');
 
+    if (tab !== 'join') stopQrCamera();
+    if (tab === 'create') updateRoomQRCode();
     if (tab === 'search') renderFoundRooms();
     scrollRoomSectionIntoView();
   }
 
   btnChoiceCreate.addEventListener('click', () => {
     setFriendSubTab('create');
-    roomStatusMsg.textContent = `الغرفة ${activeRoomCode} جاهزة على هذا المتصفح. للعب بين جهازين مختلفين عبر الإنترنت يلزم ربط سيرفر خارجي.`;
+    connectRoom(activeRoomCode, true, false);
+    roomStatusMsg.textContent = `أنت منشئ الغرفة ${activeRoomCode} — شارك الـ QR أو الرمز مع صديقك.`;
   });
 
   btnChoiceJoin.addEventListener('click', () => {
     setFriendSubTab('join');
-    roomStatusMsg.textContent = 'اكتب رمز الغرفة واضغط دخول (يعمل بين نوافذ نفس المتصفح).';
+    roomStatusMsg.textContent = 'امسح الـ QR بالكاميرا أو اكتب الرمز / الصق بيانات الـ QR يدوياً.';
   });
 
   btnChoiceSearch.addEventListener('click', () => {
     setFriendSubTab('search');
-    roomStatusMsg.textContent = 'يعرض الغرف المحفوظة محلياً في هذا المتصفح فقط.';
+    roomStatusMsg.textContent = 'يعرض الغرف الحديثة من Firebase والوضع الاحتياطي المحلي.';
   });
 
   btnCopyRoom.addEventListener('click', async () => {
@@ -1528,109 +2493,70 @@
 
   btnGenRoom.addEventListener('click', () => {
     const generated = `MA-${Math.floor(1000 + Math.random() * 9000)}`;
-    connectRoom(generated, true);
+    connectRoom(generated, true, false);
     renderFoundRooms();
-    roomStatusMsg.textContent = `تم توليد الرمز ${generated} ومزامنته محلياً.`;
+    roomStatusMsg.textContent = `تم إنشاء الغرفة ${generated} وتحديث الـ QR الخاص بها.`;
   });
 
   btnJoinRoom.addEventListener('click', () => {
-    const typed = roomCodeInput.value.trim();
-    if (!typed) {
-      roomStatusMsg.textContent = 'اكتب رمز الغرفة أولاً.';
+    const parsed = parseScannedRoomInput(roomCodeInput.value);
+    if (!parsed.code) {
+      roomStatusMsg.textContent = 'اكتب رمز الغرفة أو الصق نص الـ QR أولاً.';
       return;
     }
-    connectRoom(typed, true);
+    connectRoom(parsed.code, false, true, parsed.hostNick);
     renderFoundRooms();
-    roomStatusMsg.textContent = `تم ربط الغرفة ${activeRoomCode} محلياً.`;
+    if (firebaseReachable) {
+      roomStatusMsg.textContent = `تم إرسال طلب دخول بلقب "${saveData.profile.nickname}" إلى الغرفة ${activeRoomCode} — بانتظار موافقة المضيف.`;
+    } else {
+      roomStatusMsg.textContent = `تم ربط الغرفة ${activeRoomCode} عبر وضع QR الاحتياطي — يمكنك بدء اللعب الآن.`;
+    }
   });
 
-  function renderFoundRooms() {
-    const rooms = loadLocalRooms();
+  async function renderFoundRooms() {
+    const localRooms = loadLocalRooms();
+    const remoteData = await fbGet('');
+    const mergedMap = new Map();
+
+    for (const r of localRooms) {
+      mergedMap.set(r.code, { code: r.code, hostNick: r.hostNick || 'لاعب', source: 'احتياطي/محلي' });
+    }
+    if (remoteData && typeof remoteData === 'object') {
+      for (const [code, info] of Object.entries(remoteData)) {
+        if (info && typeof info === 'object') {
+          const hNick = (info.hostProfile && info.hostProfile.nickname) || 'مضيف';
+          mergedMap.set(code, { code, hostNick: hNick, source: 'Firebase' });
+        }
+      }
+    }
+
+    const rooms = Array.from(mergedMap.values()).slice(0, 8);
     if (!rooms.length) {
-      foundRoomsList.innerHTML = '<div style="font-size:10.5px; color:#94a3b8; padding:4px;">لا توجد غرف محفوظة محلياً حتى الآن. أنشئ غرفة أو أدخل رمزاً.</div>';
+      foundRoomsList.innerHTML = '<div style="font-size:10.5px; color:#94a3b8; padding:4px;">لا توجد غرف متاحة حالياً. أنشئ غرفة أو أدخل رمزاً.</div>';
       return;
     }
     foundRoomsList.innerHTML = rooms.map(r => `
       <div class="found-room-item">
-        <span><strong>${r.code}</strong> • <small style="color:#a7f3d0">متصفح محلي</small></span>
-        <button class="mini-action-btn join-found-btn" data-code="${r.code}">اختيار</button>
+        <span><strong>${r.code}</strong> • <small style="color:#a7f3d0">${r.hostNick} (${r.source})</small></span>
+        <button class="mini-action-btn join-found-btn" data-code="${r.code}">طلب دخول</button>
       </div>
     `).join('');
 
     foundRoomsList.querySelectorAll('.join-found-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
-        connectRoom(code, true);
-        roomStatusMsg.textContent = `تم اختيار الغرفة ${code} — اضغط العب الآن.`;
+        roomCodeInput.value = code;
+        connectRoom(code, false, true);
+        roomStatusMsg.textContent = `تم إرسال طلب دخول بلقب "${saveData.profile.nickname}" إلى الغرفة ${code}.`;
       });
     });
   }
 
-  btnRefreshRooms.addEventListener('click', () => {
+  btnRefreshRooms.addEventListener('click', async () => {
+    await testFirebaseReachability();
     renderFoundRooms();
-    roomStatusMsg.textContent = 'تم تحديث قائمة الغرف المحلية.';
+    roomStatusMsg.textContent = 'تم تحديث حالة الاتصال وقائمة الغرف.';
   });
-
-  const ACHIEVEMENTS = [
-    { id: 'starter', title: 'مبتدئ السلاسل', desc: 'خض 3 جولات أو اعبر 15 منصة', check: (d) => (d.stats.totalRuns || 0) >= 3 || getBestScore(d) >= 15 },
-    { id: 'collector', title: 'صائد العملات', desc: 'اجمع 50 عملة إجمالاً', check: (d) => (d.stats.totalCoinsEarned || 0) >= 50 },
-    { id: 'combo_ace', title: 'سيد الكومبو', desc: 'حقق كومبو x5 في جولة واحدة', check: (d) => (d.stats.maxCombo || 1) >= 5 },
-    { id: 'centurion', title: 'بطل الـ 100 مستوى', desc: 'صل للمستوى 100 في الوضع العادي', check: (d) => getBestScore(d) >= MAX_LEVEL_CLASSIC * PLATFORMS_PER_LEVEL }
-  ];
-
-  function getBestScore(d) {
-    return (d.scores && d.scores.length) ? d.scores[0].score : 0;
-  }
-
-  function getCurrentTitle(d) {
-    let current = 'مبتدئ السلاسل';
-    for (const a of ACHIEVEMENTS) {
-      if (a.check(d)) current = a.title;
-    }
-    return current;
-  }
-
-  const SAVE_KEY = 'chain_runner_ma_clean_v17';
-  const SKINS = [
-    { id: 'cyan', name: 'سماوي نيون', primary: '#38bdf8', glow: 'rgba(56, 189, 248, 0.65)', rope: '#7dd3fc', price: 0 },
-    { id: 'gold', name: 'ذهبي ملكي', primary: '#fbbf24', glow: 'rgba(251, 191, 36, 0.65)', rope: '#fde047', price: 15 },
-    { id: 'violet', name: 'بنفسجي', primary: '#a855f7', glow: 'rgba(168, 85, 247, 0.65)', rope: '#d8b4fe', price: 30 },
-    { id: 'emerald', name: 'زمردي', primary: '#10b981', glow: 'rgba(16, 185, 129, 0.65)', rope: '#6ee7b7', price: 50 },
-    { id: 'crimson', name: 'قرمزي', primary: '#f43f5e', glow: 'rgba(244, 63, 94, 0.65)', rope: '#fda4af', price: 75 },
-    { id: 'white', name: 'طيف أبيض', primary: '#ffffff', glow: 'rgba(255, 255, 255, 0.75)', rope: '#e2e8f0', price: 100 }
-  ];
-
-  let saveData = {
-    coins: 0,
-    unlockedSkins: ['cyan'],
-    selectedSkin: 'cyan',
-    upgrades: { rangeLvl: 0, magnetLvl: 0, startShieldLvl: 0 },
-    settings: { soundOn: true, shakeOn: true },
-    stats: { totalCoinsEarned: 0, maxCombo: 1, totalRuns: 0 },
-    scores: []
-  };
-
-  function loadSave() {
-    try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (raw) {
-        const p = JSON.parse(raw);
-        saveData = {
-          ...saveData,
-          ...p,
-          upgrades: { ...saveData.upgrades, ...(p.upgrades || {}) },
-          settings: { ...saveData.settings, ...(p.settings || {}) },
-          stats: { ...saveData.stats, ...(p.stats || {}) }
-        };
-      }
-    } catch (e) {}
-  }
-
-  function persistSave() {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(saveData)); } catch (e) {}
-  }
-
-  loadSave();
 
   function addCoins(amount) {
     if (amount <= 0) return;
@@ -1699,8 +2625,12 @@
 
     if (m === 'ai') updateAiTierNote();
     if (m === 'friends') {
+      testFirebaseReachability();
+      updateRoomQRCode();
       renderFoundRooms();
       scrollRoomSectionIntoView();
+    } else {
+      stopQrCamera();
     }
     syncActiveModeHudVisibility(gameRunning);
   }
@@ -1753,6 +2683,7 @@
     }
 
     const playing = !screenId;
+    if (playing) stopQrCamera();
     hud.classList.toggle('hidden', !playing);
     topBanners.classList.toggle('hidden', !playing);
     mobileControls.classList.toggle('hidden', !playing);
@@ -1775,6 +2706,13 @@
   btnOpenSettings.addEventListener('click', () => showScreen('screen-settings'));
 
   function startMatchNow() {
+    if (selectedGameMode === 'friends' && !isRoomHost && !approvedForCurrentRoom && firebaseReachable) {
+      modesDrawer.classList.remove('hidden');
+      friendsBox.classList.remove('hidden');
+      roomStatusMsg.textContent = 'يلزم أولاً موافقة صاحب الغرفة على طلب دخولك قبل بدء اللعب معاً.';
+      scrollRoomSectionIntoView();
+      return;
+    }
     initAudio();
     startBGM();
     resetGame();
@@ -1796,6 +2734,7 @@
   });
 
   function renderAllUI() {
+    syncProfileUI();
     homeCoinsEl.textContent = saveData.coins;
     shopCoinsEl.textContent = saveData.coins;
     hudCoinsEl.textContent = saveData.coins;
@@ -2260,7 +3199,7 @@
 
     friendScore = 0;
     friendLevel = 1;
-    updateFriendHud();
+    syncFriendProfileUI();
 
     hudScoreEl.textContent = score;
     hudLevelEl.textContent = level;
@@ -2287,8 +3226,8 @@
     if (aiModeActive) {
       toastEl.textContent = `مبارزة AI (${getAiDiffLabel()}) • الأول للمستوى 20 يفوز`;
     } else if (selectedGameMode === 'friends') {
-      toastEl.textContent = `غرفة ${activeRoomCode} • مزامنة محلية نشطة`;
-      broadcastFriendEvent({ type: 'live_progress', score: 0, level: 1 });
+      toastEl.textContent = `غرفة ${activeRoomCode} • اللعب مع "${friendProfile.nickname}"`;
+      publishProgress(0, 1);
     } else if (chaseActive) {
       toastEl.textContent = 'موجة المطاردة نشطة — تحرك بسرعة';
     } else {
@@ -2557,7 +3496,8 @@
       saveData.scores.push({ score, date: new Date().toLocaleDateString('ar-EG') });
       saveData.scores.sort((a, b) => b.score - a.score);
       saveData.scores = saveData.scores.slice(0, 5);
-      broadcastFriendEvent({ type: 'score_update', score, level });
+      broadcastFriendEvent({ type: 'score_update', score, level, profile: saveData.profile });
+      publishProgress(score, level);
     }
     persistSave();
 
@@ -2567,7 +3507,7 @@
   }
 
   window.addEventListener('keydown', (e) => {
-    if (document.activeElement === roomCodeInput) return;
+    if (document.activeElement === roomCodeInput || document.activeElement === nicknameInput) return;
     if (e.repeat) return;
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
       e.preventDefault();
@@ -2849,7 +3789,7 @@
               updateInstantHowtoBanner();
 
               if (selectedGameMode === 'friends') {
-                broadcastFriendEvent({ type: 'live_progress', score, level });
+                publishProgress(score, level);
               }
 
               if (aiModeActive && score >= MAX_LEVEL_AI * PLATFORMS_PER_LEVEL) {
