@@ -506,6 +506,81 @@
     flex-shrink: 0;
   }
 
+  .back-btn.locked-guide {
+    opacity: 0.45;
+    border-color: rgba(244, 63, 94, 0.55);
+    color: #fecdd3;
+  }
+
+  /* صندوق التعليمات الإلزامي لأول دخول في الإعدادات */
+  .mandatory-guide-card {
+    background: linear-gradient(145deg, rgba(16, 185, 129, 0.16), rgba(14, 165, 233, 0.12));
+    border: 1.5px solid rgba(56, 189, 248, 0.65);
+    border-radius: 15px;
+    padding: 11px 12px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mandatory-guide-card.completed {
+    border-color: rgba(16, 185, 129, 0.45);
+    background: rgba(16, 185, 129, 0.08);
+  }
+
+  .mandatory-guide-card h3 {
+    font-size: 13px;
+    font-weight: 900;
+    color: #7dd3fc;
+  }
+
+  .guide-rules-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 11.5px;
+    color: #f1f5f9;
+    line-height: 1.45;
+  }
+
+  .guide-confirm-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .guide-check-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fde047;
+    cursor: pointer;
+  }
+
+  .guide-proceed-btn {
+    background: linear-gradient(135deg, #10b981, #0ea5e9);
+    border: none;
+    color: #04131c;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .guide-proceed-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
   .profile-card {
     background: rgba(13, 24, 48, 0.92);
     border: 1px solid rgba(56, 189, 248, 0.35);
@@ -1692,13 +1767,31 @@
   <section id="screen-settings" class="screen-layer hidden">
     <div class="screen-header">
       <div class="screen-title-box">
-        <h2>الإعدادات والإحصائيات</h2>
-        <p>سجل إنجازاتك، ألقابك، خيارات اللعب، وفريق التصميم</p>
+        <h2>الإعدادات وتعليمات اللعب</h2>
+        <p>اقرأ التعليمات، اضبط الإعدادات، وتابع إحصائياتك</p>
       </div>
-      <button type="button" class="back-btn" data-back="screen-home">← رجوع</button>
+      <button type="button" class="back-btn" id="settings-back-btn" data-back="screen-home">← رجوع</button>
     </div>
 
     <div class="page-content-box">
+      <!-- تعليمات اللعب الإلزامية لأول مرة -->
+      <div class="mandatory-guide-card" id="mandatory-guide-card">
+        <h3>تعليمات اللعب — كيف تلعب CHAIN RUNNER؟</h3>
+        <ul class="guide-rules-list">
+          <li><strong>1. البداية والقفز:</strong> اضغط زر <strong>قفز</strong> (أو Space / W / ↑) للانطلاق من المنصة الأولى.</li>
+          <li><strong>2. الحبل والخطاف:</strong> اضغط زر <strong>خطاف</strong> (أو E / F أو ضغط مطول على الشاشة) للتعلق بنقاط التثبيت والمرور بين المنصات.</li>
+          <li><strong>3. بدون توقف:</strong> المنصة لا توقفك بدون حبل/خطاف؛ واصل ربط الحبال قبل انتهاء المهلة أو السقوط في الفراغ.</li>
+          <li><strong>4. الاندفاع والقذف:</strong> استعمل <strong>اندفاع</strong> (أو Shift / D / →) في الجو أو للقذف من نقاط الطاقة البنفسجية.</li>
+        </ul>
+        <div class="guide-confirm-row">
+          <label class="guide-check-label">
+            <input type="checkbox" id="guide-ack-checkbox">
+            <span>قرأت التعليمات وفهمت طريقة اللعب</span>
+          </label>
+          <button type="button" class="guide-proceed-btn" id="guide-proceed-btn" disabled>متابعة إلى اللعبة</button>
+        </div>
+      </div>
+
       <div class="section-hdr"><span>إحصائياتك طويلة المدى</span></div>
       <div class="stats-grid-3">
         <div class="stat-tile">
@@ -1759,11 +1852,6 @@
 (() => {
   const splashScreen = document.getElementById('splash-screen');
   const btnEnterGame = document.getElementById('btn-enter-game');
-  if (btnEnterGame && splashScreen) {
-    btnEnterGame.addEventListener('click', () => {
-      splashScreen.classList.add('hidden');
-    });
-  }
 
   const MAX_LEVEL_CLASSIC = 100;
   const MAX_LEVEL_AI = 20;
@@ -1788,6 +1876,11 @@
   const screenHome = document.getElementById('screen-home');
   const screenShop = document.getElementById('screen-shop');
   const screenSettings = document.getElementById('screen-settings');
+
+  const mandatoryGuideCard = document.getElementById('mandatory-guide-card');
+  const guideAckCheckbox = document.getElementById('guide-ack-checkbox');
+  const guideProceedBtn = document.getElementById('guide-proceed-btn');
+  const settingsBackBtn = document.getElementById('settings-back-btn');
 
   const hud = document.getElementById('hud');
   const topBanners = document.getElementById('top-banners');
@@ -1971,11 +2064,44 @@
     unlockedSkins: ['cyan'],
     selectedSkin: 'cyan',
     upgrades: { rangeLvl: 0, magnetLvl: 0, startShieldLvl: 0 },
-    settings: { soundOn: true, shakeOn: true, chainMode: true },
+    settings: { soundOn: true, shakeOn: true, chainMode: true, tutorialDone: false },
     stats: { totalCoinsEarned: 0, maxCombo: 1, totalRuns: 0 },
     scores: [],
     friendMatches: {}
   };
+
+  function isTutorialCompleted() {
+    return Boolean(saveData.settings && saveData.settings.tutorialDone);
+  }
+
+  function syncTutorialLockUI() {
+    const done = isTutorialCompleted();
+    mandatoryGuideCard.classList.toggle('completed', done);
+    guideAckCheckbox.checked = done;
+    guideProceedBtn.disabled = !guideAckCheckbox.checked;
+    settingsBackBtn.classList.toggle('locked-guide', !done);
+  }
+
+  guideAckCheckbox.addEventListener('change', () => {
+    guideProceedBtn.disabled = !guideAckCheckbox.checked;
+  });
+
+  guideProceedBtn.addEventListener('click', () => {
+    if (!guideAckCheckbox.checked) return;
+    saveData.settings.tutorialDone = true;
+    persistSave();
+    syncTutorialLockUI();
+    showScreen('screen-home');
+  });
+
+  if (btnEnterGame && splashScreen) {
+    btnEnterGame.addEventListener('click', () => {
+      splashScreen.classList.add('hidden');
+      if (!isTutorialCompleted()) {
+        showScreen('screen-settings');
+      }
+    });
+  }
 
   function openIDB() {
     return new Promise((resolve) => {
@@ -2032,7 +2158,11 @@
         magnetLvl: Math.max(Number(target.upgrades?.magnetLvl) || 0, Number(candidate.upgrades?.magnetLvl) || 0),
         startShieldLvl: Math.max(Number(target.upgrades?.startShieldLvl) || 0, Number(candidate.upgrades?.startShieldLvl) || 0)
       },
-      settings: { ...target.settings, ...(candidate.settings || {}) },
+      settings: {
+        ...target.settings,
+        ...(candidate.settings || {}),
+        tutorialDone: Boolean(target.settings?.tutorialDone || candidate.settings?.tutorialDone)
+      },
       stats: {
         totalCoinsEarned: Math.max(Number(target.stats?.totalCoinsEarned) || 0, Number(candidate.stats?.totalCoinsEarned) || 0),
         maxCombo: Math.max(Number(target.stats?.maxCombo) || 1, Number(candidate.stats?.maxCombo) || 1),
@@ -3156,6 +3286,10 @@
   }
 
   function showScreen(screenId) {
+    if (screenId === 'screen-home' && !isTutorialCompleted()) {
+      screenId = 'screen-settings';
+    }
+
     [screenHome, screenShop, screenSettings].forEach(sc => sc.classList.add('hidden'));
     const target = document.getElementById(screenId);
     if (target) {
@@ -3187,6 +3321,10 @@
   btnOpenSettings.addEventListener('click', () => showScreen('screen-settings'));
 
   function startMatchNow() {
+    if (!isTutorialCompleted()) {
+      showScreen('screen-settings');
+      return;
+    }
     initAudio();
     startBGM();
     resetGame();
@@ -3213,6 +3351,7 @@
 
   function renderAllUI() {
     syncProfileUI();
+    syncTutorialLockUI();
     homeCoinsEl.textContent = saveData.coins;
     shopCoinsEl.textContent = saveData.coins;
     hudCoinsEl.textContent = saveData.coins;
