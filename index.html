@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#050811">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CHAIN RUNNER">
@@ -511,7 +512,6 @@
     color: #fecdd3;
   }
 
-  /* شريط صفحات الإعدادات */
   .settings-subnav {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -545,7 +545,6 @@
     display: none;
   }
 
-  /* كارت طريقة اللعب المرتب داخل الإعدادات */
   .mandatory-guide-card {
     background: linear-gradient(155deg, rgba(15, 27, 54, 0.96), rgba(8, 14, 30, 0.98));
     border: 1.5px solid rgba(56, 189, 248, 0.5);
@@ -643,7 +642,6 @@
     line-height: 1.45;
   }
 
-  /* زرار تأكيد قراءة التعليمات الواضح */
   .guide-confirm-panel {
     background: rgba(5, 10, 24, 0.78);
     border: 1.5px solid rgba(251, 191, 36, 0.45);
@@ -1867,7 +1865,6 @@
         <button type="button" class="settings-tab-btn" data-tab="designer">المصمم</button>
       </div>
 
-      <!-- 1. صفحة طريقة اللعب المرتبة -->
       <div class="settings-subpage" id="subpage-howto">
         <div class="mandatory-guide-card" id="mandatory-guide-card">
           <div class="guide-header-row">
@@ -1919,7 +1916,6 @@
         </div>
       </div>
 
-      <!-- 2. صفحة الإحصائيات -->
       <div class="settings-subpage hidden" id="subpage-stats">
         <div class="section-hdr"><span>إحصائياتك طويلة المدى</span></div>
         <div class="stats-grid-3">
@@ -1946,13 +1942,11 @@
         </div>
       </div>
 
-      <!-- 3. صفحة الألقاب -->
       <div class="settings-subpage hidden" id="subpage-titles">
         <div class="section-hdr"><span>الألقاب والإنجازات</span></div>
         <div class="achievements-grid" id="achievements-grid"></div>
       </div>
 
-      <!-- 4. صفحة الأصوات والتحكم -->
       <div class="settings-subpage hidden" id="subpage-sound">
         <div class="section-hdr"><span>إعدادات الصوت والحركة</span></div>
         <div class="settings-list">
@@ -1982,7 +1976,6 @@
         </div>
       </div>
 
-      <!-- 5. صفحة المصمم -->
       <div class="settings-subpage hidden" id="subpage-designer">
         <div class="designer-box">
           <div class="ma-logo">MA</div>
