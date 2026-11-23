@@ -1335,7 +1335,7 @@
   </div>
 
   <div id="instant-howto-banner" class="hidden">
-    1) اقفز (زر قفز أو Space / W / ↑) ➜ 2) اضغط مطولاً للخطاف (زر خطاف أو E / F أو لمس) ➜ 3) أفلت للانطلاق
+    1) اقفز في البداية ➜ 2) اضغط حبل/خطاف (E / F / زر خطاف / لمس) ➜ 3) المنصة لا توقفك، واصل الحبل قبل السقوط
   </div>
 
   <div id="rival-radar-indicator" class="hidden">
@@ -1430,9 +1430,9 @@
         <div class="instant-howto-card">
           <strong>طريقة اللعب (3 خطوات):</strong>
           <div class="howto-steps-row">
-            <div class="howto-step">1) <strong>اقفز</strong><br>زر قفز أو Space / W / ↑</div>
-            <div class="howto-step">2) <strong>تعلق بالخطاف</strong><br>E / F أو ضغط مطول</div>
-            <div class="howto-step">3) <strong>أفلت وواصل الحبل</strong><br>اندفاع: Shift / D</div>
+            <div class="howto-step">1) <strong>اقفز في البداية</strong><br>زر قفز أو Space / W / ↑</div>
+            <div class="howto-step">2) <strong>اشبك بالحبل/الخطاف</strong><br>E / F أو ضغط مطول</div>
+            <div class="howto-step">3) <strong>بدون توقف على المنصة</strong><br>واصل الحبل قبل السقوط</div>
           </div>
         </div>
 
@@ -1630,7 +1630,7 @@
         <div class="setting-row">
           <div>
             <strong>سلسلة الحبل الإلزامية بعد القفز</strong>
-            <small>أول ما تقفز تبدأ بالحبل وتواصل ربط الحبال قبل السقوط</small>
+            <small>أول ما تقفز تبدأ بالحبل والمنصة لا توقفك بدون حبل/خطاف</small>
           </div>
           <button type="button" class="toggle-pill" id="toggle-chain-btn">مفعل</button>
         </div>
@@ -1669,8 +1669,8 @@
   const MAX_LEVEL_AI = 20;
   const MAX_LEVEL_FRIENDS = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v25';
-  const SAVE_KEY = 'chain_runner_ma_clean_v25';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v26';
+  const SAVE_KEY = 'chain_runner_ma_clean_v26';
 
   const FIREBASE_DB_URL = 'https://apdowebsite-99ed7-default-rtdb.europe-west1.firebasedatabase.app';
   const ROOMS_ROOT_PATH = 'chain_runner_rooms';
@@ -2881,16 +2881,14 @@
   function updateInstantHowtoBanner() {
     instantHowtoBanner.classList.toggle('hidden', !gameRunning);
     if (!gameRunning) return;
-    if (hero.grounded) {
+    if (hero.grounded && !chainStartedThisJump) {
+      instantHowtoBanner.textContent = 'الخطوة 1: اقفز في البداية (Space / W / ↑ أو زر قفز) ثم اشبك بالحبل';
+    } else if (!hero.anchor && !isHoldingGrapple) {
       instantHowtoBanner.textContent = chainModeRequired
-        ? 'الخطوة 1: اقفز (Space / W / ↑) ➜ ثم اشبك بالحبل فوراً وواصل الحبال قبل السقوط'
-        : 'الخطوة 1: اضغط "قفز" أو Space / W / ↑ للانطلاق';
-    } else if (!hero.anchor) {
-      instantHowtoBanner.textContent = chainModeRequired
-        ? 'اشبك بالحبل الآن (E / F / زر خطاف / لمس) قبل انتهاء المهلة أو السقوط'
-        : 'الخطوة 2: اضغط مطولاً على "خطاف" أو E / F للتعلق بالنقطة';
+        ? 'اضغط حبل/خطاف (E / F / زر خطاف / لمس) — المنصة لا توقفك بدون حبل/خطاف'
+        : 'اضغط مطولاً على "خطاف" أو E / F للتعلق بالنقطة';
     } else {
-      instantHowtoBanner.textContent = 'الخطوة 3: استمر بالضغط للشدّ ثم أفلت واشبك بالحبل التالي';
+      instantHowtoBanner.textContent = 'مربوط بالحبل/الخطاف — واصل الحبال ولا تتوقف على المنصة';
     }
   }
 
@@ -3477,16 +3475,14 @@
     updatePowersUI();
 
     if (aiModeActive) {
-      toastEl.textContent = `مبارزة AI (${getAiDiffLabel()}) • جسم كامل بنفس الشكل حتى المستوى 20`;
+      toastEl.textContent = `مبارزة AI (${getAiDiffLabel()}) • اقفز في البداية وواصل الحبال`;
     } else if (selectedGameMode === 'friends') {
-      toastEl.textContent = `غرفة ${activeRoomCode} • السباق حتى المستوى 20 ضد "${friendProfile.nickname}"`;
+      toastEl.textContent = `غرفة ${activeRoomCode} • اقفز وواصل الحبال حتى المستوى 20`;
       publishProgress(0, 1, false, true).catch(() => {});
     } else if (chaseActive) {
       toastEl.textContent = 'موجة المطاردة نشطة — تحرك بسرعة';
     } else {
-      toastEl.textContent = chainModeRequired
-        ? 'اقفز وابدأ سلسلة الحبال ثم واصل الحبل قبل السقوط'
-        : 'القفز: Space / W / ↑ • الخطاف: E / F / ضغط مطول';
+      toastEl.textContent = 'في البداية انطلاقة قفز واحدة، وبعدها استعمل الحبل/الخطاف بدون توقف على المنصات';
     }
 
     isHoldingGrapple = false;
@@ -3608,7 +3604,7 @@
   }
 
   function attachAnchor(targetAnchor = null) {
-    if (hero.anchor || hero.grounded) return;
+    if (hero.anchor) return;
     const skin = getActiveSkin();
     const maxRange = getMaxGrappleRange();
 
@@ -3681,13 +3677,13 @@
 
   function jump() {
     if (!gameRunning) return;
-    if (hero.grounded) {
+    if (hero.grounded && !chainStartedThisJump) {
       const skin = getActiveSkin();
       const plat = hero.standingOn;
       hero.grounded = false;
       hero.standingOn = null;
       swungThisAir = false;
-      chainStartedThisJump = false;
+      chainStartedThisJump = true;
       nextRopeDeadline = chainModeRequired ? NEXT_ROPE_WINDOW : 0;
       hero.dashAvailable = true;
       syncDashButtonUI();
@@ -3698,14 +3694,12 @@
         triggerSpeedLines('#10b981', 0.25);
         makeBurst(hero.x, hero.y + 18, '#10b981', 14);
         playSFX('boost', combo);
-        toastEl.textContent = chainModeRequired ? 'قفزة زنبرك! اشبك بالحبل فوراً وواصل الحبال.' : 'انطلاقة زنبرك.';
+        toastEl.textContent = 'قفزة زنبرك في البداية! اشبك بالحبل وواصل السلسلة.';
       } else {
         hero.vy = -10.5; hero.vx = 5.7;
         makeBurst(hero.x, hero.y + 18, skin.primary, 10);
         playSFX('jump', combo);
-        toastEl.textContent = chainModeRequired
-          ? 'قفزت! استعمل الحبل فوراً وواصل الحبال قبل ما تقع.'
-          : 'في الهواء — اضغط مطولاً على الخطاف أو E / F للتعلق.';
+        toastEl.textContent = 'قفزة البداية تمت! استعمل الحبل/الخطاف الآن ولا تتوقف على المنصات.';
       }
       publishProgress(score, level, false, true).catch(() => {});
     }
@@ -3797,7 +3791,7 @@
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
       e.preventDefault();
       if (!gameRunning) return;
-      if (hero.grounded) jump();
+      if (hero.grounded && !chainStartedThisJump) jump();
     } else if (e.code === 'KeyE' || e.code === 'KeyF') {
       e.preventDefault();
       if (!gameRunning) return;
@@ -3847,7 +3841,7 @@
       if (d < minClickDist) { minClickDist = d; clickedAnchor = a; }
     }
 
-    if (!hero.grounded) {
+    if (!hero.grounded || chainStartedThisJump) {
       isHoldingGrapple = true;
       attachAnchor(clickedAnchor);
     }
@@ -3972,7 +3966,6 @@
         p.crackedTimer += rawDt;
         if (p.crackedTimer >= 0.5) {
           p.falling = true; hero.grounded = false; hero.standingOn = null; hero.dashAvailable = true;
-          chainStartedThisJump = false;
           nextRopeDeadline = chainModeRequired ? NEXT_ROPE_WINDOW : 0;
           syncDashButtonUI();
           makeBurst(hero.x, p.y, '#f59e0b', 10); triggerShake(4, 0.12);
@@ -4025,17 +4018,19 @@
     for (const c of coins) c.spin += 0.08;
     for (const pw of powerups) pw.bob += 0.06;
 
-    if (hero.grounded && hero.standingOn) {
+    // في بداية اللعبة قبل أول قفزة فقط: يقف اللاعب على المنصة الأولى حتى ينط انطلاقته الأولى
+    if (hero.grounded && hero.standingOn && !chainStartedThisJump) {
       hero.y = hero.standingOn.y - 22;
-      chainStartedThisJump = false;
-      nextRopeDeadline = 0;
       if (chainTimerPill) chainTimerPill.style.display = 'none';
       const edgeX = hero.standingOn.x + hero.standingOn.w - 18;
       if (hero.x < edgeX) { hero.x += 2.3; hero.runCycle += 0.26; }
       else { hero.runCycle = 0; }
     } else {
+      hero.grounded = false;
+      hero.standingOn = null;
+
       if (chainModeRequired) {
-        if (!hero.anchor) {
+        if (!hero.anchor && !isHoldingGrapple) {
           nextRopeDeadline = Math.max(0, nextRopeDeadline - rawDt);
         } else {
           nextRopeDeadline = NEXT_ROPE_WINDOW;
@@ -4044,24 +4039,16 @@
           chainTimerPill.style.display = 'inline-flex';
           chainTimerVal.textContent = `${nextRopeDeadline.toFixed(1)}s`;
         }
-        if (chainStartedThisJump && !hero.anchor && nextRopeDeadline <= 0) {
-          const nearPlatform = platforms.some(p =>
-            !p.falling &&
-            hero.x >= p.x - 16 &&
-            hero.x <= p.x + p.w + 16 &&
-            Math.abs((hero.y + 22) - p.y) < 38
-          );
-          if (!nearPlatform) {
-            if (shieldActive) {
-              rescueFromFall();
-            } else {
-              finishMatch({
-                won: false,
-                reason: 'تأخرت في استعمال الحبل التالي قبل السقوط',
-                isRaceFinish: false
-              });
-              return;
-            }
+        if (chainStartedThisJump && !hero.anchor && !isHoldingGrapple && nextRopeDeadline <= 0) {
+          if (shieldActive) {
+            rescueFromFall();
+          } else {
+            finishMatch({
+              won: false,
+              reason: 'لم تضغط حبل/خطاف قبل انتهاء المهلة والسقوط',
+              isRaceFinish: false
+            });
+            return;
           }
         }
       } else if (chainTimerPill) {
@@ -4094,36 +4081,63 @@
         }
       }
 
+      // لمس المنصات: بدون توقف! لو لم يكن ضاغطاً/ممسكاً بحبل أو خطاف، لا تقف به المنصة بل تنزل به/توقعه
       if (hero.vy >= 0) {
         for (const p of platforms) {
           if (p.falling) continue;
           const withinX = hero.x >= p.x - 8 && hero.x <= p.x + p.w + 8;
           const feetY = hero.y + 22;
           if (withinX && feetY >= p.y && feetY <= p.y + p.h + 14) {
-            hero.grounded = true; hero.standingOn = p; hero.y = p.y - 22; hero.vx = 0; hero.vy = 0;
-            releaseHangTimer = 0;
-            chainStartedThisJump = false;
-            nextRopeDeadline = 0;
-            if (chainTimerPill) chainTimerPill.style.display = 'none';
-            if (hero.anchor) { hero.anchor = null; isHoldingGrapple = false; }
+            const hasActiveRope = Boolean(hero.anchor || isHoldingGrapple);
+
+            if (!hasActiveRope && chainModeRequired) {
+              if (!p.cleared) {
+                p.cleared = true;
+                score += 1;
+                level = computeLevel(score);
+                hudScoreEl.textContent = score;
+                hudLevelEl.textContent = level;
+                advanceMission('platforms', 1);
+                updateRivalRadarUI();
+                spawnNextSegment();
+              }
+              hero.y = p.y - 22;
+              hero.vy = Math.max(hero.vy, 4.2);
+              hero.vx = Math.max(hero.vx * 0.9, 3.6);
+              makeBurst(hero.x, p.y, '#f59e0b', 7);
+              playSFX('land', 1);
+              toastEl.textContent = 'لم تضغط حبل/خطاف — المنصة لم توقفك! اضغط حبل/خطاف فوراً قبل السقوط.';
+              updateInstantHowtoBanner();
+              continue;
+            }
+
+            // لو كان متمسكاً بحبل/خطاف أو وضع السلسلة غير مفعل: يأخذ دفعة مرور بدون توقف طويل
+            hero.y = p.y - 22;
+            hero.dashAvailable = true;
             syncDashButtonUI();
             let landColor = skin.primary;
-            if (p.type === 'boost') landColor = '#10b981';
-            else if (p.type === 'cracked') landColor = '#f59e0b';
-            makeBurst(hero.x, p.y, landColor, 14);
-            triggerShake(3.5, 0.09);
-            playSFX('land', combo);
+            if (p.type === 'boost') {
+              landColor = '#10b981';
+              hero.vy = -13.5;
+              hero.vx = Math.max(hero.vx, 7.6);
+              playSFX('boost', combo);
+            } else {
+              hero.vy = -8.5;
+              hero.vx = Math.max(hero.vx, 6.2);
+              playSFX('land', combo);
+            }
+            makeBurst(hero.x, p.y, landColor, 12);
+            triggerShake(3.2, 0.08);
 
             if (!p.cleared) {
               p.cleared = true;
               const prevLevel = level;
-              if (swungThisAir) {
+              if (swungThisAir || hasActiveRope) {
                 combo++;
                 saveData.stats.maxCombo = Math.max(saveData.stats.maxCombo || 1, combo);
                 persistSave();
                 advanceMission('combo', combo);
               } else if (combo > 1) {
-                triggerShake(4.5, 0.12);
                 combo = 1;
               }
               updateComboUI();
@@ -4174,14 +4188,12 @@
               } else if (combo >= 2) {
                 const bonus = combo - 1;
                 addCoins(bonus);
-                toastEl.textContent = `كومبو x${combo} • +${bonus} عملة إضافية`;
+                toastEl.textContent = `كومبو x${combo} • +${bonus} عملة — واصل الحبال`;
                 if (combo >= 3) triggerSpeedLines('#fbbf24', 0.22);
               } else {
-                toastEl.textContent = `المستوى ${level}/${getActiveMaxLevel()} • اقفز للمتابعة`;
+                toastEl.textContent = `المستوى ${level}/${getActiveMaxLevel()} • واصل الحبل بدون توقف`;
               }
               spawnNextSegment();
-            } else {
-              combo = 1; updateComboUI(); updateInstantHowtoBanner(); toastEl.textContent = 'اضغط قفز للمتابعة';
             }
             break;
           }
@@ -4238,7 +4250,7 @@
     if (hero.y > height + 60) {
       if (shieldActive) rescueFromFall();
       else {
-        finishMatch({ won: false, reason: 'سقوط في الفراغ', isRaceFinish: false });
+        finishMatch({ won: false, reason: 'سقوط في الفراغ (لم تستعمل الحبل/الخطاف)', isRaceFinish: false });
         return;
       }
     }
