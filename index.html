@@ -343,7 +343,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 10px 12px 14px;
+    padding: 10px 12px 110px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -492,7 +492,6 @@
 
   .start-game-btn:active { transform: scale(0.98); }
 
-  /* زرارا المتجر والإعدادات ظاهران وثابتان دايماً */
   .nav-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -535,17 +534,16 @@
     align-items: center;
   }
 
+  /* مفتوح بشكل واضح وثابت حتى لا يختفي أي قسم من الغرفة */
   .modes-drawer {
-    background: rgba(8, 13, 27, 0.94);
-    border: 1px solid rgba(56, 189, 248, 0.28);
+    background: rgba(8, 13, 27, 0.96);
+    border: 1px solid rgba(56, 189, 248, 0.32);
     border-radius: 12px;
     padding: 8px;
     display: flex;
     flex-direction: column;
     gap: 7px;
   }
-
-  .modes-drawer.hidden { display: none; }
 
   .mode-selector-4 {
     display: grid;
@@ -561,9 +559,9 @@
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-muted);
-    padding: 6px;
+    padding: 7px 6px;
     border-radius: 8px;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 800;
     cursor: pointer;
     text-align: center;
@@ -636,8 +634,8 @@
   }
 
   .friends-box {
-    background: rgba(16, 185, 129, 0.08);
-    border: 1px solid rgba(16, 185, 129, 0.32);
+    background: rgba(16, 185, 129, 0.1);
+    border: 1.5px solid rgba(16, 185, 129, 0.45);
     border-radius: 12px;
     padding: 8px 10px;
     display: flex;
@@ -657,7 +655,7 @@
     background: rgba(16, 185, 129, 0.16);
     border: 1px solid rgba(16, 185, 129, 0.45);
     color: #d1fae5;
-    padding: 6px 4px;
+    padding: 7px 4px;
     border-radius: 8px;
     font-size: 10.5px;
     font-weight: 800;
@@ -672,13 +670,13 @@
   }
 
   .friend-sub-panel {
-    background: rgba(0, 0, 0, 0.32);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.36);
+    border: 1px solid rgba(16, 185, 129, 0.25);
     border-radius: 9px;
-    padding: 7px 9px;
+    padding: 8px 9px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
   }
 
   .friend-sub-panel.hidden { display: none; }
@@ -687,7 +685,7 @@
     background: rgba(0, 0, 0, 0.45);
     border: 1px dashed rgba(52, 211, 153, 0.7);
     color: #6ee7b7;
-    padding: 2px 8px;
+    padding: 3px 8px;
     border-radius: 7px;
     font-size: 11px;
     font-weight: 900;
@@ -702,12 +700,12 @@
 
   input.room-input {
     flex: 1;
-    background: rgba(5, 8, 17, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(5, 8, 17, 0.9);
+    border: 1.5px solid rgba(52, 211, 153, 0.45);
     border-radius: 8px;
-    padding: 5px 9px;
+    padding: 7px 9px;
     color: #fff;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     outline: none;
   }
@@ -715,12 +713,12 @@
   input.room-input:focus { border-color: #34d399; }
 
   .mini-action-btn {
-    background: rgba(16, 185, 129, 0.24);
-    border: 1px solid rgba(16, 185, 129, 0.55);
-    color: #d1fae5;
-    padding: 5px 9px;
+    background: rgba(16, 185, 129, 0.26);
+    border: 1px solid rgba(16, 185, 129, 0.6);
+    color: #ecfdf5;
+    padding: 6px 10px;
     border-radius: 8px;
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: 800;
     cursor: pointer;
     white-space: nowrap;
@@ -730,7 +728,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    max-height: 95px;
+    max-height: 110px;
     overflow-y: auto;
   }
 
@@ -738,11 +736,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 7px;
-    padding: 4px 7px;
-    font-size: 10.5px;
+    padding: 5px 8px;
+    font-size: 11px;
   }
 
   .top-scores-card {
@@ -770,7 +768,7 @@
   .top-scores-card li:last-child { border-bottom: none; }
 
   @media (min-width: 768px) {
-    .screen-layer { padding: 16px 22px; }
+    .screen-layer { padding: 16px 22px 48px; }
     .home-main { grid-template-columns: 1fr 1fr; gap: 16px; }
     .showcase-canvas-wrap { height: 150px; }
     .mode-selector-4 { grid-template-columns: repeat(4, 1fr); }
@@ -786,7 +784,7 @@
     width: 100%;
     max-width: 820px;
     margin: 0 auto;
-    padding-bottom: 20px;
+    padding-bottom: 24px;
   }
 
   .section-hdr {
@@ -1066,13 +1064,13 @@
     </div>
   </div>
 
-  <!-- صفحة 1: القائمة الرئيسية (كل الأزرار واضحة وثابتة) -->
+  <!-- صفحة 1: القائمة الرئيسية -->
   <section id="screen-home" class="screen-layer">
     <div class="screen-header">
       <div class="screen-title-box">
         <h2 id="home-title">CHAIN RUNNER • MA</h2>
         <div class="title-badge-row">
-          <p id="home-subtitle">ركض وخطاف سريع • كل الأقسام ظاهرة ومتاحة</p>
+          <p id="home-subtitle">ركض وخطاف سريع • كل الأقسام ظاهرة بالكامل</p>
           <span class="rank-pill" id="home-rank-badge">🏅 مبتدئ السلاسل</span>
         </div>
       </div>
@@ -1117,10 +1115,10 @@
 
         <button class="secondary-bar-btn" id="btn-toggle-modes-drawer">
           <span>🎮 أوضاع اللعب والغرف (<strong id="selected-mode-label" style="color:#38bdf8">عادي</strong>)</span>
-          <span id="modes-drawer-chevron">▼</span>
+          <span id="modes-drawer-chevron">▲</span>
         </button>
 
-        <div class="modes-drawer hidden" id="modes-drawer">
+        <div class="modes-drawer" id="modes-drawer">
           <div class="mode-selector-4">
             <button class="mode-btn active" id="mode-classic-btn">عادي</button>
             <button class="mode-btn chase-mode" id="mode-chase-btn">🔥 مطاردة</button>
@@ -1147,7 +1145,7 @@
 
             <div class="friend-sub-panel" id="panel-create-room">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
-                <span style="font-size:11px; color:#d1fae5;">الكود: <span class="room-code-badge" id="room-code-badge">MA-2026</span></span>
+                <span style="font-size:11.5px; color:#d1fae5;">الكود: <span class="room-code-badge" id="room-code-badge">MA-2026</span></span>
                 <div style="display:flex; gap:5px;">
                   <button class="mini-action-btn" id="btn-copy-room">نسخ الكود</button>
                   <button class="mini-action-btn" id="btn-gen-room">توليد جديد</button>
@@ -1164,19 +1162,19 @@
 
             <div class="friend-sub-panel hidden" id="panel-search-room">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
-                <span style="font-size:11px; color:#d1fae5;">الغرف المتاحة حالياً:</span>
+                <span style="font-size:11.5px; color:#d1fae5;">الغرف المتاحة حالياً:</span>
                 <button class="mini-action-btn" id="btn-refresh-rooms">تحديث البحث</button>
               </div>
               <div class="found-rooms-list" id="found-rooms-list"></div>
             </div>
 
-            <div id="room-status-msg" style="font-size:10px; color:#a7f3d0;">جاهز للعب — أنشئ غرفة، أدخل رمزاً، أو ابحث عن غرفة</div>
+            <div id="room-status-msg" style="font-size:11px; font-weight:700; color:#a7f3d0;">جاهز للعب — أنشئ غرفة، أدخل رمزاً، أو ابحث عن غرفة</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div style="text-align:center; font-size:10px; color:var(--text-muted); margin-top:6px; flex-shrink:0;">
+    <div style="text-align:center; font-size:10px; color:var(--text-muted); margin-top:8px; flex-shrink:0;">
       MA Studio • يتأقلم مع الموبايل واللاب والكمبيوتر • تحكم باللمس أو الكيبورد
     </div>
   </section>
@@ -1371,10 +1369,21 @@
   const hasFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
   const localPeerId = `peer_${Math.random().toString(36).slice(2, 8)}`;
 
+  function scrollRoomSectionIntoView() {
+    setTimeout(() => {
+      friendsBox.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 60);
+  }
+
   btnToggleModesDrawer.addEventListener('click', () => {
     const opening = modesDrawer.classList.contains('hidden');
     modesDrawer.classList.toggle('hidden', !opening);
     modesDrawerChevron.textContent = opening ? '▲' : '▼';
+    if (opening) {
+      setTimeout(() => {
+        modesDrawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 60);
+    }
   });
 
   let activeRoomCode = 'MA-2026';
@@ -1444,6 +1453,7 @@
     panelSearchRoom.classList.toggle('hidden', tab !== 'search');
 
     if (tab === 'search') renderFoundRooms();
+    scrollRoomSectionIntoView();
   }
 
   btnChoiceCreate.addEventListener('click', () => {
@@ -1545,7 +1555,7 @@
     return current;
   }
 
-  const SAVE_KEY = 'chain_runner_ma_visible_sections_v15';
+  const SAVE_KEY = 'chain_runner_ma_room_visible_v16';
   const SKINS = [
     { id: 'cyan', name: 'سماوي نيون', primary: '#38bdf8', glow: 'rgba(56, 189, 248, 0.65)', rope: '#7dd3fc', price: 0 },
     { id: 'gold', name: 'ذهبي ملكي', primary: '#fbbf24', glow: 'rgba(251, 191, 36, 0.65)', rope: '#fde047', price: 15 },
@@ -1629,6 +1639,9 @@
     const labels = { classic: 'عادي', chase: 'مطاردة', ai: 'ضد AI', friends: 'أصدقاء' };
     selectedModeLabel.textContent = labels[m] || 'عادي';
 
+    modesDrawer.classList.remove('hidden');
+    modesDrawerChevron.textContent = '▲';
+
     modeClassicBtn.classList.toggle('active', m === 'classic');
     modeChaseBtn.classList.toggle('active', m === 'chase');
     modeAiBtn.classList.toggle('active', m === 'ai');
@@ -1636,15 +1649,17 @@
 
     aiDiffBox.classList.toggle('hidden', m !== 'ai');
     friendsBox.classList.toggle('hidden', m !== 'friends');
+
+    if (m === 'friends') {
+      renderFoundRooms();
+      scrollRoomSectionIntoView();
+    }
   }
 
   modeClassicBtn.addEventListener('click', () => setMode('classic'));
   modeChaseBtn.addEventListener('click', () => setMode('chase'));
   modeAiBtn.addEventListener('click', () => setMode('ai'));
-  modeFriendsBtn.addEventListener('click', () => {
-    setMode('friends');
-    renderFoundRooms();
-  });
+  modeFriendsBtn.addEventListener('click', () => setMode('friends'));
 
   diffBtns.forEach(btn => {
     btn.addEventListener('click', () => {
