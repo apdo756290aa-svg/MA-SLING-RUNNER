@@ -542,6 +542,75 @@
     cursor: pointer;
   }
 
+  /* لوحة مقارنة ونتائج الأصدقاء */
+  .h2h-scoreboard {
+    background: linear-gradient(145deg, rgba(16, 185, 129, 0.14), rgba(13, 24, 48, 0.95));
+    border: 1.5px solid rgba(16, 185, 129, 0.5);
+    border-radius: 14px;
+    padding: 9px 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .h2h-scoreboard.hidden { display: none; }
+
+  .h2h-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .h2h-verdict {
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(56, 189, 248, 0.55);
+    color: #e0f2fe;
+  }
+
+  .h2h-verdict.winner {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: #34d399;
+    color: #a7f3d0;
+  }
+
+  .h2h-verdict.gameover {
+    background: rgba(244, 63, 94, 0.25);
+    border-color: #fb7185;
+    color: #fecdd3;
+  }
+
+  .h2h-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    text-align: center;
+  }
+
+  .h2h-box {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 9px;
+    padding: 6px 4px;
+  }
+
+  .h2h-box strong {
+    display: block;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .h2h-box small {
+    font-size: 9.5px;
+    color: #94a3b8;
+  }
+
   .home-main {
     display: grid;
     grid-template-columns: 1fr;
@@ -1233,7 +1302,7 @@
         <span id="hud-friend-avatar" class="mini-avatar">👥</span>
         <span id="hud-friend-nick">صديق</span>:
         <strong id="hud-friend-score">0</strong>
-        <span class="lbl">(م<span id="hud-friend-lvl">1</span>)</span>
+        <span class="lbl">(م<span id="hud-friend-lvl">1</span>/20)</span>
       </div>
       <div class="hud-chip ai-chip" id="ai-chip" style="display:none;">
         <span>AI:</span>
@@ -1380,6 +1449,29 @@
       </div>
 
       <div class="home-actions-panel">
+        <!-- لوحة نتيجة المواجهة بينك وبين صاحبك -->
+        <div class="h2h-scoreboard hidden" id="h2h-scoreboard">
+          <div class="h2h-header">
+            <strong style="font-size:12px; color:#d1fae5;">ملخص المواجهة مع <span id="h2h-friend-name">صديق</span></strong>
+            <span class="h2h-verdict" id="h2h-verdict-badge">جاهز للسباق (20 مستوى)</span>
+          </div>
+          <div class="h2h-grid-3">
+            <div class="h2h-box">
+              <strong id="h2h-games-count">0</strong>
+              <small>عدد الجولات معاً</small>
+            </div>
+            <div class="h2h-box">
+              <strong id="h2h-my-last">0</strong>
+              <small>نتيجتك (منصات/م)</small>
+            </div>
+            <div class="h2h-box">
+              <strong id="h2h-friend-last">0</strong>
+              <small>نتيجة صاحبك (منصات/م)</small>
+            </div>
+          </div>
+          <div id="h2h-detail-line" style="font-size:10.5px; color:#a7f3d0; font-weight:700;"></div>
+        </div>
+
         <button type="button" class="start-game-btn" id="btn-start-play">العب الآن</button>
 
         <div class="nav-grid-2">
@@ -1479,7 +1571,7 @@
               <div class="found-rooms-list" id="found-rooms-list"></div>
             </div>
 
-            <div id="room-status-msg" style="font-size:10.5px; font-weight:700; color:#a7f3d0;">جاهز للربط عبر Firebase أو وضع QR والرمز الاحتياطي.</div>
+            <div id="room-status-msg" style="font-size:10.5px; font-weight:700; color:#a7f3d0;">سباق الأصدقاء حتى المستوى 20 • الأول للمستوى 20 يفوز (WINNER) والآخر (GAME OVER).</div>
           </div>
         </div>
       </div>
@@ -1576,9 +1668,10 @@
 (() => {
   const MAX_LEVEL_CLASSIC = 100;
   const MAX_LEVEL_AI = 20;
+  const MAX_LEVEL_FRIENDS = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v21';
-  const SAVE_KEY = 'chain_runner_ma_clean_v21';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v22';
+  const SAVE_KEY = 'chain_runner_ma_clean_v22';
 
   const FIREBASE_DB_URL = 'https://apdowebsite-99ed7-default-rtdb.europe-west1.firebasedatabase.app';
   const ROOMS_ROOT_PATH = 'chain_runner_rooms';
@@ -1612,6 +1705,14 @@
   const hudCoinsEl = document.getElementById('hud-coins');
   const homeBestEl = document.getElementById('home-best');
   const homeScoresList = document.getElementById('home-scores-list');
+
+  const h2hScoreboard = document.getElementById('h2h-scoreboard');
+  const h2hFriendName = document.getElementById('h2h-friend-name');
+  const h2hVerdictBadge = document.getElementById('h2h-verdict-badge');
+  const h2hGamesCount = document.getElementById('h2h-games-count');
+  const h2hMyLast = document.getElementById('h2h-my-last');
+  const h2hFriendLast = document.getElementById('h2h-friend-last');
+  const h2hDetailLine = document.getElementById('h2h-detail-line');
 
   const btnToggleProfile = document.getElementById('btn-toggle-profile');
   const btnCloseProfile = document.getElementById('btn-close-profile');
@@ -1754,7 +1855,8 @@
     upgrades: { rangeLvl: 0, magnetLvl: 0, startShieldLvl: 0 },
     settings: { soundOn: true, shakeOn: true },
     stats: { totalCoinsEarned: 0, maxCombo: 1, totalRuns: 0 },
-    scores: []
+    scores: [],
+    friendMatches: {}
   };
 
   function loadSave() {
@@ -1768,7 +1870,8 @@
           profile: { ...saveData.profile, ...(p.profile || {}) },
           upgrades: { ...saveData.upgrades, ...(p.upgrades || {}) },
           settings: { ...saveData.settings, ...(p.settings || {}) },
-          stats: { ...saveData.stats, ...(p.stats || {}) }
+          stats: { ...saveData.stats, ...(p.stats || {}) },
+          friendMatches: { ...(p.friendMatches || {}) }
         };
       }
     } catch (e) {}
@@ -1779,6 +1882,97 @@
   }
 
   loadSave();
+
+  let activeRoomCode = `MA-${Math.floor(1000 + Math.random() * 9000)}`;
+  let roomChannel = null;
+  let roomPollTimer = null;
+  let isRoomHost = true;
+  let approvedForCurrentRoom = true;
+  let pendingJoinRequest = null;
+
+  let friendScore = 0;
+  let friendLevel = 1;
+  let friendProfile = { nickname: 'صديق', avatar: '👥', avatarType: 'emoji' };
+  let lastH2HOutcome = null; // 'WINNER' | 'GAME OVER' | 'DRAW' | 'IN_PROGRESS'
+
+  function getRoomMatchRecord(code = activeRoomCode) {
+    const key = (code || 'DEFAULT').toUpperCase();
+    if (!saveData.friendMatches[key]) {
+      saveData.friendMatches[key] = {
+        gamesPlayed: 0,
+        myLastScore: 0,
+        myLastLevel: 1,
+        friendLastScore: 0,
+        friendLastLevel: 1,
+        myWins: 0,
+        friendWins: 0,
+        lastWinnerLabel: 'لم تبدأ جولة بعد'
+      };
+    }
+    return saveData.friendMatches[key];
+  }
+
+  function updateFriendScoreboardUI() {
+    const showBox = (selectedGameMode === 'friends') || Boolean(lastH2HOutcome);
+    h2hScoreboard.classList.toggle('hidden', !showBox);
+    if (!showBox) return;
+
+    const rec = getRoomMatchRecord(activeRoomCode);
+    const fNick = friendProfile.nickname || 'صديق';
+    h2hFriendName.textContent = fNick;
+    h2hGamesCount.textContent = rec.gamesPlayed || 0;
+    h2hMyLast.textContent = `${rec.myLastScore || 0} (م${rec.myLastLevel || 1}/20)`;
+    h2hFriendLast.textContent = `${rec.friendLastScore || 0} (م${rec.friendLastLevel || 1}/20)`;
+
+    h2hVerdictBadge.classList.remove('winner', 'gameover');
+    if (lastH2HOutcome === 'WINNER') {
+      h2hVerdictBadge.textContent = 'WINNER — أنت الفائز!';
+      h2hVerdictBadge.classList.add('winner');
+    } else if (lastH2HOutcome === 'GAME OVER') {
+      h2hVerdictBadge.textContent = `GAME OVER — ${fNick} كسب!`;
+      h2hVerdictBadge.classList.add('gameover');
+    } else if (lastH2HOutcome === 'DRAW') {
+      h2hVerdictBadge.textContent = 'تعادل';
+    } else {
+      h2hVerdictBadge.textContent = `سباق حتى المستوى 20 (${rec.myWins || 0} لك • ${rec.friendWins || 0} لصاحبك)`;
+    }
+
+    h2hDetailLine.textContent =
+      `سجل الغرفة ${activeRoomCode}: لعبت ${rec.gamesPlayed || 0} جيم مع "${fNick}" • فوزك: ${rec.myWins || 0} • فوزه: ${rec.friendWins || 0} • ${rec.lastWinnerLabel || ''}`;
+  }
+
+  function recordFriendMatchResult(mySc, myLv, frSc, frLv, outcomeCode) {
+    const rec = getRoomMatchRecord(activeRoomCode);
+    rec.gamesPlayed = (rec.gamesPlayed || 0) + 1;
+    rec.myLastScore = mySc;
+    rec.myLastLevel = myLv;
+    rec.friendLastScore = Math.max(rec.friendLastScore || 0, frSc);
+    rec.friendLastLevel = Math.max(rec.friendLastLevel || 1, frLv);
+
+    const fNick = friendProfile.nickname || 'صديق';
+    if (outcomeCode === 'WINNER') {
+      rec.myWins = (rec.myWins || 0) + 1;
+      rec.lastWinnerLabel = `أنت الفائز (WINNER) في المستوى ${myLv}`;
+      lastH2HOutcome = 'WINNER';
+    } else if (outcomeCode === 'GAME OVER') {
+      rec.friendWins = (rec.friendWins || 0) + 1;
+      rec.lastWinnerLabel = `${fNick} وصل للمستوى ${Math.max(20, frLv)} أولاً (GAME OVER)`;
+      lastH2HOutcome = 'GAME OVER';
+    } else if (mySc > frSc) {
+      rec.myWins = (rec.myWins || 0) + 1;
+      rec.lastWinnerLabel = `أنت الأعلى (${mySc} مقابل ${frSc})`;
+      lastH2HOutcome = 'WINNER';
+    } else if (frSc > mySc) {
+      rec.friendWins = (rec.friendWins || 0) + 1;
+      rec.lastWinnerLabel = `${fNick} الأعلى (${frSc} مقابل ${mySc})`;
+      lastH2HOutcome = 'GAME OVER';
+    } else {
+      rec.lastWinnerLabel = `تعادل (${mySc} منصة لكل منكما)`;
+      lastH2HOutcome = 'DRAW';
+    }
+    persistSave();
+    updateFriendScoreboardUI();
+  }
 
   function renderAvatarIntoElement(el, profileObj) {
     if (!el) return;
@@ -1924,11 +2118,6 @@
       firebaseReachable = false;
     }
     updateConnectionBadgeUI();
-    if (!firebaseReachable) {
-      roomStatusMsg.textContent = 'وضع QR والرمز الاحتياطي نشط وجاهز للربط المباشر.';
-    } else {
-      roomStatusMsg.textContent = 'الاتصال بـ Firebase نشط — ومعه QR ورمز يدوي جاهزان دائماً.';
-    }
     return firebaseReachable;
   }
 
@@ -1995,17 +2184,6 @@
       return null;
     }
   }
-
-  let activeRoomCode = `MA-${Math.floor(1000 + Math.random() * 9000)}`;
-  let roomChannel = null;
-  let roomPollTimer = null;
-  let isRoomHost = true;
-  let approvedForCurrentRoom = true;
-  let pendingJoinRequest = null;
-
-  let friendScore = 0;
-  let friendLevel = 1;
-  let friendProfile = { nickname: 'صديق', avatar: '👥', avatarType: 'emoji' };
 
   function buildQrPayloadString() {
     const safeNick = encodeURIComponent(saveData.profile.nickname || 'لاعب');
@@ -2180,6 +2358,7 @@
     renderAvatarIntoElement(hudFriendAvatar, friendProfile);
     hudFriendScoreEl.textContent = friendScore;
     hudFriendLvlEl.textContent = friendLevel;
+    updateFriendScoreboardUI();
   }
 
   function broadcastFriendEvent(payload, targetCode = activeRoomCode) {
@@ -2195,6 +2374,26 @@
         });
         if (ch !== roomChannel) ch.close();
       } catch (e) {}
+    }
+  }
+
+  function handleOpponentReachedFinish(opponentScore, opponentLevel, opponentProf) {
+    if (opponentProf) friendProfile = opponentProf;
+    friendScore = Math.max(friendScore, Number(opponentScore) || MAX_LEVEL_FRIENDS * PLATFORMS_PER_LEVEL);
+    friendLevel = Math.max(friendLevel, Number(opponentLevel) || MAX_LEVEL_FRIENDS);
+    syncFriendProfileUI();
+
+    if (gameRunning && selectedGameMode === 'friends') {
+      recordFriendMatchResult(score, level, friendScore, friendLevel, 'GAME OVER');
+      finishMatch({
+        won: false,
+        reason: `GAME OVER • ${friendProfile.nickname} وصل للمستوى ${MAX_LEVEL_FRIENDS} أولاً`,
+        isRaceFinish: true,
+        customTitle: 'GAME OVER',
+        skipFriendRecord: true
+      });
+    } else {
+      recordFriendMatchResult(score, level, friendScore, friendLevel, 'GAME OVER');
     }
   }
 
@@ -2317,17 +2516,21 @@
           friendScore = Number(pdata.score) || friendScore;
           friendLevel = Number(pdata.level) || friendLevel;
           syncFriendProfileUI();
+          if (pdata.finished20 && gameRunning && selectedGameMode === 'friends') {
+            handleOpponentReachedFinish(friendScore, friendLevel, friendProfile);
+          }
         }
       }
     }
   }
 
-  async function publishProgress(currentScore, currentLevel) {
+  async function publishProgress(currentScore, currentLevel, finished20 = false) {
     if (selectedGameMode !== 'friends' || !activeRoomCode) return;
     broadcastFriendEvent({
-      type: 'live_progress',
+      type: finished20 ? 'race_finished_20' : 'live_progress',
       score: currentScore,
       level: currentLevel,
+      finished20,
       profile: saveData.profile
     });
     await fbPatch(`${activeRoomCode}/players/${localPeerId}`, {
@@ -2336,6 +2539,7 @@
       avatar: saveData.profile.avatar,
       score: currentScore,
       level: currentLevel,
+      finished20: Boolean(finished20),
       updatedAt: Date.now()
     });
   }
@@ -2377,17 +2581,23 @@
               if (data.hostProfile) friendProfile = data.hostProfile;
               syncFriendProfileUI();
               roomStatusMsg.textContent = `صاحب الغرفة وافق! يمكنك الآن بدء اللعب مع "${friendProfile.nickname}".`;
-              publishProgress(score, level);
+              publishProgress(score, level, false).catch(() => {});
             } else {
               approvedForCurrentRoom = false;
               roomStatusMsg.textContent = 'صاحب الغرفة لم يوافق على طلب الانضمام.';
             }
+          } else if (data.type === 'race_finished_20') {
+            handleOpponentReachedFinish(data.score, data.level, data.profile);
           } else if (data.type === 'live_progress') {
             if (data.profile) friendProfile = data.profile;
             friendScore = Number(data.score) || 0;
             friendLevel = Number(data.level) || 1;
             syncFriendProfileUI();
-            roomStatusMsg.textContent = `"${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${friendScore} منصة (المستوى ${friendLevel})`;
+            if (data.finished20) {
+              handleOpponentReachedFinish(friendScore, friendLevel, friendProfile);
+            } else {
+              roomStatusMsg.textContent = `"${friendProfile.nickname}" في الغرفة ${activeRoomCode}: ${friendScore} منصة (المستوى ${friendLevel}/20)`;
+            }
           } else if (data.type === 'score_update') {
             if (data.profile) friendProfile = data.profile;
             friendScore = Math.max(friendScore, Number(data.score) || 0);
@@ -2411,6 +2621,7 @@
         avatar: saveData.profile.avatar,
         score: 0,
         level: 1,
+        finished20: false,
         updatedAt: Date.now()
       });
     }
@@ -2436,7 +2647,7 @@
     if (roomPollTimer) clearInterval(roomPollTimer);
     roomPollTimer = setInterval(() => {
       syncRoomStateFromFirebase().catch(() => {});
-    }, 2000);
+    }, 1800);
   }
 
   function setFriendSubTab(tab) {
@@ -2633,6 +2844,7 @@
     } else {
       stopQrCamera().catch(() => {});
     }
+    updateFriendScoreboardUI();
     syncActiveModeHudVisibility(gameRunning);
   }
 
@@ -2650,7 +2862,9 @@
   });
 
   function getActiveMaxLevel() {
-    return selectedGameMode === 'ai' ? MAX_LEVEL_AI : MAX_LEVEL_CLASSIC;
+    if (selectedGameMode === 'ai') return MAX_LEVEL_AI;
+    if (selectedGameMode === 'friends') return MAX_LEVEL_FRIENDS;
+    return MAX_LEVEL_CLASSIC;
   }
 
   function computeLevel(platScore) {
@@ -2727,8 +2941,12 @@
   });
 
   hudHomeBtn.addEventListener('click', () => {
+    const wasRunning = gameRunning;
     gameRunning = false;
     updateInstantHowtoBanner();
+    if (selectedGameMode === 'friends' && wasRunning && score > 0) {
+      recordFriendMatchResult(score, level, friendScore, friendLevel, 'COMPARE');
+    }
     homeTitle.textContent = 'توقف مؤقت / القائمة';
     homeSubtitle.textContent = `آخر جولة: المستوى ${level}/${getActiveMaxLevel()} • ${score} منصة`;
     showScreen('screen-home');
@@ -2740,6 +2958,7 @@
     shopCoinsEl.textContent = saveData.coins;
     hudCoinsEl.textContent = saveData.coins;
     homeRankBadge.textContent = getCurrentTitle(saveData);
+    updateFriendScoreboardUI();
 
     statTotalCoinsEl.textContent = saveData.stats.totalCoinsEarned || 0;
     statMaxComboEl.textContent = `x${saveData.stats.maxCombo || 1}`;
@@ -3230,8 +3449,8 @@
     if (aiModeActive) {
       toastEl.textContent = `مبارزة AI (${getAiDiffLabel()}) • الأول للمستوى 20 يفوز`;
     } else if (selectedGameMode === 'friends') {
-      toastEl.textContent = `غرفة ${activeRoomCode} • اللعب مع "${friendProfile.nickname}"`;
-      publishProgress(0, 1).catch(() => {});
+      toastEl.textContent = `غرفة ${activeRoomCode} • السباق حتى المستوى 20 ضد "${friendProfile.nickname}"`;
+      publishProgress(0, 1, false).catch(() => {});
     } else if (chaseActive) {
       toastEl.textContent = 'موجة المطاردة نشطة — تحرك بسرعة';
     } else {
@@ -3476,7 +3695,7 @@
     toastEl.textContent = 'الدرع أنقذك من السقوط.';
   }
 
-  function finishMatch({ won, reason, isRaceFinish }) {
+  function finishMatch({ won, reason, isRaceFinish, customTitle = '', skipFriendRecord = false }) {
     if (!gameRunning) return;
     gameRunning = false;
     isHoldingGrapple = false;
@@ -3496,16 +3715,28 @@
       playSFX('die', 1);
     }
 
+    if (selectedGameMode === 'friends' && !skipFriendRecord) {
+      recordFriendMatchResult(score, level, friendScore, friendLevel, won ? 'WINNER' : 'GAME OVER');
+    }
+
     if (score > 0) {
       saveData.scores.push({ score, date: new Date().toLocaleDateString('ar-EG') });
       saveData.scores.sort((a, b) => b.score - a.score);
       saveData.scores = saveData.scores.slice(0, 5);
       broadcastFriendEvent({ type: 'score_update', score, level, profile: saveData.profile });
-      publishProgress(score, level).catch(() => {});
+      publishProgress(score, level, selectedGameMode === 'friends' && won && level >= MAX_LEVEL_FRIENDS).catch(() => {});
     }
     persistSave();
 
-    homeTitle.textContent = isRaceFinish ? (won ? 'فوز في السباق' : 'الذكاء الاصطناعي سبقك') : (won ? 'إتمام الـ 100 مستوى' : 'انتهت الجولة');
+    if (customTitle) {
+      homeTitle.textContent = customTitle;
+    } else if (selectedGameMode === 'friends' && isRaceFinish) {
+      homeTitle.textContent = won ? 'WINNER' : 'GAME OVER';
+    } else if (isRaceFinish) {
+      homeTitle.textContent = won ? 'فوز في السباق' : 'الذكاء الاصطناعي سبقك';
+    } else {
+      homeTitle.textContent = won ? 'إتمام الـ 100 مستوى' : 'GAME OVER';
+    }
     homeSubtitle.textContent = `${reason} • المستوى ${level}/${getActiveMaxLevel()} • ${score} منصة`;
     showScreen('screen-home');
   }
@@ -3792,8 +4023,19 @@
               updateAiRadarUI();
               updateInstantHowtoBanner();
 
+              const reached20InFriends = (selectedGameMode === 'friends' && level >= MAX_LEVEL_FRIENDS);
               if (selectedGameMode === 'friends') {
-                publishProgress(score, level).catch(() => {});
+                publishProgress(score, level, reached20InFriends).catch(() => {});
+              }
+
+              if (reached20InFriends) {
+                finishMatch({
+                  won: true,
+                  reason: `WINNER • وصلت للمستوى ${MAX_LEVEL_FRIENDS} أولاً`,
+                  isRaceFinish: true,
+                  customTitle: 'WINNER'
+                });
+                return;
               }
 
               if (aiModeActive && score >= MAX_LEVEL_AI * PLATFORMS_PER_LEVEL) {
@@ -3805,7 +4047,7 @@
                 return;
               }
 
-              if (!aiModeActive && level === MAX_LEVEL_CLASSIC) {
+              if (!aiModeActive && selectedGameMode !== 'friends' && level === MAX_LEVEL_CLASSIC) {
                 finishMatch({
                   won: true,
                   reason: 'أتممت جميع المستويات الـ 100',
