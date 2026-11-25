@@ -1803,7 +1803,13 @@
           </div>
 
           <div class="ai-diff-box hidden" id="ai-diff-box">
-            <span>مستوى الذكاء الاصطناعي (20 مستوى • جسم كامل بنفس الشكل):</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
+              <span>مستوى الذكاء الاصطناعي:</span>
+              <div style="display:flex; gap:4px;">
+                <button type="button" class="diff-btn active" id="race-cap-20-btn">1 ← 20 مستوى</button>
+                <button type="button" class="diff-btn" id="race-cap-inf-btn">1 ← لا نهاية ∞</button>
+              </div>
+            </div>
             <div class="diff-pills-4">
               <button type="button" class="diff-btn" data-diff="easy">سهل<small>م 1–5 (هادئ)</small></button>
               <button type="button" class="diff-btn active" data-diff="medium">متوسط<small>م 6–10</small></button>
@@ -1816,7 +1822,10 @@
           <div class="friends-box hidden" id="friends-box">
             <div class="conn-mode-row">
               <span>حالة الربط: <span class="conn-badge" id="conn-mode-badge">جاري الفحص...</span></span>
-              <button type="button" class="mini-action-btn" id="btn-recheck-conn">فحص الاتصال</button>
+              <div style="display:flex; gap:4px; align-items:center;">
+                <button type="button" class="mini-action-btn" id="btn-toggle-race-cap">المدى: 1 ← 20</button>
+                <button type="button" class="mini-action-btn" id="btn-recheck-conn">فحص الاتصال</button>
+              </div>
             </div>
 
             <div class="friends-three-btns">
@@ -1926,12 +1935,13 @@
     </div>
 
     <div class="page-content-box">
-      <div class="settings-subnav" id="settings-subnav">
-        <button type="button" class="settings-tab-btn active" data-tab="howto">طريقة اللعب</button>
-        <button type="button" class="settings-tab-btn" data-tab="stats">الإحصائيات</button>
-        <button type="button" class="settings-tab-btn" data-tab="titles">الألقاب</button>
-        <button type="button" class="settings-tab-btn" data-tab="sound">الأصوات</button>
-        <button type="button" class="settings-tab-btn" data-tab="designer">المصمم</button>
+      <div class="settings-subnav" id="settings-subnav" style="grid-template-columns: repeat(6, 1fr);">
+        <button type="button" class="settings-tab-btn active" data-tab="howto" data-i18n="tab_howto">طريقة اللعب</button>
+        <button type="button" class="settings-tab-btn" data-tab="lang" data-i18n="tab_lang">اللغة</button>
+        <button type="button" class="settings-tab-btn" data-tab="stats" data-i18n="tab_stats">الإحصائيات</button>
+        <button type="button" class="settings-tab-btn" data-tab="titles" data-i18n="tab_titles">الألقاب</button>
+        <button type="button" class="settings-tab-btn" data-tab="sound" data-i18n="tab_sound">الأصوات</button>
+        <button type="button" class="settings-tab-btn" data-tab="designer" data-i18n="tab_designer">المصمم</button>
       </div>
 
       <div class="settings-subpage" id="subpage-howto">
@@ -2045,6 +2055,11 @@
         </div>
       </div>
 
+      <div class="settings-subpage hidden" id="subpage-lang">
+        <div class="section-hdr"><span data-i18n="choose_lang_title">اختر لغة اللعبة (تُحفظ تلقائياً دائماً)</span></div>
+        <div id="language-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:8px;"></div>
+      </div>
+
       <div class="settings-subpage hidden" id="subpage-designer">
         <div class="designer-box">
           <div class="ma-logo">MA</div>
@@ -2054,6 +2069,48 @@
             <div>محمود عماد محمد مبروك</div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- شاشة الإعداد الأولي المتدرج (1: اللغة -> 2: الاسم والصورة -> 3: التعليمات) -->
+  <section id="screen-onboarding" class="screen-layer hidden" style="z-index: 40; justify-content:center; align-items:center;">
+    <div class="mandatory-guide-card" style="width:100%; max-width:520px; margin:auto;">
+      <div class="guide-header-row">
+        <h3 id="onboard-step-title">الخطوة 1 من 3: اختر لغتك</h3>
+        <span class="guide-status-pill" id="onboard-step-pill">1 / 3</span>
+      </div>
+
+      <!-- خطوة 1: اختيار اللغة -->
+      <div id="onboard-step-1" style="display:flex; flex-direction:column; gap:10px;">
+        <p style="font-size:12px; color:#cbd5e1;" id="onboard-lang-desc">اختر اللغة المفضلة لواجهة اللعبة (يمكنك تغييرها لاحقاً من الإعدادات):</p>
+        <div id="onboard-language-grid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:7px;"></div>
+        <button type="button" class="guide-proceed-btn" id="onboard-next-1">التالي: الاسم والصورة ←</button>
+      </div>
+
+      <!-- خطوة 2: الاسم والصورة -->
+      <div id="onboard-step-2" class="hidden" style="display:flex; flex-direction:column; gap:10px;">
+        <p style="font-size:12px; color:#cbd5e1;" id="onboard-prof-desc">اكتب اسمك/لقبك واختر صورتك الشخصية في اللعبة:</p>
+        <div class="profile-top-row">
+          <div id="onboard-avatar-preview" class="profile-preview-avatar">⚡</div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+            <input type="text" class="room-input" id="onboard-nickname-input" maxlength="24" placeholder="اكتب اسمك هنا...">
+            <label class="mini-action-btn" style="cursor:pointer; text-align:center;">
+              <span id="onboard-upload-lbl">رفع صورة من الجهاز</span>
+              <input type="file" id="onboard-avatar-file" accept="image/*" style="display:none;">
+            </label>
+          </div>
+        </div>
+        <div class="preset-avatars-row" id="onboard-emoji-row">
+          <button type="button" class="preset-avatar-btn" data-emoji="🥷">🥷</button>
+          <button type="button" class="preset-avatar-btn" data-emoji="⚡">⚡</button>
+          <button type="button" class="preset-avatar-btn" data-emoji="🦸">🦸</button>
+          <button type="button" class="preset-avatar-btn" data-emoji="🔥">🔥</button>
+          <button type="button" class="preset-avatar-btn" data-emoji="🐺">🐺</button>
+          <button type="button" class="preset-avatar-btn" data-emoji="🚀">🚀</button>
+          <button type="button" class="preset-avatar-btn" data-emoji="🎯">🎯</button>
+        </div>
+        <button type="button" class="guide-proceed-btn" id="onboard-next-2">التالي: تعليمات اللعب ←</button>
       </div>
     </div>
   </section>
@@ -2089,6 +2146,7 @@
   const settingsTabBtns = document.querySelectorAll('.settings-tab-btn');
   const settingsSubpages = {
     howto: document.getElementById('subpage-howto'),
+    lang: document.getElementById('subpage-lang'),
     stats: document.getElementById('subpage-stats'),
     titles: document.getElementById('subpage-titles'),
     sound: document.getElementById('subpage-sound'),
@@ -2423,9 +2481,9 @@
       passive: { startShield: true }
     },
     {
-      id: 'galaxy', name: 'سيد المجرة', emoji: '🌌', primary: '#4f46e5', secondary: '#ec4899', glow: 'rgba(236, 72, 153, 0.85)', rope: '#f472b6',
-      shape: 'galaxy', price: 140, skillName: 'ثقب دودي', skillType: 'wormhole_warp', cooldown: 8.5,
-      skillDesc: 'هالة كواكب تدور حوله • يقفز عبر الفضاء ويتخطى الخطر فوراً!',
+      id: 'galaxy', name: 'حكيم المجرات', emoji: '🕳️', primary: '#4f46e5', secondary: '#ec4899', glow: 'rgba(236, 72, 153, 0.85)', rope: '#f472b6',
+      shape: 'galaxy', price: 140, skillName: 'الثقب الأسود', skillType: 'black_hole_warp', cooldown: 8.5,
+      skillDesc: 'يفتح ثقباً أسود يبتلعه وينقله عشوائياً عبر 1 إلى 4 منصات للأمام!',
       passive: { rangeBonus: 85, coinBonus: 1 }
     },
     {
@@ -2457,7 +2515,7 @@
       dashBoostLvl: 0,
       luckLvl: 0
     },
-    settings: { soundOn: true, shakeOn: true, chainMode: true, tutorialDone: false },
+    settings: { soundOn: true, shakeOn: true, chainMode: true, tutorialDone: false, lang: 'ar' },
     stats: { totalCoinsEarned: 0, maxCombo: 1, totalRuns: 0 },
     scores: [],
     friendMatches: {}
@@ -2465,6 +2523,393 @@
 
   let guideCheckedState = false;
   let forceFirstTimeGate = false;
+
+
+  const LANGUAGES = [
+    { code: 'ar', name: 'العربية', dir: 'rtl' },
+    { code: 'en', name: 'English', dir: 'ltr' },
+    { code: 'fr', name: 'Français', dir: 'ltr' },
+    { code: 'es', name: 'Español', dir: 'ltr' },
+    { code: 'de', name: 'Deutsch', dir: 'ltr' },
+    { code: 'it', name: 'Italiano', dir: 'ltr' },
+    { code: 'pt', name: 'Português', dir: 'ltr' },
+    { code: 'tr', name: 'Türkçe', dir: 'ltr' },
+    { code: 'ru', name: 'Русский', dir: 'ltr' },
+    { code: 'zh', name: '中文', dir: 'ltr' }
+  ];
+
+  const I18N = {
+    ar: {
+      you_lost: 'لقد خسرت',
+      you_won: 'لقد فزت!',
+      play_now: 'العب الآن',
+      shop_btn: 'المتجر (26 بطل + ترقيات)',
+      settings_btn: 'الإعدادات',
+      tab_howto: 'طريقة اللعب',
+      tab_lang: 'اللغة',
+      tab_stats: 'الإحصائيات',
+      tab_titles: 'الألقاب',
+      tab_sound: 'الأصوات',
+      tab_designer: 'المصمم',
+      choose_lang_title: 'اختر لغة اللعبة (تُحفظ تلقائياً دائماً)',
+      toast_fell_edge: 'وصلت لنهاية المنصة ولم تستعمل الحبل!',
+      reason_edge_fall: 'سقطت لأنك وصلت لنهاية المنصة دون استعمال الحبل',
+      reason_rope_timeout: 'لم تستعمل الحبل/الخطاف قبل السقوط',
+      onboard_1_title: 'الخطوة 1 من 3: اختر لغتك',
+      onboard_2_title: 'الخطوة 2 من 3: الاسم والصورة الشخصية',
+      onboard_next_1: 'التالي: الاسم والصورة ←',
+      onboard_next_2: 'التالي: تعليمات اللعب ←',
+      btn_jump: 'قفز',
+      btn_grapple: 'خطاف',
+      btn_dash: 'اندفاع',
+      btn_skill: 'مهارة'
+    },
+    en: {
+      you_lost: 'YOU LOST',
+      you_won: 'YOU WON!',
+      play_now: 'Play Now',
+      shop_btn: 'Shop (26 Heroes + Upgrades)',
+      settings_btn: 'Settings',
+      tab_howto: 'How to Play',
+      tab_lang: 'Language',
+      tab_stats: 'Stats',
+      tab_titles: 'Titles',
+      tab_sound: 'Audio',
+      tab_designer: 'Designer',
+      choose_lang_title: 'Choose Game Language (Saved Permanently)',
+      toast_fell_edge: 'You reached the platform edge without grappling!',
+      reason_edge_fall: 'You fell off the platform edge without using the rope',
+      reason_rope_timeout: 'Failed to use rope/grapple before falling',
+      onboard_1_title: 'Step 1 of 3: Choose Your Language',
+      onboard_2_title: 'Step 2 of 3: Name & Avatar',
+      onboard_next_1: 'Next: Name & Avatar →',
+      onboard_next_2: 'Next: Game Tutorial →',
+      btn_jump: 'Jump',
+      btn_grapple: 'Grapple',
+      btn_dash: 'Dash',
+      btn_skill: 'Skill'
+    },
+    fr: {
+      you_lost: 'VOUS AVEZ PERDU',
+      you_won: 'VOUS AVEZ GAGNÉ !',
+      play_now: 'Jouer',
+      shop_btn: 'Boutique (26 Héros)',
+      settings_btn: 'Paramètres',
+      tab_howto: 'Règles',
+      tab_lang: 'Langue',
+      tab_stats: 'Stats',
+      tab_titles: 'Titres',
+      tab_sound: 'Audio',
+      tab_designer: 'Créateur',
+      choose_lang_title: 'Choisir la langue (sauvegardée)',
+      toast_fell_edge: 'Bord de plateforme atteint sans grappin !',
+      reason_edge_fall: 'Tombé au bord sans utiliser la corde',
+      reason_rope_timeout: 'Corde non utilisée à temps',
+      onboard_1_title: 'Étape 1/3 : Choisissez la langue',
+      onboard_2_title: 'Étape 2/3 : Nom et Avatar',
+      onboard_next_1: 'Suivant : Nom et Avatar →',
+      onboard_next_2: 'Suivant : Tutoriel →',
+      btn_jump: 'Sauter',
+      btn_grapple: 'Grappin',
+      btn_dash: 'Élan',
+      btn_skill: 'Pouvoir'
+    },
+    es: {
+      you_lost: 'HAS PERDIDO',
+      you_won: '¡HAS GANADO!',
+      play_now: 'Jugar Ahora',
+      shop_btn: 'Tienda (26 Héroes)',
+      settings_btn: 'Ajustes',
+      tab_howto: 'Cómo Jugar',
+      tab_lang: 'Idioma',
+      tab_stats: 'Estadísticas',
+      tab_titles: 'Títulos',
+      tab_sound: 'Sonido',
+      tab_designer: 'Diseñador',
+      choose_lang_title: 'Elige el idioma (guardado siempre)',
+      toast_fell_edge: '¡Llegaste al borde sin usar la cuerda!',
+      reason_edge_fall: 'Caíste por el borde sin usar el gancho',
+      reason_rope_timeout: 'No usaste la cuerda a tiempo',
+      onboard_1_title: 'Paso 1 de 3: Elige tu idioma',
+      onboard_2_title: 'Paso 2 de 3: Nombre y Avatar',
+      onboard_next_1: 'Siguiente: Nombre y Avatar →',
+      onboard_next_2: 'Siguiente: Instrucciones →',
+      btn_jump: 'Saltar',
+      btn_grapple: 'Gancho',
+      btn_dash: 'Impulso',
+      btn_skill: 'Habilidad'
+    },
+    de: {
+      you_lost: 'DU HAST VERLOREN',
+      you_won: 'DU HAST GEWONNEN!',
+      play_now: 'Jetzt Spielen',
+      shop_btn: 'Shop (26 Helden)',
+      settings_btn: 'Einstellungen',
+      tab_howto: 'Anleitung',
+      tab_lang: 'Sprache',
+      tab_stats: 'Statistik',
+      tab_titles: 'Titel',
+      tab_sound: 'Ton',
+      tab_designer: 'Designer',
+      choose_lang_title: 'Spielsprache wählen (dauerhaft gespeichert)',
+      toast_fell_edge: 'Plattformkante ohne Seil erreicht!',
+      reason_edge_fall: 'Ohne Seil von der Plattform gefallen',
+      reason_rope_timeout: 'Seil nicht rechtzeitig benutzt',
+      onboard_1_title: 'Schritt 1 von 3: Sprache wählen',
+      onboard_2_title: 'Schritt 2 von 3: Name & Avatar',
+      onboard_next_1: 'Weiter: Name & Avatar →',
+      onboard_next_2: 'Weiter: Spielanleitung →',
+      btn_jump: 'Springen',
+      btn_grapple: 'Greifen',
+      btn_dash: 'Sprint',
+      btn_skill: 'Fähigkeit'
+    },
+    it: {
+      you_lost: 'HAI PERSO',
+      you_won: 'HAI VINTO!',
+      play_now: 'Gioca Ora',
+      shop_btn: 'Negozio (26 Eroi)',
+      settings_btn: 'Impostazioni',
+      tab_howto: 'Come Giocare',
+      tab_lang: 'Lingua',
+      tab_stats: 'Statistiche',
+      tab_titles: 'Titoli',
+      tab_sound: 'Audio',
+      tab_designer: 'Designer',
+      choose_lang_title: 'Scegli la lingua (salvata sempre)',
+      toast_fell_edge: 'Bordo raggiunto senza usare la corda!',
+      reason_edge_fall: 'Caduto dal bordo senza rampino',
+      reason_rope_timeout: 'Corda non usata in tempo',
+      onboard_1_title: 'Passo 1 di 3: Scegli la lingua',
+      onboard_2_title: 'Passo 2 di 3: Nome e Avatar',
+      onboard_next_1: 'Avanti: Nome e Avatar →',
+      onboard_next_2: 'Avanti: Istruzioni →',
+      btn_jump: 'Salta',
+      btn_grapple: 'Rampino',
+      btn_dash: 'Scatto',
+      btn_skill: 'Abilità'
+    },
+    pt: {
+      you_lost: 'VOCÊ PERDEU',
+      you_won: 'VOCÊ VENCEU!',
+      play_now: 'Jogar Agora',
+      shop_btn: 'Loja (26 Heróis)',
+      settings_btn: 'Configurações',
+      tab_howto: 'Como Jogar',
+      tab_lang: 'Idioma',
+      tab_stats: 'Estatísticas',
+      tab_titles: 'Títulos',
+      tab_sound: 'Som',
+      tab_designer: 'Criador',
+      choose_lang_title: 'Escolha o idioma (salvo sempre)',
+      toast_fell_edge: 'Chegou à borda sem usar a corda!',
+      reason_edge_fall: 'Caiu da borda sem usar o gancho',
+      reason_rope_timeout: 'Não usou a corda a tempo',
+      onboard_1_title: 'Passo 1 de 3: Escolha o idioma',
+      onboard_2_title: 'Passo 2 de 3: Nome e Avatar',
+      onboard_next_1: 'Próximo: Nome e Avatar →',
+      onboard_next_2: 'Próximo: Instruções →',
+      btn_jump: 'Pular',
+      btn_grapple: 'Gancho',
+      btn_dash: 'Arrancada',
+      btn_skill: 'Poder'
+    },
+    tr: {
+      you_lost: 'KAYBETTİN',
+      you_won: 'KAZANDIN!',
+      play_now: 'Şimdi Oyna',
+      shop_btn: 'Mağaza (26 Kahraman)',
+      settings_btn: 'Ayarlar',
+      tab_howto: 'Nasıl Oynanır',
+      tab_lang: 'Dil',
+      tab_stats: 'İstatistik',
+      tab_titles: 'Unvanlar',
+      tab_sound: 'Ses',
+      tab_designer: 'Tasarımcı',
+      choose_lang_title: 'Oyun Dilini Seç (Kalıcı Kaydedilir)',
+      toast_fell_edge: 'İp kullanmadan platform sonuna geldin!',
+      reason_edge_fall: 'İp kullanmadan platformdan düştün',
+      reason_rope_timeout: 'Zamanında kanca kullanmadın',
+      onboard_1_title: 'Adım 1/3: Dilini Seç',
+      onboard_2_title: 'Adım 2/3: İsim ve Avatar',
+      onboard_next_1: 'İleri: İsim ve Avatar →',
+      onboard_next_2: 'İleri: Oyun Talimatları →',
+      btn_jump: 'Zıpla',
+      btn_grapple: 'Kanca',
+      btn_dash: 'Atıl',
+      btn_skill: 'Yetenek'
+    },
+    ru: {
+      you_lost: 'ВЫ ПРОИГРАЛИ',
+      you_won: 'ВЫ ПОБЕДИЛИ!',
+      play_now: 'Играть',
+      shop_btn: 'Магазин (26 Героев)',
+      settings_btn: 'Настройки',
+      tab_howto: 'Правила',
+      tab_lang: 'Язык',
+      tab_stats: 'Статистика',
+      tab_titles: 'Титулы',
+      tab_sound: 'Звук',
+      tab_designer: 'Автор',
+      choose_lang_title: 'Выберите язык игры (сохраняется)',
+      toast_fell_edge: 'Вы дошли до края без верёвки!',
+      reason_edge_fall: 'Вы упали с края платформы без крюка',
+      reason_rope_timeout: 'Не использовали крюк вовремя',
+      onboard_1_title: 'Шаг 1 из 3: Выберите язык',
+      onboard_2_title: 'Шаг 2 из 3: Имя и Аватар',
+      onboard_next_1: 'Далее: Имя и Аватар →',
+      onboard_next_2: 'Далее: Обучение →',
+      btn_jump: 'Прыжок',
+      btn_grapple: 'Крюк',
+      btn_dash: 'Рывок',
+      btn_skill: 'Навык'
+    },
+    zh: {
+      you_lost: '你输了',
+      you_won: '你赢了！',
+      play_now: '开始游戏',
+      shop_btn: '商店 (26位英雄)',
+      settings_btn: '设置',
+      tab_howto: '玩法说明',
+      tab_lang: '语言',
+      tab_stats: '统计',
+      tab_titles: '称号',
+      tab_sound: '音效',
+      tab_designer: '设计师',
+      choose_lang_title: '选择游戏语言（永久保存）',
+      toast_fell_edge: '到达平台边缘却未使用抓钩！',
+      reason_edge_fall: '未在平台边缘使用绳索而掉落',
+      reason_rope_timeout: '未能及时使用抓钩',
+      onboard_1_title: '第 1/3 步：选择语言',
+      onboard_2_title: '第 2/3 步：昵称与头像',
+      onboard_next_1: '下一步：昵称与头像 →',
+      onboard_next_2: '下一步：游戏教学 →',
+      btn_jump: '跳跃',
+      btn_grapple: '抓钩',
+      btn_dash: '冲刺',
+      btn_skill: '技能'
+    }
+  };
+
+  function getActiveLang() {
+    return (saveData.settings && saveData.settings.lang) || 'ar';
+  }
+
+  function t(key) {
+    const lang = getActiveLang();
+    return (I18N[lang] && I18N[lang][key]) || I18N.ar[key] || key;
+  }
+
+  function applyLanguageUI() {
+    const lang = getActiveLang();
+    const meta = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
+    document.documentElement.lang = meta.code;
+    document.documentElement.dir = meta.dir;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      if (k) el.textContent = t(k);
+    });
+
+    if (btnStartPlay) btnStartPlay.textContent = t('play_now');
+    if (btnOpenShop) btnOpenShop.textContent = t('shop_btn');
+    if (btnOpenSettings) btnOpenSettings.textContent = t('settings_btn');
+    const jumpSpan = btnJump && btnJump.querySelector('span');
+    if (jumpSpan) jumpSpan.textContent = t('btn_jump');
+    const grapSpan = btnGrapple && btnGrapple.querySelector('span');
+    if (grapSpan) grapSpan.textContent = t('btn_grapple');
+    if (dashBtnLabel && !(hero.anchor && hero.anchor.kind === 'slingshot')) {
+      dashBtnLabel.textContent = t('btn_dash');
+    }
+
+    const renderLangButtons = (container) => {
+      if (!container) return;
+      container.innerHTML = LANGUAGES.map(l => `
+        <button type="button" class="mode-btn ${l.code === lang ? 'active' : ''}" data-lang-code="${l.code}" style="padding:9px 8px; border:1px solid rgba(56,189,248,0.35);">
+          ${l.name}
+        </button>
+      `).join('');
+      container.querySelectorAll('[data-lang-code]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          saveData.settings.lang = btn.getAttribute('data-lang-code');
+          persistSave();
+          applyLanguageUI();
+        });
+      });
+    };
+
+    renderLangButtons(document.getElementById('language-grid'));
+    renderLangButtons(document.getElementById('onboard-language-grid'));
+
+    const obTitle = document.getElementById('onboard-step-title');
+    const obStep1 = document.getElementById('onboard-step-1');
+    const obNext1 = document.getElementById('onboard-next-1');
+    const obNext2 = document.getElementById('onboard-next-2');
+    if (obTitle && obStep1) {
+      obTitle.textContent = !obStep1.classList.contains('hidden') ? t('onboard_1_title') : t('onboard_2_title');
+    }
+    if (obNext1) obNext1.textContent = t('onboard_next_1');
+    if (obNext2) obNext2.textContent = t('onboard_next_2');
+  }
+
+  // منطق شاشة الإعداد الأولي المتدرج (1: اللغة -> 2: الاسم والصورة -> 3: التعليمات)
+  const screenOnboarding = document.getElementById('screen-onboarding');
+  const onboardStep1 = document.getElementById('onboard-step-1');
+  const onboardStep2 = document.getElementById('onboard-step-2');
+  const onboardNext1 = document.getElementById('onboard-next-1');
+  const onboardNext2 = document.getElementById('onboard-next-2');
+  const onboardNicknameInput = document.getElementById('onboard-nickname-input');
+  const onboardAvatarPreview = document.getElementById('onboard-avatar-preview');
+  const onboardAvatarFile = document.getElementById('onboard-avatar-file');
+
+  if (onboardNext1) {
+    onboardNext1.addEventListener('click', () => {
+      onboardStep1.classList.add('hidden');
+      onboardStep2.classList.remove('hidden');
+      document.getElementById('onboard-step-pill').textContent = '2 / 3';
+      document.getElementById('onboard-step-title').textContent = t('onboard_2_title');
+      if (onboardNicknameInput) onboardNicknameInput.value = saveData.profile.nickname || '';
+      renderAvatarIntoElement(onboardAvatarPreview, saveData.profile);
+    });
+  }
+
+  document.querySelectorAll('#onboard-emoji-row .preset-avatar-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      saveData.profile.avatarType = 'emoji';
+      saveData.profile.avatar = btn.dataset.emoji;
+      persistSave();
+      renderAvatarIntoElement(onboardAvatarPreview, saveData.profile);
+      syncProfileUI();
+    });
+  });
+
+  if (onboardAvatarFile) {
+    onboardAvatarFile.addEventListener('change', async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const compressed = await compressImageToDataUrl(file, 220);
+      if (compressed) {
+        saveData.profile.avatarType = 'image';
+        saveData.profile.avatar = compressed;
+        persistSave();
+        renderAvatarIntoElement(onboardAvatarPreview, saveData.profile);
+        syncProfileUI();
+      }
+    });
+  }
+
+  if (onboardNext2) {
+    onboardNext2.addEventListener('click', () => {
+      const nick = (onboardNicknameInput && onboardNicknameInput.value.trim()) || saveData.profile.nickname || 'النينجا الصغير';
+      saveData.profile.nickname = nick;
+      persistSave();
+      syncProfileUI();
+      if (screenOnboarding) screenOnboarding.classList.add('hidden');
+      forceFirstTimeGate = true;
+      showScreen('screen-settings');
+      setSettingsTab('howto');
+    });
+  }
 
   function isTutorialCompleted() {
     return Boolean(saveData.settings && saveData.settings.tutorialDone);
@@ -2518,10 +2963,17 @@
   if (btnEnterGame && splashScreen) {
     btnEnterGame.addEventListener('click', () => {
       splashScreen.classList.add('hidden');
+      applyLanguageUI();
       if (!isTutorialCompleted()) {
         forceFirstTimeGate = true;
-        showScreen('screen-settings');
-        setSettingsTab('howto');
+        [screenHome, screenShop, screenSettings].forEach(sc => sc.classList.add('hidden'));
+        if (screenOnboarding) {
+          screenOnboarding.classList.remove('hidden');
+          onboardStep1.classList.remove('hidden');
+          onboardStep2.classList.add('hidden');
+          document.getElementById('onboard-step-pill').textContent = '1 / 3';
+          document.getElementById('onboard-step-title').textContent = t('onboard_1_title');
+        }
       } else {
         forceFirstTimeGate = false;
         showScreen('screen-home');
@@ -2803,7 +3255,7 @@
     syncFriendProfileUI();
     recordFriendMatchResult(score, level, friendScore, friendLevel, 'GAME OVER');
     gameRunning = false;
-    homeTitle.textContent = 'GAME OVER';
+    homeTitle.textContent = t('you_lost');
     homeSubtitle.textContent = `${friendProfile.nickname} وصل للمستوى ${MAX_LEVEL_FRIENDS} أولاً • نتيجتك: ${score} منصة • نتيجته: ${friendScore} منصة`;
     showScreen('screen-home');
   });
@@ -2827,7 +3279,7 @@
     if (friendLevel >= MAX_LEVEL_FRIENDS) {
       recordFriendMatchResult(score, level, friendScore, friendLevel, 'GAME OVER');
       gameRunning = false;
-      homeTitle.textContent = 'GAME OVER';
+      homeTitle.textContent = t('you_lost');
       homeSubtitle.textContent = `${friendProfile.nickname} أنهى الـ 20 مستوى (${friendScore} منصة) أولاً`;
       showScreen('screen-home');
       return;
@@ -3700,11 +4152,44 @@
     });
   });
 
+  let raceTargetCap = 20; // 20 أو Infinity (من 1 لما لا نهاية، وآخره 20 اختياري وليس إجبارياً دائماً)
+
+  function setRaceTargetCap(capVal) {
+    raceTargetCap = capVal;
+    const cap20Btn = document.getElementById('race-cap-20-btn');
+    const capInfBtn = document.getElementById('race-cap-inf-btn');
+    const toggleRaceCapBtn = document.getElementById('btn-toggle-race-cap');
+    if (cap20Btn) cap20Btn.classList.toggle('active', capVal === 20);
+    if (capInfBtn) capInfBtn.classList.toggle('active', capVal === Infinity);
+    if (toggleRaceCapBtn) {
+      toggleRaceCapBtn.textContent = capVal === Infinity ? 'المدى: 1 ← ∞' : 'المدى: 1 ← 20';
+    }
+    if (selectedGameMode === 'ai' || selectedGameMode === 'friends') {
+      selectedModeLabel.textContent = selectedGameMode === 'ai'
+        ? (capVal === Infinity ? 'ضد AI (∞)' : 'ضد AI (20)')
+        : (capVal === Infinity ? 'أصدقاء (∞)' : 'أصدقاء (20)');
+    }
+    updateFriendScoreboardUI();
+  }
+
+  const raceCap20Btn = document.getElementById('race-cap-20-btn');
+  const raceCapInfBtn = document.getElementById('race-cap-inf-btn');
+  const btnToggleRaceCap = document.getElementById('btn-toggle-race-cap');
+  if (raceCap20Btn) raceCap20Btn.addEventListener('click', () => setRaceTargetCap(20));
+  if (raceCapInfBtn) raceCapInfBtn.addEventListener('click', () => setRaceTargetCap(Infinity));
+  if (btnToggleRaceCap) {
+    btnToggleRaceCap.addEventListener('click', () => {
+      setRaceTargetCap(raceTargetCap === 20 ? Infinity : 20);
+    });
+  }
+
   function isEndlessMode() {
-    return selectedGameMode === 'classic' || selectedGameMode === 'chase';
+    if (selectedGameMode === 'classic' || selectedGameMode === 'chase') return true;
+    return raceTargetCap === Infinity;
   }
 
   function getActiveMaxLevel() {
+    if (isEndlessMode()) return Infinity;
     if (selectedGameMode === 'ai') return MAX_LEVEL_AI;
     if (selectedGameMode === 'friends') return MAX_LEVEL_FRIENDS;
     return Infinity;
@@ -3802,6 +4287,7 @@
   });
 
   function renderAllUI() {
+    applyLanguageUI();
     syncProfileUI();
     syncTutorialLockUI();
     homeCoinsEl.textContent = saveData.coins;
@@ -4096,6 +4582,7 @@
   let heroSkillActiveTimer = 0;
   let heroSkillActiveType = '';
   let heroMidAirJumpUsed = false;
+  let blackHoleEffects = [];
 
   let aiModeActive = false;
   let aiProgress = 0;
@@ -4229,7 +4716,6 @@
 
       case 'flash_dash':
       case 'shadow_blink':
-      case 'wormhole_warp':
         hero.anchor = null;
         hero.x += 175;
         hero.vx = Math.max(hero.vx + 6, 11.5);
@@ -4240,6 +4726,38 @@
         makeBurst(hero.x, hero.y, h.secondary, 18);
         toastEl.textContent = `${h.emoji} ${h.skillName}: انتقال خاطف للأمام!`;
         break;
+
+      case 'black_hole_warp': {
+        hero.anchor = null;
+        ensureWorldAhead();
+        const jumpPlatformsCount = 1 + Math.floor(Math.random() * 4); // 1 إلى 4 منصات عشوائياً
+        const aheadPlats = platforms.filter(p => !p.falling && (p.x + p.w * 0.5) > hero.x + 25);
+        const targetPlat = aheadPlats[Math.min(jumpPlatformsCount - 1, Math.max(0, aheadPlats.length - 1))];
+        const entryX = hero.x;
+        const entryY = hero.y;
+        blackHoleEffects.push({ x: entryX, y: entryY, timer: 1.15, maxTimer: 1.15, spin: 0 });
+        makeBurst(entryX, entryY, '#a855f7', 22);
+
+        if (targetPlat) {
+          hero.x = targetPlat.x + targetPlat.w * 0.35;
+          hero.y = targetPlat.y - 75;
+        } else {
+          hero.x += jumpPlatformsCount * 240;
+          hero.y -= 55;
+        }
+        hero.vx = Math.max(hero.vx + 3.5, 8.8);
+        hero.vy = -6.8;
+        hero.dashAvailable = true;
+        chainStartedThisJump = true;
+        nextRopeDeadline = getNextRopeWindow() + 0.6;
+        syncDashButtonUI();
+
+        blackHoleEffects.push({ x: hero.x, y: hero.y, timer: 1.15, maxTimer: 1.15, spin: 1.6 });
+        makeBurst(hero.x, hero.y, '#ec4899', 22);
+        triggerSpeedLines('#c084fc', 0.55);
+        toastEl.textContent = `🕳️ ${h.skillName}: ابتلعك الثقب الأسود ونقلك ${jumpPlatformsCount} منصة للأمام!`;
+        break;
+      }
 
       case 'web_swing':
         hero.anchor = null;
@@ -4862,14 +5380,16 @@
     persistSave();
 
     const maxTxt = isEndlessMode() ? '∞' : `/${getActiveMaxLevel()}`;
-    if (customTitle) {
+    if (customTitle && customTitle !== 'GAME OVER') {
       homeTitle.textContent = customTitle;
+    } else if (!won) {
+      homeTitle.textContent = t('you_lost');
     } else if (selectedGameMode === 'friends' && isRaceFinish) {
-      homeTitle.textContent = won ? 'WINNER' : 'GAME OVER';
+      homeTitle.textContent = t('you_won');
     } else if (isRaceFinish) {
-      homeTitle.textContent = won ? 'فوز في السباق' : 'الذكاء الاصطناعي سبقك';
+      homeTitle.textContent = t('you_won');
     } else {
-      homeTitle.textContent = won ? 'إنجاز أسطوري' : 'GAME OVER';
+      homeTitle.textContent = t('you_won');
     }
     homeSubtitle.textContent = `${reason} • المستوى ${level}${maxTxt} • ${score} منصة`;
     showScreen('screen-home');
@@ -4964,6 +5484,12 @@
       p.x += p.vx; p.y += p.vy; p.life -= p.decay;
       if (p.life <= 0) particles.splice(i, 1);
     }
+    for (let i = blackHoleEffects.length - 1; i >= 0; i--) {
+      const bh = blackHoleEffects[i];
+      bh.timer -= rawDt;
+      bh.spin += rawDt * 9;
+      if (bh.timer <= 0) blackHoleEffects.splice(i, 1);
+    }
 
     if (!gameRunning) return;
 
@@ -4990,9 +5516,10 @@
     const skin = getActiveSkin();
 
     if (aiModeActive) {
-      const maxRacePlats = MAX_LEVEL_AI * PLATFORMS_PER_LEVEL;
+      const maxRacePlats = isEndlessMode() ? Infinity : (MAX_LEVEL_AI * PLATFORMS_PER_LEVEL);
       aiProgress = Math.min(maxRacePlats, aiProgress + rawDt * getAiPlatsPerSec() * worldScale);
-      const nextAiLvl = Math.min(MAX_LEVEL_AI, Math.floor(aiProgress / PLATFORMS_PER_LEVEL) + 1);
+      const rawAiLvl = Math.floor(aiProgress / PLATFORMS_PER_LEVEL) + 1;
+      const nextAiLvl = isEndlessMode() ? rawAiLvl : Math.min(MAX_LEVEL_AI, rawAiLvl);
       if (nextAiLvl !== aiLevel) {
         aiLevel = nextAiLvl;
         hudAiLvlEl.textContent = aiLevel;
@@ -5017,7 +5544,7 @@
 
       updateRivalRadarUI();
 
-      if (aiProgress >= maxRacePlats && level < MAX_LEVEL_AI) {
+      if (!isEndlessMode() && aiProgress >= maxRacePlats && level < MAX_LEVEL_AI) {
         finishMatch({
           won: false,
           reason: 'وصل الذكاء الاصطناعي للمستوى 20 أولاً',
@@ -5127,9 +5654,19 @@
     if (hero.grounded && hero.standingOn && !chainStartedThisJump) {
       hero.y = hero.standingOn.y - 22;
       if (chainTimerPill) chainTimerPill.style.display = 'none';
-      const edgeX = hero.standingOn.x + hero.standingOn.w - 18;
-      if (hero.x < edgeX) { hero.x += 2.3; hero.runCycle += 0.26; }
-      else { hero.runCycle = 0; }
+      const platEndX = hero.standingOn.x + hero.standingOn.w;
+      hero.x += 2.45;
+      hero.runCycle += 0.28;
+      // إذا وصل لنهاية المنصة ولم يمسك بالحبل يدوياً يسقط فوراً
+      if (hero.x > platEndX + 4 && !hero.anchor && !isHoldingGrapple) {
+        hero.grounded = false;
+        hero.standingOn = null;
+        hero.vx = 2.6;
+        hero.vy = 1.6;
+        chainStartedThisJump = true;
+        nextRopeDeadline = chainModeRequired ? 0.55 : 0;
+        toastEl.textContent = t('toast_fell_edge');
+      }
     } else {
       hero.grounded = false;
       hero.standingOn = null;
@@ -5150,7 +5687,7 @@
           } else {
             finishMatch({
               won: false,
-              reason: 'لم تضغط حبل/خطاف قبل انتهاء المهلة والسقوط',
+              reason: t('reason_rope_timeout'),
               isRaceFinish: false
             });
             return;
@@ -5216,7 +5753,7 @@
           const passiveCoinBonus = (skin.passive?.coinBonus || 0) + (saveData.upgrades.coinMultLvl || 0);
           if (passiveCoinBonus > 0) addCoins(passiveCoinBonus);
 
-          const reached20InFriends = (selectedGameMode === 'friends' && level >= MAX_LEVEL_FRIENDS);
+          const reached20InFriends = (!isEndlessMode() && selectedGameMode === 'friends' && level >= MAX_LEVEL_FRIENDS);
           if (selectedGameMode === 'friends') {
             publishProgress(score, level, reached20InFriends, true).catch(() => {});
           }
@@ -5231,7 +5768,7 @@
             return;
           }
 
-          if (aiModeActive && score >= MAX_LEVEL_AI * PLATFORMS_PER_LEVEL) {
+          if (!isEndlessMode() && aiModeActive && score >= MAX_LEVEL_AI * PLATFORMS_PER_LEVEL) {
             finishMatch({
               won: true,
               reason: 'عبرت خط النهاية في المستوى 20 أولاً',
@@ -5250,7 +5787,7 @@
         }
       }
 
-      if (!chainModeRequired && hero.vy > 0 && !hero.anchor) {
+      if (hero.vy > 0 && !hero.anchor) {
         for (const p of platforms) {
           if (p.falling) continue;
           const withinX = hero.x + 11 > p.x && hero.x - 11 < p.x + p.w;
@@ -5260,7 +5797,9 @@
             hero.standingOn = p;
             hero.y = p.y - 22;
             hero.vy = 0;
-            hero.vx *= 0.45;
+            hero.vx = 0;
+            chainStartedThisJump = false;
+            nextRopeDeadline = 0;
             hero.dashAvailable = true;
             heroMidAirJumpUsed = false;
             syncDashButtonUI();
@@ -5272,21 +5811,7 @@
         }
       }
 
-      if (!chainModeRequired) {
-        const curPlat = hero.standingOn;
-        const idx = platforms.indexOf(curPlat);
-        if (idx >= 0 && idx < platforms.length - 1) {
-          const nextPlat = platforms[idx + 1];
-          const gapEdge = nextPlat.x - (curPlat.x + curPlat.w);
-          const heroToGap = (curPlat.x + curPlat.w) - hero.x;
-          if (heroToGap > 0 && heroToGap < gapEdge * 0.48 && !hero.anchor && !isHoldingGrapple) {
-            const best = findBestAnchorInAir();
-            if (best && best.x > hero.x - 20 && best.x < nextPlat.x + 120) {
-              attachAnchor(best);
-            }
-          }
-        }
-      }
+      // التحكم بالحبل يدوي 100% بيد اللاعب فقط
     }
 
     for (const c of coins) {
@@ -5350,7 +5875,7 @@
       else {
         finishMatch({
           won: false,
-          reason: chainModeRequired ? 'سقطت لأنك لم تضغط حبل/خطاف في الوقت المناسب' : 'سقطت خارج المنصة',
+          reason: t('reason_edge_fall'),
           isRaceFinish: false
         });
         return;
@@ -5763,6 +6288,31 @@
       ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
+
+    for (const bh of blackHoleEffects) {
+      const ratio = Math.max(0, bh.timer / bh.maxTimer);
+      const radius = (14 + Math.sin((1 - ratio) * Math.PI) * 32);
+      ctx.save();
+      ctx.translate(bh.x, bh.y);
+      ctx.rotate(bh.spin);
+      const bhGrad = ctx.createRadialGradient(0, 0, 2, 0, 0, radius);
+      bhGrad.addColorStop(0, '#02040a');
+      bhGrad.addColorStop(0.55, '#1e1b4b');
+      bhGrad.addColorStop(0.82, 'rgba(168, 85, 247, 0.85)');
+      bhGrad.addColorStop(1, 'rgba(236, 72, 153, 0)');
+      ctx.fillStyle = bhGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = `rgba(244, 114, 182, ${ratio})`;
+      ctx.lineWidth = 2.4;
+      for (let arm = 0; arm < 3; arm++) {
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * (0.45 + arm * 0.2), arm * 2.1, arm * 2.1 + 1.8);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
 
     if (shieldActive) {
       ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
