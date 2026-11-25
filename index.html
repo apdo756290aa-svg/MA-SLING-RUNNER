@@ -428,6 +428,18 @@
     transform: scale(0.93);
   }
 
+  .pad-btn.skill-pad {
+    border-color: rgba(244, 63, 94, 0.65);
+    background: rgba(244, 63, 94, 0.16);
+  }
+  .pad-btn.skill-pad.cooldown {
+    opacity: 0.45;
+  }
+  .pad-btn.skill-pad:active {
+    background: rgba(244, 63, 94, 0.38);
+    transform: scale(0.93);
+  }
+
   .screen-layer {
     position: absolute;
     inset: 0;
@@ -1321,78 +1333,117 @@
 
   .page-content-box {
     width: 100%;
-    max-width: 820px;
+    max-width: 920px;
     margin: 0 auto;
     padding-bottom: 24px;
   }
 
   .section-hdr {
-    font-size: 12.5px;
-    font-weight: 800;
+    font-size: 13px;
+    font-weight: 900;
     color: #e2e8f0;
-    margin: 10px 0 6px;
+    margin: 12px 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .active-hero-banner {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(168, 85, 247, 0.18));
+    border: 1.5px solid rgba(56, 189, 248, 0.45);
+    border-radius: 14px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   .skins-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 7px;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 8px;
   }
 
   .skin-card {
     background: var(--card-bg);
     border: 1.5px solid var(--border-soft);
-    border-radius: 14px;
-    padding: 9px 7px;
+    border-radius: 15px;
+    padding: 10px 8px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     text-align: center;
+    transition: transform 0.12s, border-color 0.15s, background 0.15s;
   }
+
+  .skin-card:active { transform: scale(0.97); }
 
   .skin-card.selected {
     border-color: var(--accent);
-    background: rgba(56, 189, 248, 0.16);
+    background: rgba(56, 189, 248, 0.18);
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.22);
   }
 
-  .skin-orb {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.45);
+  .hero-badge-preview {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
   }
 
-  .skin-title { font-size: 11px; font-weight: 800; }
-  .skin-tag { font-size: 10px; color: var(--gold); font-weight: 700; }
+  .skin-title { font-size: 12px; font-weight: 900; color: #fff; }
+  .skin-skill-name {
+    font-size: 10px;
+    font-weight: 800;
+    color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.12);
+    padding: 2px 7px;
+    border-radius: 99px;
+  }
+  .skin-skill-desc {
+    font-size: 9.5px;
+    color: var(--text-muted);
+    line-height: 1.35;
+    min-height: 26px;
+  }
+  .skin-tag { font-size: 10.5px; color: var(--gold); font-weight: 800; margin-top: 2px; }
   .skin-tag.owned { color: #34d399; }
 
   .upgrades-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 7px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
   }
 
   .upg-card {
     background: var(--card-bg);
     border: 1px solid var(--border-soft);
     border-radius: 13px;
-    padding: 9px 11px;
+    padding: 10px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
   }
 
-  .upg-info strong { display: block; font-size: 11.5px; }
+  .upg-info strong { display: block; font-size: 12px; }
   .upg-info small { font-size: 10px; color: var(--text-muted); }
 
   .upg-btn {
     background: linear-gradient(135deg, #0ea5e9, #6366f1);
     border: none;
     color: #fff;
-    padding: 6px 10px;
+    padding: 7px 11px;
     border-radius: 9px;
     font-size: 11px;
     font-weight: 800;
@@ -1538,6 +1589,7 @@
       <span id="hud-accent-dot" style="width:9px;height:9px;border-radius:50%;background:#38bdf8;display:inline-block;"></span>
       <span id="hud-my-avatar" class="mini-avatar">⚡</span>
       <strong id="hud-my-nickname">النينجا الصغير</strong>
+      <span class="lbl" id="hud-hero-class" style="color:#7dd3fc;">(سماوي نيون)</span>
     </div>
 
     <div class="hud-group">
@@ -1564,7 +1616,7 @@
       </div>
       <div class="hud-chip">
         <span class="lbl">المستوى</span>
-        <span><strong id="hud-level">1</strong>/<span id="hud-max-level">100</span></span>
+        <span><strong id="hud-level">1</strong><span id="hud-max-level"> ∞</span></span>
       </div>
       <div class="hud-chip">
         <span class="lbl">المنصات</span>
@@ -1584,7 +1636,7 @@
   </div>
 
   <div id="instant-howto-banner" class="hidden">
-    1) اقفز في البداية ➜ 2) اضغط حبل/خطاف (E / F / زر خطاف / لمس) ➜ 3) المنصة لا توقفك، واصل الحبل قبل السقوط
+    1) اقفز في البداية ➜ 2) اضغط حبل/خطاف (E / F / زر خطاف / لمس) ➜ 3) المنصات لانهائية، واصل الحبل قبل السقوط
   </div>
 
   <div id="rival-radar-indicator" class="hidden">
@@ -1595,14 +1647,20 @@
   <div class="active-powers" id="active-powers"></div>
 
   <div id="keyboard-hint-bar" class="hidden">
-    القفز: Space / W / ↑ • الخطاف: E / F • الاندفاع أو القذف: Shift / D / → • السونار: Q
+    القفز: Space / W / ↑ • الخطاف: E / F • الاندفاع أو القذف: Shift / D / → • مهارة البطل: R • السونار: Q
   </div>
 
   <div id="mobile-controls" class="hidden">
-    <button type="button" class="pad-btn jump-pad" id="btn-jump">
-      <span>قفز</span>
-      <small>Space / W / ↑</small>
-    </button>
+    <div class="ctrl-pair">
+      <button type="button" class="pad-btn jump-pad" id="btn-jump">
+        <span>قفز</span>
+        <small>Space / W</small>
+      </button>
+      <button type="button" class="pad-btn skill-pad" id="btn-hero-skill">
+        <span id="hero-skill-btn-label">مهارة</span>
+        <small id="hero-skill-btn-sub">جاهزة (R)</small>
+      </button>
+    </div>
     <div class="ctrl-pair">
       <button type="button" class="pad-btn dash-pad" id="btn-dash">
         <span id="dash-btn-label">اندفاع</span>
@@ -1621,7 +1679,7 @@
       <div class="screen-title-box">
         <h2 id="home-title">CHAIN RUNNER • MA</h2>
         <div class="title-badge-row">
-          <p id="home-subtitle">ركض وخطاف سريع • حفظ دائم وقابل للتثبيت على التليفون</p>
+          <p id="home-subtitle">منصات لانهائية تتولد تلقائياً • 26 شخصية بمهارات وأشكال خارقة</p>
           <span class="rank-pill" id="home-rank-badge">مبتدئ السلاسل</span>
         </div>
       </div>
@@ -1661,7 +1719,7 @@
         <span style="font-size:10.5px; color:#94a3b8;">أو اختر رمزاً سريعاً:</span>
         <button type="button" class="preset-avatar-btn" data-emoji="🥷">🥷</button>
         <button type="button" class="preset-avatar-btn" data-emoji="⚡">⚡</button>
-        <button type="button" class="preset-avatar-btn" data-emoji="🦅">🦅</button>
+        <button type="button" class="preset-avatar-btn" data-emoji="🦸">🦸</button>
         <button type="button" class="preset-avatar-btn" data-emoji="🔥">🔥</button>
         <button type="button" class="preset-avatar-btn" data-emoji="🐺">🐺</button>
         <button type="button" class="preset-avatar-btn" data-emoji="🚀">🚀</button>
@@ -1684,12 +1742,12 @@
       <div class="game-showcase-card">
         <div class="showcase-canvas-wrap">
           <canvas id="previewCanvas"></canvas>
-          <div class="showcase-badge">معاينة حية</div>
+          <div class="showcase-badge" id="preview-hero-badge">معاينة البطل</div>
         </div>
 
         <div class="top-scores-card" style="margin-top:8px;">
           <h4>
-            <span>أفضل النتائج</span>
+            <span>أفضل النتائج (لانهائي)</span>
             <span>الأعلى: <strong id="home-best" style="color:#38bdf8">0</strong></span>
           </h4>
           <ul id="home-scores-list"></ul>
@@ -1727,19 +1785,19 @@
         <button type="button" class="start-game-btn" id="btn-start-play">العب الآن</button>
 
         <div class="nav-grid-2">
-          <button type="button" class="nav-page-btn" id="btn-open-shop">المتجر</button>
+          <button type="button" class="nav-page-btn" id="btn-open-shop">المتجر (26 بطل + ترقيات)</button>
           <button type="button" class="nav-page-btn settings-btn" id="btn-open-settings">الإعدادات</button>
         </div>
 
         <button type="button" class="secondary-bar-btn" id="btn-toggle-modes-drawer">
-          <span>أوضاع اللعب والغرف (<strong id="selected-mode-label" style="color:#38bdf8">عادي</strong>)</span>
+          <span>أوضاع اللعب والغرف (<strong id="selected-mode-label" style="color:#38bdf8">عادي لانهائي</strong>)</span>
           <span id="modes-drawer-chevron">▲</span>
         </button>
 
         <div class="modes-drawer" id="modes-drawer">
           <div class="mode-selector-4">
-            <button type="button" class="mode-btn active" id="mode-classic-btn">عادي</button>
-            <button type="button" class="mode-btn chase-mode" id="mode-chase-btn">مطاردة</button>
+            <button type="button" class="mode-btn active" id="mode-classic-btn">عادي ∞</button>
+            <button type="button" class="mode-btn chase-mode" id="mode-chase-btn">مطاردة ∞</button>
             <button type="button" class="mode-btn ai-mode" id="mode-ai-btn">ضد AI</button>
             <button type="button" class="mode-btn friends-mode" id="mode-friends-btn">أصدقاء</button>
           </div>
@@ -1825,8 +1883,8 @@
   <section id="screen-shop" class="screen-layer hidden">
     <div class="screen-header">
       <div class="screen-title-box">
-        <h2>المتجر والترقيات</h2>
-        <p>خصص لون شخصيتك وطور قدراتك بالعملات الذهبية</p>
+        <h2>المتجر والأبطال الخارقون (26 شخصية)</h2>
+        <p>كل بطل له شكل مميز ومهارة خاصة أثناء اللعب + 8 ترقيات متقدمة</p>
       </div>
       <div style="display:flex; gap:6px; align-items:center;">
         <div class="hud-chip">
@@ -1838,10 +1896,21 @@
     </div>
 
     <div class="page-content-box">
-      <div class="section-hdr"><span>ألوان ومظاهر الشخصية</span></div>
+      <div class="active-hero-banner" id="active-hero-banner">
+        <div>
+          <strong style="font-size:13px; color:#fff;">البطل المختار حالياً: <span id="shop-selected-hero-name" style="color:#38bdf8;">سماوي نيون</span></strong>
+          <div style="font-size:11px; color:#cbd5e1; margin-top:2px;" id="shop-selected-hero-skill">المهارة: نبضة السونار — تكشف أقرب نقطة تثبيت وتوسع مدى الخطاف.</div>
+        </div>
+        <span class="rank-pill" id="shop-unlocked-count">1 / 26 بطل</span>
+      </div>
+
+      <div class="section-hdr">
+        <span>الأبطال والشخصيات (اضغط للشراء أو التفعيل)</span>
+        <span style="font-size:10.5px; color:#94a3b8;">زر المهارة في اللعب: R أو زر "مهارة"</span>
+      </div>
       <div class="skins-grid" id="skins-grid"></div>
 
-      <div class="section-hdr"><span>الترقيات الدائمة</span></div>
+      <div class="section-hdr"><span>الترقيات الدائمة (8 ترقيات متكاملة)</span></div>
       <div class="upgrades-grid" id="upgrades-grid"></div>
     </div>
   </section>
@@ -1892,16 +1961,16 @@
             <div class="guide-step-box">
               <div class="step-num-badge">3</div>
               <div class="guide-step-content">
-                <strong>استمرار السلسلة بدون توقف</strong>
-                <p>المنصة لا توقفك بدون حبل/خطاف؛ واصل ربط الحبال قبل انتهاء المهلة أو السقوط.</p>
+                <strong>منصات لانهائية لا تتوقف</strong>
+                <p>المنصات تتولد للأبد؛ واصل ربط الحبال قبل انتهاء المهلة أو السقوط.</p>
               </div>
             </div>
 
             <div class="guide-step-box">
               <div class="step-num-badge">4</div>
               <div class="guide-step-content">
-                <strong>الاندفاع والقذف والسونار</strong>
-                <p>استخدم <strong>اندفاع / قذف</strong> بـ <code>Shift</code> / <code>D</code> / <code>→</code>، و<strong>السونار</strong> بـ <code>Q</code>.</p>
+                <strong>مهارات الأبطال والاندفاع</strong>
+                <p>فعّل مهارة بطلك الخاصة بـ <code>R</code> أو زر <strong>مهارة</strong>، والاندفاع بـ <code>Shift</code> / <code>D</code>.</p>
               </div>
             </div>
           </div>
@@ -1994,12 +2063,11 @@
   const splashScreen = document.getElementById('splash-screen');
   const btnEnterGame = document.getElementById('btn-enter-game');
 
-  const MAX_LEVEL_CLASSIC = 100;
   const MAX_LEVEL_AI = 20;
   const MAX_LEVEL_FRIENDS = 20;
   const PLATFORMS_PER_LEVEL = 3;
-  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v28';
-  const SAVE_KEY = 'chain_runner_ma_clean_v28';
+  const LOCAL_ROOMS_KEY = 'chain_runner_ma_local_rooms_v29';
+  const SAVE_KEY = 'chain_runner_ma_clean_v29';
   const WALLET_VAULT_KEY = 'chain_runner_ma_wallet_vault_v1';
   const IDB_NAME = 'ChainRunnerMA_DB';
   const IDB_STORE = 'PersistentState';
@@ -2057,6 +2125,11 @@
   const homeScoresList = document.getElementById('home-scores-list');
   const statsBestValEl = document.getElementById('stats-best-val');
   const statsScoresListEl = document.getElementById('stats-scores-list');
+  const previewHeroBadge = document.getElementById('preview-hero-badge');
+
+  const shopSelectedHeroName = document.getElementById('shop-selected-hero-name');
+  const shopSelectedHeroSkill = document.getElementById('shop-selected-hero-skill');
+  const shopUnlockedCount = document.getElementById('shop-unlocked-count');
 
   const h2hScoreboard = document.getElementById('h2h-scoreboard');
   const h2hFriendName = document.getElementById('h2h-friend-name');
@@ -2082,6 +2155,7 @@
   const headerNickPreview = document.getElementById('header-nick-preview');
   const hudMyAvatar = document.getElementById('hud-my-avatar');
   const hudMyNickname = document.getElementById('hud-my-nickname');
+  const hudHeroClass = document.getElementById('hud-hero-class');
   const profileStatusMsg = document.getElementById('profile-status-msg');
   const presetAvatarBtns = document.querySelectorAll('.preset-avatar-btn');
 
@@ -2163,6 +2237,9 @@
   const skinsGrid = document.getElementById('skins-grid');
   const upgradesGrid = document.getElementById('upgrades-grid');
   const btnJump = document.getElementById('btn-jump');
+  const btnHeroSkill = document.getElementById('btn-hero-skill');
+  const heroSkillBtnLabel = document.getElementById('hero-skill-btn-label');
+  const heroSkillBtnSub = document.getElementById('hero-skill-btn-sub');
   const btnDash = document.getElementById('btn-dash');
   const dashBtnLabel = document.getElementById('dash-btn-label');
   const dashBtnSub = document.getElementById('dash-btn-sub');
@@ -2171,7 +2248,7 @@
   const hasFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
   const localPeerId = `peer_${Math.random().toString(36).slice(2, 8)}`;
 
-  const NEXT_ROPE_WINDOW = 1.65;
+  const BASE_ROPE_WINDOW = 1.85;
   let chainModeRequired = true;
   let chainStartedThisJump = false;
   let nextRopeDeadline = 0;
@@ -2189,7 +2266,8 @@
     { id: 'starter', title: 'مبتدئ السلاسل', desc: 'خض 3 جولات أو اعبر 15 منصة', check: (d) => (d.stats.totalRuns || 0) >= 3 || getBestScore(d) >= 15 },
     { id: 'collector', title: 'صائد العملات', desc: 'اجمع 50 عملة إجمالاً', check: (d) => (d.stats.totalCoinsEarned || 0) >= 50 },
     { id: 'combo_ace', title: 'سيد الكومبو', desc: 'حقق كومبو x5 في جولة واحدة', check: (d) => (d.stats.maxCombo || 1) >= 5 },
-    { id: 'centurion', title: 'بطل الـ 100 مستوى', desc: 'صل للمستوى 100 في الوضع العادي', check: (d) => getBestScore(d) >= MAX_LEVEL_CLASSIC * PLATFORMS_PER_LEVEL }
+    { id: 'hero_squad', title: 'قائد الأبطال', desc: 'افتح 5 أبطال مختلفين من المتجر', check: (d) => (d.unlockedSkins || []).length >= 5 },
+    { id: 'endless_master', title: 'أسطورة اللانهاية', desc: 'اعبر 150 منصة في رحلة لانهائية', check: (d) => getBestScore(d) >= 150 }
   ];
 
   function getBestScore(d) {
@@ -2204,21 +2282,181 @@
     return current;
   }
 
-  const SKINS = [
-    { id: 'cyan', name: 'سماوي نيون', primary: '#38bdf8', glow: 'rgba(56, 189, 248, 0.65)', rope: '#7dd3fc', price: 0 },
-    { id: 'gold', name: 'ذهبي ملكي', primary: '#fbbf24', glow: 'rgba(251, 191, 36, 0.65)', rope: '#fde047', price: 15 },
-    { id: 'violet', name: 'بنفسجي', primary: '#a855f7', glow: 'rgba(168, 85, 247, 0.65)', rope: '#d8b4fe', price: 30 },
-    { id: 'emerald', name: 'زمردي', primary: '#10b981', glow: 'rgba(16, 185, 129, 0.65)', rope: '#6ee7b7', price: 50 },
-    { id: 'crimson', name: 'قرمزي', primary: '#f43f5e', glow: 'rgba(244, 63, 94, 0.65)', rope: '#fda4af', price: 75 },
-    { id: 'white', name: 'طيف أبيض', primary: '#ffffff', glow: 'rgba(255, 255, 255, 0.75)', rope: '#e2e8f0', price: 100 }
+  // 26 شخصية مختلفة تماماً في الشكل (عباءات، أجنحة، تيجان، هالات، قرون، دروع) وكل شخصية لها مهارة فريدة
+  const HEROES = [
+    {
+      id: 'cyan', name: 'سماوي نيون', emoji: '⚡', primary: '#38bdf8', secondary: '#0284c7', glow: 'rgba(56, 189, 248, 0.65)', rope: '#7dd3fc',
+      shape: 'visor', price: 0, skillName: 'نبضة السونار', skillType: 'sonar_reach', cooldown: 6,
+      skillDesc: 'يكشف نقاط التثبيت + يوسع مدى الخطاف +45px تلقائياً',
+      passive: { rangeBonus: 45 }
+    },
+    {
+      id: 'superman', name: 'سوبر مان الأحمر', emoji: '🦸', primary: '#ef4444', secondary: '#2563eb', glow: 'rgba(239, 68, 68, 0.75)', rope: '#f87171',
+      shape: 'superman', price: 25, skillName: 'طيران خارق', skillType: 'super_flight', cooldown: 8,
+      skillDesc: 'جسم أحمر وعباءة حمراء ودرع صدر • يطير للأمام بسرعة خارقة 2.2 ثانية!',
+      passive: { speedMult: 1.06 }
+    },
+    {
+      id: 'batman', name: 'فارس الظلام', emoji: '🦇', primary: '#1e293b', secondary: '#facc15', glow: 'rgba(250, 204, 21, 0.65)', rope: '#facc15',
+      shape: 'batman', price: 30, skillName: 'خطاف الوطواط المزدوج', skillType: 'bat_grapple', cooldown: 6,
+      skillDesc: 'أذنا وطواط وعباءة سوداء • يجذبك لأقرب نقطة من مسافة مضاعفة!',
+      passive: { rangeBonus: 95 }
+    },
+    {
+      id: 'flash', name: 'البرق الخاطف', emoji: '⚡', primary: '#dc2626', secondary: '#fde047', glow: 'rgba(253, 224, 71, 0.8)', rope: '#fde047',
+      shape: 'flash', price: 35, skillName: 'اندفاع البرق', skillType: 'flash_dash', cooldown: 5,
+      skillDesc: 'أجنحة برق ذهبية • يعيد شحن الاندفاع فوراً وينطلق بسرعة البرق!',
+      passive: { speedMult: 1.12 }
+    },
+    {
+      id: 'spider', name: 'البطل العنكبوتي', emoji: '🕷️', primary: '#e11d48', secondary: '#1d4ed8', glow: 'rgba(225, 29, 72, 0.7)', rope: '#ffffff',
+      shape: 'spider', price: 40, skillName: 'شبكة العنكبوت', skillType: 'web_swing', cooldown: 5.5,
+      skillDesc: 'خيط عنكبوت أبيض وقناع • يقذفك للأعلى بقوة + يمدد مهلة الحبل 0.6 ثانية',
+      passive: { ropeWindowBonus: 0.6 }
+    },
+    {
+      id: 'iron', name: 'الدرع الحديدي', emoji: '🤖', primary: '#b91c1c', secondary: '#fbbf24', glow: 'rgba(251, 191, 36, 0.75)', rope: '#38bdf8',
+      shape: 'iron', price: 45, skillName: 'مفاعل الصدر', skillType: 'iron_shield', cooldown: 11,
+      skillDesc: 'خوذة حديدية ومفاعل مضيء • يفعل درع حماية فوري + دافع طيران!',
+      passive: { startShield: true }
+    },
+    {
+      id: 'thor', name: 'إله الرعد', emoji: '🔨', primary: '#3b82f6', secondary: '#ef4444', glow: 'rgba(96, 165, 250, 0.85)', rope: '#93c5fd',
+      shape: 'thor', price: 50, skillName: 'صاعقة المطرقة', skillType: 'thunder_strike', cooldown: 8.5,
+      skillDesc: 'عباءة حمراء ومطرقة رعد • يضرب البرق ويدمر كل العوائق القريبة!',
+      passive: { coinBonus: 1 }
+    },
+    {
+      id: 'hulk', name: 'العملاق الأخضر', emoji: '💪', primary: '#16a34a', secondary: '#7e22ce', glow: 'rgba(22, 163, 74, 0.75)', rope: '#4ade80',
+      shape: 'hulk', price: 55, skillName: 'قفزة التحطيم', skillType: 'hulk_smash', cooldown: 7.5,
+      skillDesc: 'جسم ضخم عريض • يقفز في أي وقت حتى في الهواء ويكسر العوائق!',
+      passive: { midAirJump: true }
+    },
+    {
+      id: 'angel', name: 'الملاك المجنح', emoji: '🪽', primary: '#f8fafc', secondary: '#fde047', glow: 'rgba(255, 255, 255, 0.85)', rope: '#fef08a',
+      shape: 'angel', price: 60, skillName: 'تحليق الأجنحة', skillType: 'wing_glide', cooldown: 7,
+      skillDesc: 'أجنحة بيضاء وهالة نور • يبطئ السقوط تلقائياً ويرتفع بأجنحته!',
+      passive: { gravityMult: 0.78 }
+    },
+    {
+      id: 'demon', name: 'فارس الجحيم', emoji: '😈', primary: '#991b1b', secondary: '#f97316', glow: 'rgba(249, 115, 22, 0.8)', rope: '#fb923c',
+      shape: 'demon', price: 65, skillName: 'انفجار اللهب', skillType: 'hell_blast', cooldown: 8,
+      skillDesc: 'قرون نارية وذيل • يحرق العوائق ويعطيك +2 عملة إضافية عند كل منصة!',
+      passive: { coinBonus: 2 }
+    },
+    {
+      id: 'ninja', name: 'نينجا الظل', emoji: '🥷', primary: '#0f172a', secondary: '#38bdf8', glow: 'rgba(56, 189, 248, 0.7)', rope: '#38bdf8',
+      shape: 'ninja', price: 70, skillName: 'انتقال الظل', skillType: 'shadow_blink', cooldown: 5.5,
+      skillDesc: 'وشاح نينجا متطاير • ينتقل آنياً للأمام عبر العوائق دون إصابة!',
+      passive: { ropeWindowBonus: 0.5 }
+    },
+    {
+      id: 'samurai', name: 'الساموراي الذهبي', emoji: '⚔️', primary: '#d97706', secondary: '#fef08a', glow: 'rgba(251, 191, 36, 0.75)', rope: '#fde047',
+      shape: 'samurai', price: 75, skillName: 'ضربة السيف', skillType: 'katana_slash', cooldown: 7,
+      skillDesc: 'خوذة ساموراي وسيف • يقطع العوائق أمامه ويحولها لعملات ذهبية!',
+      passive: { coinBonus: 1 }
+    },
+    {
+      id: 'wizard', name: 'ساحر الزمن', emoji: '🧙', primary: '#7c3aed', secondary: '#c084fc', glow: 'rgba(192, 132, 252, 0.8)', rope: '#e879f9',
+      shape: 'wizard', price: 80, skillName: 'إيقاف الزمن', skillType: 'time_freeze', cooldown: 10,
+      skillDesc: 'قبعة ساحر وعصا سحرية • يبطئ العالم 4 ثوانٍ كاملة للتصويب الدقيق!',
+      passive: { ropeWindowBonus: 0.7 }
+    },
+    {
+      id: 'cyborg', name: 'السايبورغ الليزري', emoji: '🦾', primary: '#06b6d4', secondary: '#f43f5e', glow: 'rgba(6, 182, 212, 0.8)', rope: '#22d3ee',
+      shape: 'cyborg', price: 85, skillName: 'شعاع الليزر', skillType: 'laser_beam', cooldown: 7.5,
+      skillDesc: 'عين ليزر حمراء • يطلق ليزر يمسح العوائق ويجذب كل العملات!',
+      passive: { rangeBonus: 70 }
+    },
+    {
+      id: 'king', name: 'الملك المتوّج', emoji: '👑', primary: '#eab308', secondary: '#a855f7', glow: 'rgba(234, 179, 8, 0.85)', rope: '#fef08a',
+      shape: 'king', price: 90, skillName: 'مطر الذهب', skillType: 'gold_rain', cooldown: 9,
+      skillDesc: 'تاج ملكي وعباءة أرجوانية • يمطر 8 عملات ذهبية حولك + مضاعف عملات!',
+      passive: { coinBonus: 2 }
+    },
+    {
+      id: 'phoenix', name: 'طائر العنقاء', emoji: '🔥', primary: '#f97316', secondary: '#fde047', glow: 'rgba(249, 115, 22, 0.85)', rope: '#fdba74',
+      shape: 'phoenix', price: 95, skillName: 'نهوض العنقاء', skillType: 'phoenix_rise', cooldown: 10,
+      skillDesc: 'أجنحة لهب ذهبية • يرفعك عالياً من الهاوية ويمنحك درعاً نارياً!',
+      passive: { gravityMult: 0.82 }
+    },
+    {
+      id: 'frost', name: 'ملك الجليد', emoji: '❄️', primary: '#7dd3fc', secondary: '#e0f2fe', glow: 'rgba(125, 211, 252, 0.85)', rope: '#bae6fd',
+      shape: 'frost', price: 100, skillName: 'تجميد العوائق', skillType: 'ice_freeze', cooldown: 8.5,
+      skillDesc: 'تاج جليدي وهالة ثلج • يجمد العوائق ويجعلها غير ضارة 3.5 ثانية!',
+      passive: { ropeWindowBonus: 0.45 }
+    },
+    {
+      id: 'magneto', name: 'سيد المغناطيس', emoji: '🧲', primary: '#9333ea', secondary: '#ef4444', glow: 'rgba(147, 51, 234, 0.8)', rope: '#d8b4fe',
+      shape: 'magneto', price: 105, skillName: 'جاذبية عظمى', skillType: 'mega_magnet', cooldown: 8,
+      skillDesc: 'خوذة مغناطيسية وعباءة • يسحب كل العملات في الشاشة لمدة 6 ثوانٍ!',
+      passive: { magnetBonus: 4 }
+    },
+    {
+      id: 'astronaut', name: 'رائد الفضاء', emoji: '👨‍🚀', primary: '#e2e8f0', secondary: '#38bdf8', glow: 'rgba(56, 189, 248, 0.75)', rope: '#7dd3fc',
+      shape: 'astronaut', price: 110, skillName: 'انعدام الجاذبية', skillType: 'zero_gravity', cooldown: 8,
+      skillDesc: 'خوذة فضاء وحقيبة نفاثة • يطفو في الهواء بجاذبية خفيفة جداً!',
+      passive: { gravityMult: 0.72 }
+    },
+    {
+      id: 'dragon', name: 'فارس التنين', emoji: '🐉', primary: '#059669', secondary: '#fbbf24', glow: 'rgba(16, 185, 129, 0.8)', rope: '#34d399',
+      shape: 'dragon', price: 115, skillName: 'نَفَس التنين', skillType: 'dragon_breath', cooldown: 7.5,
+      skillDesc: 'قرون تنين وأجنحة خضراء • يطلق موجة نار تفتح الطريق للأمام!',
+      passive: { speedMult: 1.08 }
+    },
+    {
+      id: 'cyberwolf', name: 'الذئب الآلي', emoji: '🐺', primary: '#64748b', secondary: '#22d3ee', glow: 'rgba(34, 211, 238, 0.8)', rope: '#67e8f9',
+      shape: 'wolf', price: 120, skillName: 'وثبة الصياد', skillType: 'wolf_pounce', cooldown: 5.5,
+      skillDesc: 'أذنا ذئب ومخالب نيون • ينقض للأمام ويمسك أقرب نقطة تثبيت تلقائياً!',
+      passive: { rangeBonus: 80 }
+    },
+    {
+      id: 'vampire', name: 'كونت الليل', emoji: '🧛', primary: '#4c0519', secondary: '#f43f5e', glow: 'rgba(244, 63, 94, 0.8)', rope: '#fb7185',
+      shape: 'vampire', price: 125, skillName: 'تحول الخفاش', skillType: 'bat_swarm', cooldown: 7.5,
+      skillDesc: 'عباءة قرمزية بياقة عالية • يرتفع في الهواء ويمتص طاقة درع!',
+      passive: { gravityMult: 0.84 }
+    },
+    {
+      id: 'guardian', name: 'الحارس المدرع', emoji: '🛡️', primary: '#0284c7', secondary: '#fbbf24', glow: 'rgba(2, 132, 199, 0.8)', rope: '#38bdf8',
+      shape: 'guardian', price: 130, skillName: 'حصن الأمان', skillType: 'fortress_shield', cooldown: 10,
+      skillDesc: 'درع ثقيل وخوذة فارس • يبدأ بدرع دائم + يجدد الدرع عند تفعيل المهارة!',
+      passive: { startShield: true }
+    },
+    {
+      id: 'galaxy', name: 'سيد المجرة', emoji: '🌌', primary: '#4f46e5', secondary: '#ec4899', glow: 'rgba(236, 72, 153, 0.85)', rope: '#f472b6',
+      shape: 'galaxy', price: 140, skillName: 'ثقب دودي', skillType: 'wormhole_warp', cooldown: 8.5,
+      skillDesc: 'هالة كواكب تدور حوله • يقفز عبر الفضاء ويتخطى الخطر فوراً!',
+      passive: { rangeBonus: 85, coinBonus: 1 }
+    },
+    {
+      id: 'pirate', name: 'قرصان السماء', emoji: '🏴‍☠️', primary: '#b45309', secondary: '#f8fafc', glow: 'rgba(245, 158, 11, 0.75)', rope: '#fcd34d',
+      shape: 'pirate', price: 145, skillName: 'كنز القراصنة', skillType: 'treasure_chest', cooldown: 8,
+      skillDesc: 'قبعة قرصان وعصابة عين • يفجر صندوق كنز يعطيك 10 عملات مباشرة!',
+      passive: { coinBonus: 2 }
+    },
+    {
+      id: 'omega', name: 'أوميجا المطلق', emoji: '💠', primary: '#ffffff', secondary: '#38bdf8', glow: 'rgba(255, 255, 255, 0.95)', rope: '#ffffff',
+      shape: 'omega', price: 180, skillName: 'القوة المطلقة', skillType: 'omega_overdrive', cooldown: 9,
+      skillDesc: 'تاج نوراني + أجنحة + درع • يجمع الطيران + الدرع + المغناطيس معاً!',
+      passive: { rangeBonus: 100, coinBonus: 3, startShield: true, speedMult: 1.1 }
+    }
   ];
 
   let saveData = {
-    profile: { nickname: 'النينجا الصغير', avatar: '🥷', avatarType: 'emoji' },
+    profile: { nickname: 'النينجا الصغير', avatar: '🦸', avatarType: 'emoji' },
     coins: 0,
     unlockedSkins: ['cyan'],
     selectedSkin: 'cyan',
-    upgrades: { rangeLvl: 0, magnetLvl: 0, startShieldLvl: 0 },
+    upgrades: {
+      rangeLvl: 0,
+      magnetLvl: 0,
+      startShieldLvl: 0,
+      ropeTimeLvl: 0,
+      coinMultLvl: 0,
+      skillCdLvl: 0,
+      dashBoostLvl: 0,
+      luckLvl: 0
+    },
     settings: { soundOn: true, shakeOn: true, chainMode: true, tutorialDone: false },
     stats: { totalCoinsEarned: 0, maxCombo: 1, totalRuns: 0 },
     scores: [],
@@ -2344,7 +2582,12 @@
       upgrades: {
         rangeLvl: Math.max(Number(target.upgrades?.rangeLvl) || 0, Number(candidate.upgrades?.rangeLvl) || 0),
         magnetLvl: Math.max(Number(target.upgrades?.magnetLvl) || 0, Number(candidate.upgrades?.magnetLvl) || 0),
-        startShieldLvl: Math.max(Number(target.upgrades?.startShieldLvl) || 0, Number(candidate.upgrades?.startShieldLvl) || 0)
+        startShieldLvl: Math.max(Number(target.upgrades?.startShieldLvl) || 0, Number(candidate.upgrades?.startShieldLvl) || 0),
+        ropeTimeLvl: Math.max(Number(target.upgrades?.ropeTimeLvl) || 0, Number(candidate.upgrades?.ropeTimeLvl) || 0),
+        coinMultLvl: Math.max(Number(target.upgrades?.coinMultLvl) || 0, Number(candidate.upgrades?.coinMultLvl) || 0),
+        skillCdLvl: Math.max(Number(target.upgrades?.skillCdLvl) || 0, Number(candidate.upgrades?.skillCdLvl) || 0),
+        dashBoostLvl: Math.max(Number(target.upgrades?.dashBoostLvl) || 0, Number(candidate.upgrades?.dashBoostLvl) || 0),
+        luckLvl: Math.max(Number(target.upgrades?.luckLvl) || 0, Number(candidate.upgrades?.luckLvl) || 0)
       },
       settings: {
         ...target.settings,
@@ -2364,16 +2607,12 @@
   function loadSave() {
     try {
       const rawVault = localStorage.getItem(WALLET_VAULT_KEY);
-      if (rawVault) {
-        saveData = mergeSaveCandidate(saveData, JSON.parse(rawVault));
-      }
+      if (rawVault) saveData = mergeSaveCandidate(saveData, JSON.parse(rawVault));
     } catch (e) {}
 
     try {
       const rawMain = localStorage.getItem(SAVE_KEY);
-      if (rawMain) {
-        saveData = mergeSaveCandidate(saveData, JSON.parse(rawMain));
-      }
+      if (rawMain) saveData = mergeSaveCandidate(saveData, JSON.parse(rawMain));
     } catch (e) {}
 
     try {
@@ -2427,14 +2666,14 @@
 
   let friendScore = 0;
   let friendLevel = 1;
-  let friendSkinId = 'emerald';
+  let friendSkinId = 'superman';
   let friendActive = false;
   let friendMotion = { x: 145, y: 300, legSwing: 0, anchored: false, anchorX: 0, anchorY: 0 };
   let friendProfile = { nickname: 'صديق', avatar: '👥', avatarType: 'emoji' };
   let lastH2HOutcome = null;
 
   function getSkinById(id) {
-    return SKINS.find(s => s.id === id) || SKINS[0];
+    return HEROES.find(s => s.id === id) || HEROES[0];
   }
 
   function getActiveSkin() {
@@ -2615,15 +2854,18 @@
     if (p && p.avatarType === 'image' && p.avatar) {
       el.innerHTML = `<img src="${p.avatar}" alt="${p.nickname || 'صورة'}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
     } else {
-      el.textContent = (p && p.avatar) || '🥷';
+      el.textContent = (p && p.avatar) || '🦸';
     }
   }
 
   function syncProfileUI() {
     const nick = saveData.profile.nickname || 'النينجا الصغير';
+    const activeHero = getActiveSkin();
     nicknameInput.value = nick;
     headerNickPreview.textContent = nick;
     hudMyNickname.textContent = nick;
+    if (hudHeroClass) hudHeroClass.textContent = `(${activeHero.name})`;
+    if (previewHeroBadge) previewHeroBadge.textContent = `${activeHero.emoji} ${activeHero.name}`;
     renderAvatarIntoElement(headerAvatarPreview, saveData.profile);
     renderAvatarIntoElement(hudMyAvatar, saveData.profile);
     renderAvatarIntoElement(profileBigAvatar, saveData.profile);
@@ -3367,12 +3609,26 @@
     persistSave();
   }
 
+  function getNextRopeWindow() {
+    const heroBonus = getActiveSkin().passive?.ropeWindowBonus || 0;
+    const upgBonus = (saveData.upgrades.ropeTimeLvl || 0) * 0.25;
+    return BASE_ROPE_WINDOW + heroBonus + upgBonus;
+  }
+
   function getMaxGrappleRange() {
-    return 365 + saveData.upgrades.rangeLvl * 35;
+    const heroBonus = getActiveSkin().passive?.rangeBonus || 0;
+    return 375 + (saveData.upgrades.rangeLvl || 0) * 38 + heroBonus;
   }
 
   function getMagnetDuration() {
-    return 6 + saveData.upgrades.magnetLvl * 2.5;
+    const heroBonus = getActiveSkin().passive?.magnetBonus || 0;
+    return 6 + (saveData.upgrades.magnetLvl || 0) * 2.5 + heroBonus;
+  }
+
+  function getHeroSkillCooldownMax() {
+    const baseCd = getActiveSkin().cooldown || 7;
+    const reduction = (saveData.upgrades.skillCdLvl || 0) * 0.65;
+    return Math.max(2.5, baseCd - reduction);
   }
 
   let selectedGameMode = 'classic';
@@ -3406,8 +3662,8 @@
 
   function setMode(m) {
     selectedGameMode = m;
-    const labels = { classic: 'عادي', chase: 'مطاردة', ai: 'ضد AI', friends: 'أصدقاء' };
-    selectedModeLabel.textContent = labels[m] || 'عادي';
+    const labels = { classic: 'عادي لانهائي', chase: 'مطاردة لانهائية', ai: 'ضد AI (20)', friends: 'أصدقاء (20)' };
+    selectedModeLabel.textContent = labels[m] || 'عادي لانهائي';
 
     modesDrawer.classList.remove('hidden');
     modesDrawerChevron.textContent = '▲';
@@ -3444,33 +3700,41 @@
     });
   });
 
+  function isEndlessMode() {
+    return selectedGameMode === 'classic' || selectedGameMode === 'chase';
+  }
+
   function getActiveMaxLevel() {
     if (selectedGameMode === 'ai') return MAX_LEVEL_AI;
     if (selectedGameMode === 'friends') return MAX_LEVEL_FRIENDS;
-    return MAX_LEVEL_CLASSIC;
+    return Infinity;
   }
 
   function computeLevel(platScore) {
-    return Math.min(getActiveMaxLevel(), Math.floor(platScore / PLATFORMS_PER_LEVEL) + 1);
+    const rawLvl = Math.floor(platScore / PLATFORMS_PER_LEVEL) + 1;
+    if (isEndlessMode()) return rawLvl;
+    return Math.min(getActiveMaxLevel(), rawLvl);
   }
 
   function getBiomeTheme(lvl) {
-    if (lvl <= 35) return { id: 'space', label: 'فضاء السيبر', colors: ['#040711', '#0b132b', '#111d3a'] };
-    if (lvl <= 70) return { id: 'dusk', label: 'شفق البنفسج', colors: ['#120821', '#271242', '#3b1854'] };
+    const cycle = ((lvl - 1) % 90) + 1;
+    if (cycle <= 30) return { id: 'space', label: 'فضاء السيبر', colors: ['#040711', '#0b132b', '#111d3a'] };
+    if (cycle <= 60) return { id: 'dusk', label: 'شفق البنفسج', colors: ['#120821', '#271242', '#3b1854'] };
     return { id: 'storm', label: 'عاصفة النيون', colors: ['#050c14', '#0b1d2e', '#143347'] };
   }
 
   function updateInstantHowtoBanner() {
     instantHowtoBanner.classList.toggle('hidden', !gameRunning);
     if (!gameRunning) return;
+    const h = getActiveSkin();
     if (hero.grounded && !chainStartedThisJump) {
-      instantHowtoBanner.textContent = 'الخطوة 1: اقفز في البداية (Space / W / ↑ أو زر قفز) ثم اشبك بالحبل';
+      instantHowtoBanner.textContent = `1) اقفز في البداية (Space / W / ↑) • بطلك: ${h.name} (${h.skillName} بـ R)`;
     } else if (!hero.anchor && !isHoldingGrapple) {
       instantHowtoBanner.textContent = chainModeRequired
-        ? 'اضغط حبل/خطاف (E / F / زر خطاف / لمس) — المنصة لا توقفك بدون حبل/خطاف'
+        ? 'اضغط حبل/خطاف (E / F / زر خطاف / لمس) — المنصات لانهائية، واصل الحبل قبل السقوط'
         : 'اضغط مطولاً على "خطاف" أو E / F للتعلق بالنقطة';
     } else {
-      instantHowtoBanner.textContent = 'مربوط بالحبل/الخطاف — واصل الحبال ولا تتوقف على المنصة';
+      instantHowtoBanner.textContent = `مربوط بالحبل • استخدم "${h.skillName}" (R) أو واصل الحبال للأبد!`;
     }
   }
 
@@ -3531,8 +3795,9 @@
     if (selectedGameMode === 'friends' && wasRunning && score > 0) {
       recordFriendMatchResult(score, level, friendScore, friendLevel, 'COMPARE');
     }
+    const maxTxt = isEndlessMode() ? '∞' : `/${getActiveMaxLevel()}`;
     homeTitle.textContent = 'توقف مؤقت / القائمة';
-    homeSubtitle.textContent = `آخر جولة: المستوى ${level}/${getActiveMaxLevel()} • ${score} منصة`;
+    homeSubtitle.textContent = `آخر جولة: المستوى ${level}${maxTxt} • ${score} منصة`;
     showScreen('screen-home');
   });
 
@@ -3564,6 +3829,9 @@
 
     const skin = getActiveSkin();
     hudAccentDot.style.background = skin.primary;
+    if (shopSelectedHeroName) shopSelectedHeroName.textContent = `${skin.emoji} ${skin.name}`;
+    if (shopSelectedHeroSkill) shopSelectedHeroSkill.textContent = `المهارة: ${skin.skillName} — ${skin.skillDesc}`;
+    if (shopUnlockedCount) shopUnlockedCount.textContent = `${saveData.unlockedSkins.length} / ${HEROES.length} بطل`;
 
     toggleChainBtn.textContent = chainModeRequired ? 'مفعل' : 'متوقف';
     toggleChainBtn.classList.toggle('off', !chainModeRequired);
@@ -3574,15 +3842,19 @@
     toggleShakeBtn.textContent = saveData.settings.shakeOn ? 'مفعل' : 'متوقف';
     toggleShakeBtn.classList.toggle('off', !saveData.settings.shakeOn);
 
-    skinsGrid.innerHTML = SKINS.map(s => {
+    skinsGrid.innerHTML = HEROES.map(s => {
       const unlocked = saveData.unlockedSkins.includes(s.id);
       const selected = saveData.selectedSkin === s.id;
       return `
         <div class="skin-card ${selected ? 'selected' : ''}" data-skin="${s.id}">
-          <div class="skin-orb" style="background:${s.primary}"></div>
+          <div class="hero-badge-preview" style="background:linear-gradient(135deg, ${s.primary}, ${s.secondary});">
+            <span>${s.emoji}</span>
+          </div>
           <div class="skin-title">${s.name}</div>
+          <div class="skin-skill-name">⚡ ${s.skillName}</div>
+          <div class="skin-skill-desc">${s.skillDesc}</div>
           <div class="skin-tag ${unlocked ? 'owned' : ''}">
-            ${selected ? 'مُفعّل' : (unlocked ? 'مملوك' : `${s.price} عملة`)}
+            ${selected ? '✓ البطل النشط' : (unlocked ? 'مملوك (اضغط للتفعيل)' : `🪙 ${s.price} عملة`)}
           </div>
         </div>
       `;
@@ -3591,7 +3863,7 @@
     skinsGrid.querySelectorAll('.skin-card').forEach(el => {
       el.addEventListener('click', () => {
         const id = el.dataset.skin;
-        const s = SKINS.find(x => x.id === id);
+        const s = HEROES.find(x => x.id === id);
         if (!s) return;
         if (saveData.unlockedSkins.includes(id)) {
           saveData.selectedSkin = id;
@@ -3610,9 +3882,14 @@
     });
 
     const upgDefs = [
-      { key: 'rangeLvl', title: 'مدى الخطاف', desc: '+35px مدى لكل مستوى', max: 4, baseCost: 20 },
-      { key: 'magnetLvl', title: 'مدة المغناطيس', desc: '+2.5 ثانية جذب للعملات', max: 4, baseCost: 20 },
-      { key: 'startShieldLvl', title: 'درع البداية', desc: 'ابدأ الجولة بدرع حماية', max: 1, baseCost: 45 }
+      { key: 'rangeLvl', title: 'مدى الخطاف الفائق', desc: '+38px مدى ربط الحبل لكل مستوى', max: 5, baseCost: 20 },
+      { key: 'ropeTimeLvl', title: 'مهلة الحبل الإضافية', desc: '+0.25 ثانية إضافية قبل السقوط', max: 5, baseCost: 25 },
+      { key: 'skillCdLvl', title: 'شحن مهارة البطل', desc: 'يقلل وقت انتظار مهارة البطل 0.65ث', max: 5, baseCost: 30 },
+      { key: 'coinMultLvl', title: 'مضاعف العملات', desc: '+1 عملة إضافية عند كل منصة تعبرها', max: 4, baseCost: 35 },
+      { key: 'magnetLvl', title: 'مدة المغناطيس', desc: '+2.5 ثانية جذب للعملات الذهبية', max: 4, baseCost: 20 },
+      { key: 'dashBoostLvl', title: 'قوة الاندفاع الجوي', desc: 'يزيد سرعة وارتفاع الاندفاع الجوي', max: 4, baseCost: 25 },
+      { key: 'luckLvl', title: 'حظ الصناديق والقدرات', desc: 'يزيد ظهور الدروع والعملات والمغناطيس', max: 4, baseCost: 30 },
+      { key: 'startShieldLvl', title: 'درع البداية الدائم', desc: 'ابدأ كل جولة بدرع حماية تلقائي', max: 1, baseCost: 45 }
     ];
 
     upgradesGrid.innerHTML = upgDefs.map(u => {
@@ -3728,6 +4005,10 @@
         osc.type = 'sawtooth'; osc.frequency.setValueAtTime(340, now); osc.frequency.exponentialRampToValueAtTime(980, now + 0.15);
         gain.gain.setValueAtTime(0.14, now); gain.gain.exponentialRampToValueAtTime(0.005, now + 0.15);
         osc.start(now); osc.stop(now + 0.15);
+      } else if (type === 'skill') {
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(280, now); osc.frequency.exponentialRampToValueAtTime(1180, now + 0.24);
+        gain.gain.setValueAtTime(0.17, now); gain.gain.exponentialRampToValueAtTime(0.005, now + 0.24);
+        osc.start(now); osc.stop(now + 0.24);
       } else if (type === 'gate') {
         osc.type = 'sine'; osc.frequency.setValueAtTime(587.33, now); osc.frequency.exponentialRampToValueAtTime(1174.66, now + 0.15);
         gain.gain.setValueAtTime(0.14, now); gain.gain.exponentialRampToValueAtTime(0.005, now + 0.15);
@@ -3792,7 +4073,7 @@
 
   const GRAVITY = 0.48;
   const MIN_ROPE_DIST = 55;
-  const MAX_PARTICLES = 65;
+  const MAX_PARTICLES = 75;
 
   let gameRunning = false;
   let score = 0;
@@ -3810,6 +4091,11 @@
   let speedLinesTimer = 0;
   let speedLinesColor = '#38bdf8';
   let sonarPulseTimer = 0;
+
+  let heroSkillCooldown = 0;
+  let heroSkillActiveTimer = 0;
+  let heroSkillActiveType = '';
+  let heroMidAirJumpUsed = false;
 
   let aiModeActive = false;
   let aiProgress = 0;
@@ -3853,14 +4139,194 @@
 
   function triggerSonarPulse() {
     if (!gameRunning) return;
-    sonarPulseTimer = 0.55;
+    sonarPulseTimer = 0.65;
     const nearest = findBestAnchorInAir();
     if (nearest) {
-      makeBurst(nearest.x, nearest.y, '#38bdf8', 8);
+      makeBurst(nearest.x, nearest.y, '#38bdf8', 10);
       toastEl.textContent = 'السونار حدد أقرب نقطة تثبيت.';
     } else {
       toastEl.textContent = 'السونار نشط — لا توجد نقطة قريبة حالياً.';
     }
+  }
+
+  function syncHeroSkillButtonUI() {
+    const h = getActiveSkin();
+    if (heroSkillBtnLabel) heroSkillBtnLabel.textContent = h.skillName.slice(0, 10);
+    if (!btnHeroSkill || !heroSkillBtnSub) return;
+    if (heroSkillCooldown > 0) {
+      btnHeroSkill.classList.add('cooldown');
+      heroSkillBtnSub.textContent = `${heroSkillCooldown.toFixed(1)}s`;
+    } else {
+      btnHeroSkill.classList.remove('cooldown');
+      heroSkillBtnSub.textContent = 'جاهزة (R)';
+    }
+  }
+
+  function activateHeroSkill() {
+    if (!gameRunning) return;
+    if (heroSkillCooldown > 0) {
+      toastEl.textContent = `المهارة تشحن (${heroSkillCooldown.toFixed(1)}ث متبقية)`;
+      playSFX('error', 1);
+      return;
+    }
+
+    const h = getActiveSkin();
+    heroSkillCooldown = getHeroSkillCooldownMax();
+    heroSkillActiveType = h.skillType;
+    syncHeroSkillButtonUI();
+    playSFX('skill', 1);
+    makeBurst(hero.x, hero.y, h.primary, 20);
+    triggerShake(6, 0.16);
+    nextRopeDeadline = getNextRopeWindow();
+
+    const destroyNearbyObstacles = () => {
+      let clearedObs = 0;
+      for (const o of obstacles) {
+        if (Math.abs(o.x - hero.x) < 420) {
+          o.cycleTimer = 3.5;
+          makeBurst(o.x, o.y, h.secondary, 10);
+          clearedObs++;
+        }
+      }
+      if (clearedObs > 0) addCoins(clearedObs);
+    };
+
+    switch (h.skillType) {
+      case 'super_flight':
+      case 'omega_overdrive':
+        hero.anchor = null;
+        heroSkillActiveTimer = 2.2;
+        hero.vx = 12.2;
+        hero.vy = -3.5;
+        shieldActive = true;
+        if (h.skillType === 'omega_overdrive') magnetTimer = Math.max(magnetTimer, 5.0);
+        triggerSpeedLines(h.primary, 2.2);
+        toastEl.textContent = `${h.emoji} ${h.skillName}: طيران خارق لا يقهر!`;
+        break;
+
+      case 'bat_grapple':
+      case 'wolf_pounce': {
+        let best = null;
+        let minD = 680;
+        for (const a of anchors) {
+          if (a.broken || a.x < hero.x - 40) continue;
+          const d = Math.hypot(a.x - hero.x, a.y - hero.y);
+          if (d < minD) { minD = d; best = a; }
+        }
+        if (best) {
+          hero.anchor = null;
+          attachAnchor(best);
+          hero.ropeLength = Math.max(MIN_ROPE_DIST, hero.ropeLength * 0.55);
+          hero.vx = Math.max(hero.vx + 4.5, 10.5);
+          toastEl.textContent = `${h.emoji} ${h.skillName}: تم السحب بقوة نحو النقطة!`;
+        } else {
+          hero.vx = Math.max(hero.vx + 5, 9.5);
+          hero.vy = -8.5;
+          toastEl.textContent = `${h.emoji} ${h.skillName}: قفزة خاطفة للأمام!`;
+        }
+        break;
+      }
+
+      case 'flash_dash':
+      case 'shadow_blink':
+      case 'wormhole_warp':
+        hero.anchor = null;
+        hero.x += 175;
+        hero.vx = Math.max(hero.vx + 6, 11.5);
+        hero.vy = -6.2;
+        hero.dashAvailable = true;
+        syncDashButtonUI();
+        triggerSpeedLines(h.secondary, 0.45);
+        makeBurst(hero.x, hero.y, h.secondary, 18);
+        toastEl.textContent = `${h.emoji} ${h.skillName}: انتقال خاطف للأمام!`;
+        break;
+
+      case 'web_swing':
+        hero.anchor = null;
+        hero.vy = -13.2;
+        hero.vx = Math.max(hero.vx + 4.2, 9.8);
+        nextRopeDeadline = getNextRopeWindow() + 0.8;
+        triggerSpeedLines('#ffffff', 0.35);
+        toastEl.textContent = `${h.emoji} شبكة العنكبوت: انطلاقة علوية ومهلة أطول!`;
+        break;
+
+      case 'iron_shield':
+      case 'fortress_shield':
+        shieldActive = true;
+        hero.vy = Math.min(hero.vy, -7.5);
+        hero.vx = Math.max(hero.vx, 8.2);
+        triggerSpeedLines('#fbbf24', 0.3);
+        toastEl.textContent = `${h.emoji} ${h.skillName}: تم تفعيل الدرع الحديدي!`;
+        break;
+
+      case 'thunder_strike':
+      case 'hell_blast':
+      case 'katana_slash':
+      case 'laser_beam':
+      case 'dragon_breath':
+        lightningAlpha = 0.38;
+        destroyNearbyObstacles();
+        hero.vx = Math.max(hero.vx + 3.5, 9.0);
+        hero.vy = Math.min(hero.vy, -6.5);
+        triggerSpeedLines(h.primary, 0.4);
+        toastEl.textContent = `${h.emoji} ${h.skillName}: تم تدمير العوائق الأمامية!`;
+        break;
+
+      case 'hulk_smash':
+        hero.anchor = null;
+        hero.vy = -14.8;
+        hero.vx = Math.max(hero.vx + 4, 9.6);
+        destroyNearbyObstacles();
+        triggerShake(9, 0.22);
+        toastEl.textContent = `${h.emoji} قفزة العملاق: ارتفاع هائل وتحطيم!`;
+        break;
+
+      case 'wing_glide':
+      case 'phoenix_rise':
+      case 'zero_gravity':
+      case 'bat_swarm':
+        hero.anchor = null;
+        heroSkillActiveTimer = 2.6;
+        hero.vy = -11.5;
+        hero.vx = Math.max(hero.vx + 3, 8.6);
+        if (h.skillType === 'phoenix_rise' || h.skillType === 'bat_swarm') shieldActive = true;
+        toastEl.textContent = `${h.emoji} ${h.skillName}: تحليق خفيف في الهواء!`;
+        break;
+
+      case 'time_freeze':
+      case 'ice_freeze':
+        slowMoTimer = Math.max(slowMoTimer, 4.0);
+        if (h.skillType === 'ice_freeze') destroyNearbyObstacles();
+        toastEl.textContent = `${h.emoji} ${h.skillName}: تباطؤ الزمن 4 ثوانٍ!`;
+        break;
+
+      case 'gold_rain':
+      case 'treasure_chest': {
+        const bonusCoins = h.skillType === 'treasure_chest' ? 10 : 8;
+        addCoins(bonusCoins);
+        for (let i = 0; i < bonusCoins; i++) {
+          coins.push({
+            x: hero.x + 80 + i * 34,
+            y: hero.y - 30 - (i % 3) * 24,
+            spin: i * 0.5,
+            collected: false
+          });
+        }
+        toastEl.textContent = `${h.emoji} ${h.skillName}: +${bonusCoins} عملة ذهبية!`;
+        break;
+      }
+
+      case 'mega_magnet':
+        magnetTimer = Math.max(magnetTimer, 6.5);
+        toastEl.textContent = `${h.emoji} جاذبية عظمى: جذب كل العملات 6.5 ثانية!`;
+        break;
+
+      default:
+        triggerSonarPulse();
+        hero.vy = Math.min(hero.vy, -7.2);
+        break;
+    }
+    updatePowersUI();
   }
 
   function updateRivalRadarUI() {
@@ -3962,7 +4428,9 @@
   }
 
   function updatePowersUI() {
+    const h = getActiveSkin();
     const badges = [];
+    if (heroSkillActiveTimer > 0) badges.push(`<div class="power-tag" style="border-color:#f43f5e;color:#fecdd3;">${h.emoji} ${h.skillName} ${heroSkillActiveTimer.toFixed(1)}ث</div>`);
     if (shieldActive) badges.push('<div class="power-tag" style="border-color:#10b981;color:#6ee7b7;">درع نشط</div>');
     if (magnetTimer > 0) badges.push(`<div class="power-tag" style="border-color:#fbbf24;color:#fde047;">مغناطيس ${magnetTimer.toFixed(1)}ث</div>`);
     if (slowMoTimer > 0) badges.push(`<div class="power-tag" style="border-color:#a855f7;color:#d8b4fe;">تباطؤ الزمن ${slowMoTimer.toFixed(1)}ث</div>`);
@@ -4014,11 +4482,20 @@
     let chosen = null;
     let bestDist = maxRange;
     for (const a of anchors) {
-      if (a.broken || a.x < hero.x - 80) continue;
+      if (a.broken || a.x < hero.x - 85) continue;
       const d = Math.hypot(a.x - hero.x, a.y - hero.y);
       if (d < bestDist) { bestDist = d; chosen = a; }
     }
     return chosen;
+  }
+
+  // ضمان توليد المنصات ونقاط التثبيت باستمرار للأبد أمام اللاعب
+  function ensureWorldAhead() {
+    let guard = 0;
+    while (platforms.length > 0 && platforms[platforms.length - 1].x < hero.x + width * 2.2 && guard < 24) {
+      spawnNextSegment();
+      guard++;
+    }
   }
 
   function resetGame() {
@@ -4032,18 +4509,24 @@
     releaseHangTimer = 0;
     chainStartedThisJump = false;
     nextRopeDeadline = 0;
+    heroSkillCooldown = 0;
+    heroSkillActiveTimer = 0;
+    heroSkillActiveType = '';
+    heroMidAirJumpUsed = false;
     if (chainTimerPill) chainTimerPill.style.display = 'none';
 
+    const skin = getActiveSkin();
     aiModeActive = selectedGameMode === 'ai';
     aiProgress = 0;
     aiLevel = 1;
     hudAiLvlEl.textContent = aiLevel;
-    hudMaxLevelEl.textContent = getActiveMaxLevel();
+    hudMaxLevelEl.textContent = isEndlessMode() ? ' ∞' : `/${getActiveMaxLevel()}`;
 
     friendScore = 0;
     friendLevel = 1;
     friendActive = (selectedGameMode === 'friends');
     syncFriendProfileUI();
+    syncHeroSkillButtonUI();
 
     hudScoreEl.textContent = score;
     hudLevelEl.textContent = level;
@@ -4062,7 +4545,7 @@
     syncActiveModeHudVisibility(gameRunning);
     updateRivalRadarUI();
 
-    shieldActive = (saveData.upgrades.startShieldLvl || 0) > 0;
+    shieldActive = ((saveData.upgrades.startShieldLvl || 0) > 0) || Boolean(skin.passive?.startShield);
     magnetTimer = 0;
     slowMoTimer = 0;
     updatePowersUI();
@@ -4073,9 +4556,9 @@
       toastEl.textContent = `غرفة ${activeRoomCode} • اقفز وواصل الحبال حتى المستوى 20`;
       publishProgress(0, 1, false, true).catch(() => {});
     } else if (chaseActive) {
-      toastEl.textContent = 'موجة المطاردة نشطة — تحرك بسرعة';
+      toastEl.textContent = 'موجة المطاردة اللانهائية نشطة — تحرك بسرعة';
     } else {
-      toastEl.textContent = 'في البداية انطلاقة قفز واحدة، وبعدها استعمل الحبل/الخطاف بدون توقف على المنصات';
+      toastEl.textContent = `${skin.emoji} ${skin.name} جاهز • منصات لانهائية تتولد تلقائياً!`;
     }
 
     isHoldingGrapple = false;
@@ -4091,7 +4574,7 @@
 
     const startY = height * 0.68;
     platforms.push({
-      id: 0, x: 60, y: startY, w: 170, h: 20, baseY: startY,
+      id: 0, x: 60, y: startY, w: 175, h: 20, baseY: startY,
       moveAmp: 0, moveSpeed: 0, phase: 0, type: 'normal', crackedTimer: 0, falling: false, cleared: true
     });
 
@@ -4106,31 +4589,31 @@
 
     cameraX = 0;
     initEnvironment();
-    for (let i = 1; i <= 8; i++) spawnNextSegment();
+    for (let i = 1; i <= 14; i++) spawnNextSegment();
   }
 
   function spawnNextSegment() {
     const lastPlat = platforms[platforms.length - 1];
     const nextId = lastPlat.id + 1;
-    const maxLvl = getActiveMaxLevel();
-    const segLvl = Math.min(maxLvl, Math.floor(nextId / PLATFORMS_PER_LEVEL) + 1);
-    const diffFactor = Math.min(1, segLvl / maxLvl);
+    const segLvl = Math.floor(nextId / PLATFORMS_PER_LEVEL) + 1;
+    // صعوبة متدرجة بسلاسة في الوضع اللانهائي بدون فجوات مستحيلة أبداً
+    const diffFactor = Math.min(1, segLvl / 65);
 
-    const gap = Math.min(365, 175 + diffFactor * 140 + Math.random() * 65);
-    const platW = Math.max(82, 150 - diffFactor * 55);
+    const gap = Math.min(345, 175 + diffFactor * 125 + Math.random() * 55);
+    const platW = Math.max(92, 152 - diffFactor * 48);
     const nextX = lastPlat.x + lastPlat.w + gap;
     const nextY = Math.max(height * 0.42, Math.min(height * 0.78, lastPlat.baseY + (Math.random() * 140 - 70)));
 
     let platType = 'normal';
     const rPlat = Math.random();
-    if (rPlat < 0.16) platType = 'boost';
-    else if (segLvl >= 2 && rPlat < 0.38) platType = 'cracked';
+    if (rPlat < 0.17) platType = 'boost';
+    else if (segLvl >= 2 && rPlat < 0.36) platType = 'cracked';
 
-    const isMoving = platType === 'normal' && segLvl >= 2 && Math.random() < 0.45;
+    const isMoving = platType === 'normal' && segLvl >= 2 && Math.random() < 0.44;
     platforms.push({
       id: nextId, x: nextX, y: nextY, baseY: nextY, w: platW, h: 20,
       moveAmp: isMoving ? 24 + Math.random() * 26 : 0,
-      moveSpeed: isMoving ? 0.02 + diffFactor * 0.025 : 0,
+      moveSpeed: isMoving ? 0.02 + diffFactor * 0.022 : 0,
       phase: Math.random() * Math.PI * 2,
       type: platType, crackedTimer: 0, falling: false, cleared: false
     });
@@ -4142,15 +4625,15 @@
     const rAnc = Math.random();
     if (rAnc < 0.28) anchorKind = 'slingshot';
     else if (segLvl >= 2 && rAnc < 0.58) anchorKind = 'moving';
-    else if (segLvl >= 2 && rAnc < 0.84) anchorKind = 'timed';
+    else if (segLvl >= 2 && rAnc < 0.82) anchorKind = 'timed';
 
     anchors.push({
       x: anchorX, y: anchorY, baseX: anchorX, baseY: anchorY,
-      kind: anchorKind, holdTime: 0, maxHold: 1.05, charge: 0, broken: false,
+      kind: anchorKind, holdTime: 0, maxHold: 1.15, charge: 0, broken: false,
       pulse: Math.random() * Math.PI * 2, phase: Math.random() * Math.PI * 2
     });
 
-    if (Math.random() < 0.34) {
+    if (Math.random() < 0.36) {
       dashGates.push({
         x: lastPlat.x + lastPlat.w + gap * 0.62,
         y: Math.max(95, anchorY + 35),
@@ -4158,7 +4641,8 @@
       });
     }
 
-    const coinCount = 2 + Math.floor(Math.random() * 2);
+    const luckBonus = (saveData.upgrades.luckLvl || 0) * 0.05;
+    const coinCount = 2 + Math.floor(Math.random() * 2) + (Math.random() < luckBonus ? 1 : 0);
     for (let c = 0; c < coinCount; c++) {
       const ratio = (c + 1) / (coinCount + 1);
       coins.push({
@@ -4168,7 +4652,7 @@
       });
     }
 
-    if (Math.random() < 0.22) {
+    if (Math.random() < 0.22 + luckBonus) {
       const pTypes = ['shield', 'magnet', 'slowmo'];
       powerups.push({
         x: anchorX + 35, y: Math.max(100, anchorY + 45),
@@ -4177,16 +4661,15 @@
       });
     }
 
-    if (gap > 260) {
-      anchors.push({
-        x: lastPlat.x + lastPlat.w + gap * 0.78, y: Math.max(85, anchorY - 15),
-        baseX: lastPlat.x + lastPlat.w + gap * 0.78, baseY: Math.max(85, anchorY - 15),
-        kind: 'normal', holdTime: 0, maxHold: 1.05, charge: 0, broken: false,
-        pulse: Math.random() * Math.PI * 2, phase: Math.random() * Math.PI * 2
-      });
-    }
+    // نقطة تثبيت إضافية دائماً لضمان عدم انقطاع السلسلة في أي مسافة
+    anchors.push({
+      x: lastPlat.x + lastPlat.w + gap * 0.82, y: Math.max(85, anchorY - 12),
+      baseX: lastPlat.x + lastPlat.w + gap * 0.82, baseY: Math.max(85, anchorY - 12),
+      kind: 'normal', holdTime: 0, maxHold: 1.2, charge: 0, broken: false,
+      pulse: Math.random() * Math.PI * 2, phase: Math.random() * Math.PI * 2
+    });
 
-    if (segLvl >= 2 && Math.random() < 0.5) {
+    if (segLvl >= 2 && Math.random() < 0.48) {
       const baseObsY = Math.min(height - 95, Math.max(lastPlat.baseY, nextY) - 12);
       obstacles.push({
         x: anchorX + (Math.random() * 45 - 22), y: baseObsY, baseY: baseObsY,
@@ -4215,8 +4698,9 @@
     hero.standingOn = null;
     swungThisAir = true;
     chainStartedThisJump = true;
-    nextRopeDeadline = NEXT_ROPE_WINDOW;
-    if (hero.vx < 3.7) hero.vx += 2.2;
+    nextRopeDeadline = getNextRopeWindow();
+    const speedMult = skin.passive?.speedMult || 1;
+    if (hero.vx < 3.8 * speedMult) hero.vx += 2.25 * speedMult;
     syncDashButtonUI();
     updateInstantHowtoBanner();
     publishProgress(score, level, false, true).catch(() => {});
@@ -4235,7 +4719,7 @@
     isHoldingGrapple = false;
     releaseHangTimer = 0.08;
     chainStartedThisJump = true;
-    nextRopeDeadline = NEXT_ROPE_WINDOW;
+    nextRopeDeadline = getNextRopeWindow();
     syncDashButtonUI();
     hero.vx = Math.max(hero.vx + 6.5, 11.4);
     hero.vy = Math.min(hero.vy - 4.5, -6.8);
@@ -4257,7 +4741,7 @@
     hero.anchor = null;
     releaseHangTimer = 0.08;
     chainStartedThisJump = true;
-    nextRopeDeadline = NEXT_ROPE_WINDOW;
+    nextRopeDeadline = getNextRopeWindow();
     syncDashButtonUI();
     updateInstantHowtoBanner();
     hero.vy -= 2.35;
@@ -4270,15 +4754,16 @@
 
   function jump() {
     if (!gameRunning) return;
+    const skin = getActiveSkin();
     if (hero.grounded && !chainStartedThisJump) {
-      const skin = getActiveSkin();
       const plat = hero.standingOn;
       hero.grounded = false;
       hero.standingOn = null;
       swungThisAir = false;
       chainStartedThisJump = true;
-      nextRopeDeadline = chainModeRequired ? NEXT_ROPE_WINDOW : 0;
+      nextRopeDeadline = chainModeRequired ? getNextRopeWindow() : 0;
       hero.dashAvailable = true;
+      heroMidAirJumpUsed = false;
       syncDashButtonUI();
       updateInstantHowtoBanner();
 
@@ -4292,9 +4777,18 @@
         hero.vy = -10.5; hero.vx = 5.7;
         makeBurst(hero.x, hero.y + 18, skin.primary, 10);
         playSFX('jump', combo);
-        toastEl.textContent = 'قفزة البداية تمت! استعمل الحبل/الخطاف الآن ولا تتوقف على المنصات.';
+        toastEl.textContent = 'قفزة البداية تمت! استعمل الحبل/الخطاف الآن.';
       }
       publishProgress(score, level, false, true).catch(() => {});
+    } else if (skin.passive?.midAirJump && !heroMidAirJumpUsed && !hero.anchor) {
+      // ميزة العملاق الأخضر: قفزة هوائية إضافية
+      heroMidAirJumpUsed = true;
+      hero.vy = -10.2;
+      hero.vx = Math.max(hero.vx, 6.4);
+      nextRopeDeadline = getNextRopeWindow();
+      makeBurst(hero.x, hero.y + 18, skin.primary, 12);
+      playSFX('jump', combo);
+      toastEl.textContent = '💪 قفزة هوائية إضافية للعملاق!';
     }
   }
 
@@ -4307,8 +4801,10 @@
     if (hero.grounded || !hero.dashAvailable) return;
     hero.dashAvailable = false;
     syncDashButtonUI();
-    hero.vx = Math.max(hero.vx + 5.5, 9.2);
-    hero.vy = Math.min(hero.vy - 3.2, -3.5);
+    const dashLvlBonus = (saveData.upgrades.dashBoostLvl || 0) * 0.7;
+    hero.vx = Math.max(hero.vx + 5.5 + dashLvlBonus, 9.2 + dashLvlBonus);
+    hero.vy = Math.min(hero.vy - 3.2 - dashLvlBonus * 0.3, -3.5);
+    nextRopeDeadline = Math.max(nextRopeDeadline, getNextRopeWindow() * 0.85);
     triggerSpeedLines('#10b981', 0.25);
     makeBurst(hero.x, hero.y, '#10b981', 12);
     triggerShake(4, 0.1);
@@ -4323,7 +4819,7 @@
     hero.vx = Math.max(hero.vx, 6.5);
     hero.anchor = null;
     hero.dashAvailable = true;
-    nextRopeDeadline = NEXT_ROPE_WINDOW;
+    nextRopeDeadline = getNextRopeWindow();
     syncDashButtonUI();
     makeBurst(hero.x, hero.y, '#10b981', 16);
     triggerShake(7, 0.2);
@@ -4365,6 +4861,7 @@
     }
     persistSave();
 
+    const maxTxt = isEndlessMode() ? '∞' : `/${getActiveMaxLevel()}`;
     if (customTitle) {
       homeTitle.textContent = customTitle;
     } else if (selectedGameMode === 'friends' && isRaceFinish) {
@@ -4372,9 +4869,9 @@
     } else if (isRaceFinish) {
       homeTitle.textContent = won ? 'فوز في السباق' : 'الذكاء الاصطناعي سبقك';
     } else {
-      homeTitle.textContent = won ? 'إتمام الـ 100 مستوى' : 'GAME OVER';
+      homeTitle.textContent = won ? 'إنجاز أسطوري' : 'GAME OVER';
     }
-    homeSubtitle.textContent = `${reason} • المستوى ${level}/${getActiveMaxLevel()} • ${score} منصة`;
+    homeSubtitle.textContent = `${reason} • المستوى ${level}${maxTxt} • ${score} منصة`;
     showScreen('screen-home');
   }
 
@@ -4384,7 +4881,7 @@
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
       e.preventDefault();
       if (!gameRunning) return;
-      if (hero.grounded && !chainStartedThisJump) jump();
+      jump();
     } else if (e.code === 'KeyE' || e.code === 'KeyF') {
       e.preventDefault();
       if (!gameRunning) return;
@@ -4393,6 +4890,9 @@
     } else if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyD' || e.code === 'ArrowRight') {
       e.preventDefault();
       airDash();
+    } else if (e.code === 'KeyR') {
+      e.preventDefault();
+      activateHeroSkill();
     } else if (e.code === 'KeyQ') {
       e.preventDefault();
       triggerSonarPulse();
@@ -4407,6 +4907,7 @@
   });
 
   btnJump.addEventListener('pointerdown', (e) => { e.stopPropagation(); jump(); });
+  btnHeroSkill.addEventListener('pointerdown', (e) => { e.stopPropagation(); activateHeroSkill(); });
   btnDash.addEventListener('pointerdown', (e) => { e.stopPropagation(); airDash(); });
   btnGrapple.addEventListener('pointerdown', (e) => {
     e.stopPropagation();
@@ -4465,6 +4966,18 @@
     }
 
     if (!gameRunning) return;
+
+    // توليد المنصات ونقاط التثبيت باستمرار للأبد
+    ensureWorldAhead();
+
+    if (heroSkillCooldown > 0) {
+      heroSkillCooldown = Math.max(0, heroSkillCooldown - rawDt);
+      syncHeroSkillButtonUI();
+    }
+    if (heroSkillActiveTimer > 0) {
+      heroSkillActiveTimer = Math.max(0, heroSkillActiveTimer - rawDt);
+      updatePowersUI();
+    }
 
     if (level >= 7 && Math.random() < 0.007) lightningAlpha = 0.2;
 
@@ -4529,7 +5042,7 @@
     }
 
     if (chaseActive) {
-      const targetSpeed = (2.65 + (level / getActiveMaxLevel()) * 3.1) * worldScale;
+      const targetSpeed = (2.65 + Math.min(1, level / 80) * 3.1) * worldScale;
       chaseWallSpeed += (targetSpeed - chaseWallSpeed) * 0.02;
       chaseWallX += chaseWallSpeed;
       if (chaseWallX < hero.x - width * 0.72) chaseWallX = hero.x - width * 0.72;
@@ -4559,7 +5072,7 @@
         p.crackedTimer += rawDt;
         if (p.crackedTimer >= 0.5) {
           p.falling = true; hero.grounded = false; hero.standingOn = null; hero.dashAvailable = true;
-          nextRopeDeadline = chainModeRequired ? NEXT_ROPE_WINDOW : 0;
+          nextRopeDeadline = chainModeRequired ? getNextRopeWindow() : 0;
           syncDashButtonUI();
           makeBurst(hero.x, p.y, '#f59e0b', 10); triggerShake(4, 0.12);
           toastEl.textContent = 'انهارت المنصة الهشة — اشبك بالحبل قبل السقوط.';
@@ -4577,7 +5090,7 @@
           if (a.holdTime >= a.maxHold) {
             a.broken = true; hero.anchor = null; isHoldingGrapple = false;
             chainStartedThisJump = true;
-            nextRopeDeadline = NEXT_ROPE_WINDOW;
+            nextRopeDeadline = getNextRopeWindow();
             syncDashButtonUI();
             makeBurst(a.x, a.y, '#f43f5e', 12); triggerShake(5, 0.12);
             playSFX('error', 1); toastEl.textContent = 'انهارت نقطة التثبيت المؤقتة — اشبك بالحبل التالي.';
@@ -4622,16 +5135,16 @@
       hero.standingOn = null;
 
       if (chainModeRequired) {
-        if (!hero.anchor && !isHoldingGrapple) {
+        if (!hero.anchor && !isHoldingGrapple && heroSkillActiveTimer <= 0) {
           nextRopeDeadline = Math.max(0, nextRopeDeadline - rawDt);
         } else {
-          nextRopeDeadline = NEXT_ROPE_WINDOW;
+          nextRopeDeadline = getNextRopeWindow();
         }
         if (chainTimerPill && chainTimerVal) {
           chainTimerPill.style.display = 'inline-flex';
           chainTimerVal.textContent = `${nextRopeDeadline.toFixed(1)}s`;
         }
-        if (chainStartedThisJump && !hero.anchor && !isHoldingGrapple && nextRopeDeadline <= 0) {
+        if (chainStartedThisJump && !hero.anchor && !isHoldingGrapple && heroSkillActiveTimer <= 0 && nextRopeDeadline <= 0) {
           if (shieldActive) {
             rescueFromFall();
           } else {
@@ -4647,9 +5160,15 @@
         chainTimerPill.style.display = 'none';
       }
 
-      const gravScale = releaseHangTimer > 0 ? 0.55 : 1;
+      const passiveGrav = skin.passive?.gravityMult || 1;
+      const skillGrav = (heroSkillActiveTimer > 0 && ['super_flight', 'omega_overdrive', 'wing_glide', 'phoenix_rise', 'zero_gravity', 'bat_swarm'].includes(heroSkillActiveType)) ? 0.12 : 1;
+      const gravScale = (releaseHangTimer > 0 ? 0.55 : 1) * passiveGrav * skillGrav;
       hero.vy += GRAVITY * gravScale;
-      if (level >= 7) hero.vx += 0.035;
+      if (heroSkillActiveTimer > 0 && (heroSkillActiveType === 'super_flight' || heroSkillActiveType === 'omega_overdrive')) {
+        hero.vy *= 0.88;
+        hero.vx = Math.max(hero.vx, 11.8);
+      }
+      if (level >= 7) hero.vx += 0.032;
       hero.x += hero.vx; hero.y += hero.vy; hero.vx *= 0.996;
 
       if (hero.anchor) {
@@ -4673,119 +5192,98 @@
         }
       }
 
-      if (hero.vy >= 0) {
+      // احتساب المنصات التي يتم عبورها تلقائياً لضمان استمرار التوليد والعداد اللانهائي
+      for (const p of platforms) {
+        if (!p.cleared && hero.x > p.x + p.w * 0.5) {
+          p.cleared = true;
+          const prevLevel = level;
+          if (swungThisAir || hero.anchor || isHoldingGrapple || heroSkillActiveTimer > 0) {
+            combo++;
+            saveData.stats.maxCombo = Math.max(saveData.stats.maxCombo || 1, combo);
+            persistSave();
+            advanceMission('combo', combo);
+          }
+          updateComboUI();
+
+          score += 1;
+          level = computeLevel(score);
+          hudScoreEl.textContent = score;
+          hudLevelEl.textContent = level;
+          advanceMission('platforms', 1);
+          updateRivalRadarUI();
+          updateInstantHowtoBanner();
+
+          const passiveCoinBonus = (skin.passive?.coinBonus || 0) + (saveData.upgrades.coinMultLvl || 0);
+          if (passiveCoinBonus > 0) addCoins(passiveCoinBonus);
+
+          const reached20InFriends = (selectedGameMode === 'friends' && level >= MAX_LEVEL_FRIENDS);
+          if (selectedGameMode === 'friends') {
+            publishProgress(score, level, reached20InFriends, true).catch(() => {});
+          }
+
+          if (reached20InFriends) {
+            finishMatch({
+              won: true,
+              reason: `WINNER • وصلت للمستوى ${MAX_LEVEL_FRIENDS} أولاً`,
+              isRaceFinish: true,
+              customTitle: 'WINNER'
+            });
+            return;
+          }
+
+          if (aiModeActive && score >= MAX_LEVEL_AI * PLATFORMS_PER_LEVEL) {
+            finishMatch({
+              won: true,
+              reason: 'عبرت خط النهاية في المستوى 20 أولاً',
+              isRaceFinish: true
+            });
+            return;
+          }
+
+          if (level > prevLevel) {
+            triggerLevelTransitionEffect(level);
+          } else if (combo >= 2) {
+            const bonus = combo - 1;
+            addCoins(bonus);
+            toastEl.textContent = `عبور منصة • كومبو x${combo} (+${bonus + passiveCoinBonus} عملة)`;
+          }
+        }
+      }
+
+      if (!chainModeRequired && hero.vy > 0 && !hero.anchor) {
         for (const p of platforms) {
           if (p.falling) continue;
-          const withinX = hero.x >= p.x - 8 && hero.x <= p.x + p.w + 8;
+          const withinX = hero.x + 11 > p.x && hero.x - 11 < p.x + p.w;
           const feetY = hero.y + 22;
           if (withinX && feetY >= p.y && feetY <= p.y + p.h + 14) {
-            const hasActiveRope = Boolean(hero.anchor || isHoldingGrapple);
-
-            if (!hasActiveRope && chainModeRequired) {
-              if (!p.cleared) {
-                p.cleared = true;
-                score += 1;
-                level = computeLevel(score);
-                hudScoreEl.textContent = score;
-                hudLevelEl.textContent = level;
-                advanceMission('platforms', 1);
-                updateRivalRadarUI();
-                spawnNextSegment();
-              }
-              hero.y = p.y - 22;
-              hero.vy = Math.max(hero.vy, 4.2);
-              hero.vx = Math.max(hero.vx * 0.9, 3.6);
-              makeBurst(hero.x, p.y, '#f59e0b', 7);
-              playSFX('land', 1);
-              toastEl.textContent = 'لم تضغط حبل/خطاف — المنصة لم توقفك! اضغط حبل/خطاف فوراً قبل السقوط.';
-              updateInstantHowtoBanner();
-              continue;
-            }
-
+            hero.grounded = true;
+            hero.standingOn = p;
             hero.y = p.y - 22;
+            hero.vy = 0;
+            hero.vx *= 0.45;
             hero.dashAvailable = true;
+            heroMidAirJumpUsed = false;
             syncDashButtonUI();
-            let landColor = skin.primary;
-            if (p.type === 'boost') {
-              landColor = '#10b981';
-              hero.vy = -13.5;
-              hero.vx = Math.max(hero.vx, 7.6);
-              playSFX('boost', combo);
-            } else {
-              hero.vy = -8.5;
-              hero.vx = Math.max(hero.vx, 6.2);
-              playSFX('land', combo);
-            }
-            makeBurst(hero.x, p.y, landColor, 12);
-            triggerShake(3.2, 0.08);
-
-            if (!p.cleared) {
-              p.cleared = true;
-              const prevLevel = level;
-              if (swungThisAir || hasActiveRope) {
-                combo++;
-                saveData.stats.maxCombo = Math.max(saveData.stats.maxCombo || 1, combo);
-                persistSave();
-                advanceMission('combo', combo);
-              } else if (combo > 1) {
-                combo = 1;
-              }
-              updateComboUI();
-
-              score += 1;
-              level = computeLevel(score);
-              hudScoreEl.textContent = score;
-              hudLevelEl.textContent = level;
-              advanceMission('platforms', 1);
-              updateRivalRadarUI();
-              updateInstantHowtoBanner();
-
-              const reached20InFriends = (selectedGameMode === 'friends' && level >= MAX_LEVEL_FRIENDS);
-              if (selectedGameMode === 'friends') {
-                publishProgress(score, level, reached20InFriends, true).catch(() => {});
-              }
-
-              if (reached20InFriends) {
-                finishMatch({
-                  won: true,
-                  reason: `WINNER • وصلت للمستوى ${MAX_LEVEL_FRIENDS} أولاً`,
-                  isRaceFinish: true,
-                  customTitle: 'WINNER'
-                });
-                return;
-              }
-
-              if (aiModeActive && score >= MAX_LEVEL_AI * PLATFORMS_PER_LEVEL) {
-                finishMatch({
-                  won: true,
-                  reason: 'عبرت خط النهاية في المستوى 20 أولاً',
-                  isRaceFinish: true
-                });
-                return;
-              }
-
-              if (!aiModeActive && selectedGameMode !== 'friends' && level === MAX_LEVEL_CLASSIC) {
-                finishMatch({
-                  won: true,
-                  reason: 'أتممت جميع المستويات الـ 100',
-                  isRaceFinish: false
-                });
-                return;
-              }
-
-              if (level > prevLevel) {
-                triggerLevelTransitionEffect(level);
-              } else if (combo >= 2) {
-                const bonus = combo - 1;
-                addCoins(bonus);
-                toastEl.textContent = `كومبو x${combo} • +${bonus} عملة — واصل الحبال`;
-                if (combo >= 3) triggerSpeedLines('#fbbf24', 0.22);
-              } else {
-                toastEl.textContent = `المستوى ${level}/${getActiveMaxLevel()} • واصل الحبل بدون توقف`;
-              }
-              spawnNextSegment();
-            }
+            updateInstantHowtoBanner();
+            makeBurst(hero.x, p.y, p.type === 'boost' ? '#10b981' : skin.primary, 10);
+            playSFX('land', 1);
             break;
+          }
+        }
+      }
+
+      if (!chainModeRequired) {
+        const curPlat = hero.standingOn;
+        const idx = platforms.indexOf(curPlat);
+        if (idx >= 0 && idx < platforms.length - 1) {
+          const nextPlat = platforms[idx + 1];
+          const gapEdge = nextPlat.x - (curPlat.x + curPlat.w);
+          const heroToGap = (curPlat.x + curPlat.w) - hero.x;
+          if (heroToGap > 0 && heroToGap < gapEdge * 0.48 && !hero.anchor && !isHoldingGrapple) {
+            const best = findBestAnchorInAir();
+            if (best && best.x > hero.x - 20 && best.x < nextPlat.x + 120) {
+              attachAnchor(best);
+            }
           }
         }
       }
@@ -4793,89 +5291,289 @@
 
     for (const c of coins) {
       if (c.collected) continue;
-      const dist = Math.hypot(hero.x - c.x, hero.y - c.y);
-      if (magnetTimer > 0 && dist < 240) {
-        c.x += ((hero.x - c.x) / Math.max(1, dist)) * 7.5;
-        c.y += ((hero.y - c.y) / Math.max(1, dist)) * 7.5;
+      if (magnetTimer > 0) {
+        const dx = hero.x - c.x; const dy = hero.y - c.y; const d = Math.hypot(dx, dy);
+        if (d < 360 && d > 1) { c.x += (dx / d) * 9.5; c.y += (dy / d) * 9.5; }
       }
-      if (dist < 26) {
+      if (Math.hypot(hero.x - c.x, hero.y - c.y) < 30) {
         c.collected = true;
-        addCoins(1);
+        const gain = 1 + (saveData.upgrades.coinMultLvl || 0) + (skin.passive?.coinBonus || 0);
+        addCoins(gain);
         advanceMission('coins', 1);
-        makeBurst(c.x, c.y, '#fbbf24', 8);
-        playSFX('coin', combo);
+        makeBurst(c.x, c.y, '#fbbf24', 8); playSFX('coin', combo);
       }
     }
 
     for (const pw of powerups) {
       if (pw.collected) continue;
-      if (Math.hypot(hero.x - pw.x, hero.y - pw.y) < 28) {
-        pw.collected = true; makeBurst(pw.x, pw.y, '#38bdf8', 12); playSFX('powerup', 1);
-        if (pw.type === 'shield') { shieldActive = true; toastEl.textContent = 'تم تفعيل الدرع.'; }
-        else if (pw.type === 'magnet') { magnetTimer = getMagnetDuration(); toastEl.textContent = 'تم تفعيل المغناطيس.'; }
-        else if (pw.type === 'slowmo') { slowMoTimer = 5.0; toastEl.textContent = 'تم تفعيل تباطؤ الزمن.'; }
+      if (Math.hypot(hero.x - pw.x, hero.y - pw.y) < 32) {
+        pw.collected = true; playSFX('powerup', 1); makeBurst(pw.x, pw.y, '#38bdf8', 14);
+        if (pw.type === 'shield') { shieldActive = true; toastEl.textContent = 'درع حماية نشط.'; }
+        else if (pw.type === 'magnet') { magnetTimer = getMagnetDuration(); toastEl.textContent = 'مغناطيس العملات نشط.'; }
+        else if (pw.type === 'slowmo') { slowMoTimer = 4.5; toastEl.textContent = 'تباطؤ الزمن نشط.'; }
         updatePowersUI();
       }
     }
 
-    if (!hero.grounded) trail.push({ x: hero.x, y: hero.y, life: 1 });
-    for (let i = trail.length - 1; i >= 0; i--) {
-      trail[i].life -= 0.1;
-      if (trail[i].life <= 0) trail.splice(i, 1);
-    }
-
     for (const o of obstacles) {
-      if (o.cycleTimer <= 3.1 && Math.hypot(hero.x - o.x, hero.y - o.y) < o.r + 12) {
+      const obsActive = o.cycleTimer < 2.35;
+      if (!obsActive) continue;
+      if (Math.hypot(hero.x - o.x, hero.y - o.y) < o.r + 12) {
+        if (heroSkillActiveTimer > 0 && ['super_flight', 'omega_overdrive', 'phoenix_rise'].includes(heroSkillActiveType)) {
+          o.cycleTimer = 3.5;
+          makeBurst(o.x, o.y, skin.primary, 12);
+          continue;
+        }
         if (shieldActive) {
-          shieldActive = false; updatePowersUI(); o.cycleTimer = 3.2;
-          makeBurst(o.x, o.y, '#10b981', 14); triggerShake(7, 0.2);
-          toastEl.textContent = 'الدرع صدّ الخطر.';
+          shieldActive = false; updatePowersUI(); o.x = -9999;
+          makeBurst(hero.x, hero.y, '#10b981', 14); triggerShake(6, 0.16);
+          toastEl.textContent = 'الدرع امتص الضربة.';
         } else {
-          finishMatch({ won: false, reason: 'اصطدام بعائق', isRaceFinish: false });
+          finishMatch({ won: false, reason: 'اصطدمت بعائق نشط', isRaceFinish: false });
           return;
         }
       }
     }
 
-    if (hero.y > height + 60) {
+    const totalSpeed = Math.hypot(hero.vx, hero.vy);
+    if (totalSpeed > 5.5 || hero.anchor || heroSkillActiveTimer > 0) {
+      trail.push({ x: hero.x, y: hero.y, alpha: 0.45 });
+      if (trail.length > 10) trail.shift();
+    } else if (trail.length > 0) {
+      trail.shift();
+    }
+
+    if (hero.y < -80) { hero.y = -80; if (hero.vy < 0) hero.vy = 0; }
+
+    if (hero.y > height + 50) {
       if (shieldActive) rescueFromFall();
       else {
-        finishMatch({ won: false, reason: 'سقوط في الفراغ (لم تستعمل الحبل/الخطاف)', isRaceFinish: false });
+        finishMatch({
+          won: false,
+          reason: chainModeRequired ? 'سقطت لأنك لم تضغط حبل/خطاف في الوقت المناسب' : 'سقطت خارج المنصة',
+          isRaceFinish: false
+        });
         return;
       }
     }
 
     const targetCamX = hero.x - width * 0.28;
-    cameraX += (targetCamX - cameraX) * 0.1;
+    cameraX += (targetCamX - cameraX) * 0.14;
 
-    if (platforms.length > 12 && platforms[0].x + platforms[0].w < cameraX - 300) platforms.shift();
-    anchors = anchors.filter(a => !a.broken && a.x > cameraX - 300);
-    obstacles = obstacles.filter(o => o.x > cameraX - 300);
-    dashGates = dashGates.filter(g => !g.used && g.x > cameraX - 300);
-    coins = coins.filter(c => !c.collected && c.x > cameraX - 300);
-    powerups = powerups.filter(pw => !pw.collected && pw.x > cameraX - 300);
-  }
-
-  function drawSpeedLines() {
-    if (speedLinesTimer <= 0) return;
-    const alpha = Math.min(0.6, speedLinesTimer * 2.2);
-    ctx.save();
-    ctx.strokeStyle = speedLinesColor;
-    ctx.globalAlpha = alpha;
-    ctx.lineWidth = 2;
-    const t = performance.now();
-    for (let i = 0; i < 12; i++) {
-      const y = ((i * 105 + t * 0.08) % height);
-      const len = 65 + (i % 3) * 40;
-      const x = width - ((t * 2.3 + i * 210) % (width + 180));
-      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + len, y); ctx.stroke();
+    // تنظيف العناصر البعيدة خلف الكاميرا مع إبقاء المنصات القادمة تتولد بلا توقف
+    if (platforms.length > 18 && platforms[0].x + platforms[0].w < cameraX - 420) {
+      platforms.shift();
     }
-    ctx.restore();
+    if (anchors.length > 36 && anchors[0].x < cameraX - 360) anchors.shift();
+    if (obstacles.length > 20 && obstacles[0].x < cameraX - 360) obstacles.shift();
+    if (coins.length > 40 && coins[0].x < cameraX - 360) coins.shift();
+    if (dashGates.length > 16 && dashGates[0].x < cameraX - 360) dashGates.shift();
+    if (powerups.length > 14 && powerups[0].x < cameraX - 360) powerups.shift();
   }
 
-  function draw() {
+  // رسم كل شخصية بشكل مميز حقيقي (عباءة سوبرمان، أذنا باتمان، أجنحة، تاج، خوذة، قرون، هالة)
+  function drawStickmanCharacter(targetCtx, x, y, skin, legSwing, anchored, anchorX, anchorY, scale = 1, label = '') {
+    targetCtx.save();
+    targetCtx.translate(x, y);
+    if (scale !== 1) targetCtx.scale(scale, scale);
+
+    if (anchored) {
+      targetCtx.strokeStyle = skin.rope;
+      targetCtx.lineWidth = 2.6;
+      targetCtx.beginPath();
+      targetCtx.moveTo(0, -4);
+      targetCtx.lineTo((anchorX - x) / scale, (anchorY - y) / scale);
+      targetCtx.stroke();
+    }
+
+    const shape = skin.shape || 'visor';
+
+    // 1) طبقة خلفية (عباءة / أجنحة / حقيبة نفاثة / هالة)
+    if (['superman', 'batman', 'thor', 'king', 'magneto', 'vampire', 'omega'].includes(shape)) {
+      const capeColor = shape === 'superman' ? '#dc2626'
+        : shape === 'batman' ? '#0f172a'
+        : shape === 'thor' ? '#ef4444'
+        : shape === 'king' ? '#9333ea'
+        : shape === 'vampire' ? '#881337'
+        : shape === 'omega' ? '#38bdf8' : '#b91c1c';
+      targetCtx.fillStyle = capeColor;
+      targetCtx.beginPath();
+      targetCtx.moveTo(-2, -10);
+      targetCtx.lineTo(-22 - Math.abs(legSwing) * 0.8, 12);
+      targetCtx.lineTo(-8, 15);
+      targetCtx.closePath();
+      targetCtx.fill();
+    }
+
+    if (['angel', 'phoenix', 'dragon', 'omega'].includes(shape)) {
+      const wingColor = shape === 'angel' ? '#ffffff'
+        : shape === 'phoenix' ? '#f97316'
+        : shape === 'dragon' ? '#10b981' : '#e0f2fe';
+      targetCtx.fillStyle = wingColor;
+      targetCtx.beginPath();
+      targetCtx.moveTo(-2, -6);
+      targetCtx.quadraticCurveTo(-24, -22, -18, 4);
+      targetCtx.closePath();
+      targetCtx.fill();
+    }
+
+    if (shape === 'astronaut') {
+      targetCtx.fillStyle = '#94a3b8';
+      targetCtx.fillRect(-10, -10, 7, 15);
+    }
+
+    if (shape === 'galaxy') {
+      targetCtx.strokeStyle = '#ec4899';
+      targetCtx.lineWidth = 1.6;
+      targetCtx.beginPath();
+      targetCtx.ellipse(0, 0, 18, 6, -0.35, 0, Math.PI * 2);
+      targetCtx.stroke();
+    }
+
+    // 2) الجسم والأطراف
+    targetCtx.strokeStyle = skin.primary;
+    targetCtx.lineWidth = shape === 'hulk' ? 5.2 : 3.4;
+    targetCtx.lineCap = 'round';
+    targetCtx.lineJoin = 'round';
+
+    // الجذع
+    targetCtx.beginPath();
+    targetCtx.moveTo(0, -11);
+    targetCtx.lineTo(0, 7);
+    targetCtx.stroke();
+
+    // صدرية / درع مميز لبعض الأبطال
+    if (shape === 'superman') {
+      targetCtx.fillStyle = '#2563eb';
+      targetCtx.fillRect(-4.5, -10, 9, 14);
+      targetCtx.fillStyle = '#facc15';
+      targetCtx.beginPath();
+      targetCtx.moveTo(0, -8);
+      targetCtx.lineTo(4, -5);
+      targetCtx.lineTo(0, -1);
+      targetCtx.lineTo(-4, -5);
+      targetCtx.closePath();
+      targetCtx.fill();
+    } else if (shape === 'iron') {
+      targetCtx.fillStyle = '#38bdf8';
+      targetCtx.beginPath();
+      targetCtx.arc(1.5, -5, 2.6, 0, Math.PI * 2);
+      targetCtx.fill();
+    } else if (shape === 'guardian') {
+      targetCtx.fillStyle = '#fbbf24';
+      targetCtx.beginPath();
+      targetCtx.arc(7, -2, 6, -Math.PI * 0.5, Math.PI * 0.5);
+      targetCtx.fill();
+    }
+
+    // الساقان
+    targetCtx.strokeStyle = shape === 'hulk' ? '#7e22ce' : skin.primary;
+    targetCtx.beginPath();
+    targetCtx.moveTo(0, 7);
+    targetCtx.lineTo(-legSwing, 21);
+    targetCtx.moveTo(0, 7);
+    targetCtx.lineTo(legSwing, 21);
+    targetCtx.stroke();
+
+    // الذراعان
+    targetCtx.strokeStyle = skin.primary;
+    targetCtx.beginPath();
+    targetCtx.moveTo(0, -6);
+    targetCtx.lineTo(anchored ? 9 : 7, anchored ? -15 : -1);
+    targetCtx.moveTo(0, -6);
+    targetCtx.lineTo(-7, 2);
+    targetCtx.stroke();
+
+    // أسلحة محمولة (مطرقة ثور / سيف الساموراي)
+    if (shape === 'thor') {
+      targetCtx.fillStyle = '#cbd5e1';
+      targetCtx.fillRect(6, -10, 7, 5);
+    } else if (shape === 'samurai') {
+      targetCtx.strokeStyle = '#fef08a';
+      targetCtx.lineWidth = 2;
+      targetCtx.beginPath();
+      targetCtx.moveTo(6, -1);
+      targetCtx.lineTo(18, -12);
+      targetCtx.stroke();
+    }
+
+    // 3) الرأس والخوذة / التاج / القرون
+    const headR = shape === 'hulk' ? 7.6 : 6.4;
+    targetCtx.fillStyle = shape === 'superman' ? '#fde68a' : (shape === 'spider' ? '#e11d48' : skin.primary);
+    targetCtx.beginPath();
+    targetCtx.arc(0, -18, headR, 0, Math.PI * 2);
+    targetCtx.fill();
+
+    // تفاصيل الرأس الفريدة
+    if (shape === 'batman' || shape === 'wolf') {
+      targetCtx.fillStyle = skin.primary;
+      targetCtx.beginPath();
+      targetCtx.moveTo(-4, -22); targetCtx.lineTo(-5, -29); targetCtx.lineTo(-1, -23);
+      targetCtx.moveTo(1, -23); targetCtx.lineTo(5, -29); targetCtx.lineTo(4, -22);
+      targetCtx.fill();
+    } else if (shape === 'king' || shape === 'frost' || shape === 'omega') {
+      targetCtx.fillStyle = shape === 'frost' ? '#e0f2fe' : '#facc15';
+      targetCtx.beginPath();
+      targetCtx.moveTo(-5, -24); targetCtx.lineTo(-5, -29); targetCtx.lineTo(-2, -26);
+      targetCtx.lineTo(0, -30); targetCtx.lineTo(2, -26); targetCtx.lineTo(5, -29); targetCtx.lineTo(5, -24);
+      targetCtx.closePath();
+      targetCtx.fill();
+    } else if (shape === 'demon' || shape === 'dragon') {
+      targetCtx.fillStyle = shape === 'demon' ? '#f97316' : '#fbbf24';
+      targetCtx.beginPath();
+      targetCtx.moveTo(-3, -23); targetCtx.lineTo(-7, -30); targetCtx.lineTo(-1, -24);
+      targetCtx.moveTo(1, -24); targetCtx.lineTo(7, -30); targetCtx.lineTo(3, -23);
+      targetCtx.fill();
+    } else if (shape === 'wizard') {
+      targetCtx.fillStyle = '#7c3aed';
+      targetCtx.beginPath();
+      targetCtx.moveTo(-8, -23); targetCtx.lineTo(0, -35); targetCtx.lineTo(8, -23);
+      targetCtx.closePath();
+      targetCtx.fill();
+    } else if (shape === 'pirate') {
+      targetCtx.fillStyle = '#0f172a';
+      targetCtx.beginPath();
+      targetCtx.arc(0, -22, 7.5, Math.PI, 0);
+      targetCtx.fill();
+    } else if (shape === 'angel') {
+      targetCtx.strokeStyle = '#fde047';
+      targetCtx.lineWidth = 1.6;
+      targetCtx.beginPath();
+      targetCtx.ellipse(0, -28, 6, 2.2, 0, 0, Math.PI * 2);
+      targetCtx.stroke();
+    } else if (shape === 'ninja') {
+      targetCtx.strokeStyle = skin.secondary;
+      targetCtx.lineWidth = 2.2;
+      targetCtx.beginPath();
+      targetCtx.moveTo(-5, -19); targetCtx.lineTo(-14, -16);
+      targetCtx.moveTo(-5, -19); targetCtx.lineTo(-13, -22);
+      targetCtx.stroke();
+    } else if (shape === 'flash') {
+      targetCtx.strokeStyle = '#fde047';
+      targetCtx.lineWidth = 2;
+      targetCtx.beginPath();
+      targetCtx.moveTo(-4, -19); targetCtx.lineTo(-10, -23);
+      targetCtx.stroke();
+    }
+
+    // قناع / نظارة
+    targetCtx.fillStyle = shape === 'cyborg' ? '#f43f5e' : (shape === 'spider' ? '#ffffff' : '#0f172a');
+    targetCtx.fillRect(0.8, -20.2, 5.2, 3.2);
+
+    if (label) {
+      targetCtx.font = 'bold 10px system-ui, sans-serif';
+      targetCtx.textAlign = 'center';
+      targetCtx.fillStyle = '#ffffff';
+      targetCtx.fillText(label, 0, -33);
+    }
+
+    targetCtx.restore();
+  }
+
+  function render() {
     const skin = getActiveSkin();
     const biome = getBiomeTheme(level);
+
     const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
     bgGrad.addColorStop(0, biome.colors[0]);
     bgGrad.addColorStop(0.55, biome.colors[1]);
@@ -4883,183 +5581,182 @@
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, width, height);
 
-    if (biome.id === 'space') {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-      for (const s of stars) {
-        const sx = ((s.x - cameraX * s.speed) % width + width) % width;
-        ctx.fillRect(sx, s.y, s.r * 1.4, s.r * 1.4);
-      }
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
-      for (const m of mountains) {
-        const mx = ((m.x - cameraX * 0.18) % (width + 500) + (width + 500)) % (width + 500) - 250;
-        ctx.beginPath();
-        ctx.moveTo(mx, height); ctx.lineTo(mx + m.w * 0.5, height - m.h); ctx.lineTo(mx + m.w, height);
-        ctx.closePath(); ctx.fill();
-      }
-    } else if (biome.id === 'dusk') {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
-      for (const cl of clouds) {
-        const cx = ((cl.x - cameraX * cl.speed) % (width + 400) + (width + 400)) % (width + 400) - 200;
-        roundRect(ctx, cx, cl.y, cl.w, cl.h, 18); ctx.fill();
-      }
-    } else {
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.07)';
-      for (const cl of clouds) {
-        const cx = ((cl.x - cameraX * (cl.speed * 1.6)) % (width + 400) + (width + 400)) % (width + 400) - 200;
-        roundRect(ctx, cx, cl.y, cl.w, cl.h * 0.8, 16); ctx.fill();
-      }
-      if (lightningAlpha > 0) {
-        ctx.fillStyle = `rgba(186, 230, 253, ${lightningAlpha})`;
-        ctx.fillRect(0, 0, width, height);
-      }
+    if (lightningAlpha > 0) {
+      ctx.fillStyle = `rgba(224, 242, 254, ${lightningAlpha})`;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    ctx.fillStyle = '#ffffff';
+    for (const s of stars) {
+      const sx = ((s.x - cameraX * s.speed) % width + width) % width;
+      ctx.globalAlpha = s.alpha;
+      ctx.beginPath(); ctx.arc(sx, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    for (const c of clouds) {
+      const cx = ((c.x - cameraX * c.speed) % (width + 400) + (width + 400)) % (width + 400) - 200;
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.08)';
+      ctx.beginPath();
+      ctx.ellipse(cx, c.y, c.w * 0.5, c.h * 0.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    for (const m of mountains) {
+      const mx = ((m.x - cameraX * 0.14) % (width + 650) + (width + 650)) % (width + 650) - 320;
+      ctx.fillStyle = 'rgba(15, 25, 50, 0.65)';
+      ctx.beginPath();
+      ctx.moveTo(mx, height); ctx.lineTo(mx + m.w * 0.5, height - m.h); ctx.lineTo(mx + m.w, height);
+      ctx.closePath(); ctx.fill();
     }
 
     ctx.save();
-    const shakeX = shakeTime > 0 ? (Math.random() - 0.5) * shakeIntensity * 2 : 0;
-    const shakeY = shakeTime > 0 ? (Math.random() - 0.5) * shakeIntensity * 2 : 0;
-    ctx.translate(-cameraX + shakeX, shakeY);
-
-    const maxRange = getMaxGrappleRange();
+    if (shakeTime > 0 && shakeIntensity > 0) {
+      ctx.translate((Math.random() - 0.5) * shakeIntensity * 2, (Math.random() - 0.5) * shakeIntensity * 2);
+    }
+    ctx.translate(-cameraX, 0);
 
     if (sonarPulseTimer > 0) {
-      const r = (1 - sonarPulseTimer / 0.55) * maxRange;
-      ctx.strokeStyle = `rgba(56, 189, 248, ${(sonarPulseTimer / 0.55) * 0.65})`;
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(hero.x, hero.y, r, 0, Math.PI * 2); ctx.stroke();
-    }
-
-    if (!hero.grounded && !hero.anchor) {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)'; ctx.lineWidth = 1.5; ctx.setLineDash([8, 8]);
-      ctx.beginPath(); ctx.arc(hero.x, hero.y, maxRange, 0, Math.PI * 2); ctx.stroke();
-
-      const nearest = findBestAnchorInAir();
-      if (nearest) {
-        ctx.strokeStyle = skin.glow; ctx.lineWidth = 1.6; ctx.setLineDash([5, 5]);
-        ctx.beginPath(); ctx.moveTo(hero.x, hero.y - 6); ctx.lineTo(nearest.x, nearest.y); ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.beginPath(); ctx.arc(nearest.x, nearest.y, 22, 0, Math.PI * 2); ctx.stroke();
-      }
-      ctx.setLineDash([]);
-    }
-
-    for (const g of dashGates) {
-      if (g.used) continue;
-      const gr = g.r + Math.sin(g.pulse) * 2.5;
-      ctx.strokeStyle = '#34d399'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(g.x, g.y, gr, 0, Math.PI * 2); ctx.stroke();
-    }
-
-    for (const a of anchors) {
-      if (a.broken) continue;
-      const inRange = Math.hypot(a.x - hero.x, a.y - hero.y) <= maxRange;
-      const pulseR = 15 + Math.sin(a.pulse) * 3.5;
-
-      let ringColor = inRange ? skin.glow : 'rgba(148, 163, 184, 0.2)';
-      let coreColor = inRange ? skin.primary : '#475569';
-      if (a.kind === 'timed') { ringColor = 'rgba(251, 191, 36, 0.7)'; coreColor = '#fbbf24'; }
-      else if (a.kind === 'slingshot') { ringColor = 'rgba(168, 85, 247, 0.85)'; coreColor = '#c084fc'; }
-
-      ctx.strokeStyle = ringColor; ctx.lineWidth = a.kind === 'slingshot' ? 2.6 : 2;
-      ctx.beginPath(); ctx.arc(a.x, a.y, pulseR, 0, Math.PI * 2); ctx.stroke();
-
-      if (a.kind === 'slingshot' && a.charge > 0) {
-        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3;
-        ctx.beginPath(); ctx.arc(a.x, a.y, pulseR + 4, -Math.PI / 2, -Math.PI / 2 + a.charge * Math.PI * 2); ctx.stroke();
-      }
-
-      ctx.fillStyle = coreColor;
-      ctx.beginPath(); ctx.arc(a.x, a.y, 5.5, 0, Math.PI * 2); ctx.fill();
-    }
-
-    ctx.fillStyle = '#fbbf24';
-    for (const c of coins) {
-      if (c.collected) continue;
-      const sx = Math.max(0.25, Math.abs(Math.cos(c.spin)));
-      ctx.beginPath(); ctx.ellipse(c.x, c.y, 8 * sx, 8, 0, 0, Math.PI * 2); ctx.fill();
-    }
-
-    for (const pw of powerups) {
-      if (pw.collected) continue;
-      const py = pw.y + Math.sin(pw.bob) * 5;
-      const colorMap = { shield: '#10b981', magnet: '#fbbf24', slowmo: '#a855f7' };
-      const labelMap = { shield: 'درع', magnet: 'جذب', slowmo: 'بطء' };
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)'; ctx.strokeStyle = colorMap[pw.type]; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(pw.x, py, 14, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillStyle = colorMap[pw.type];
-      ctx.fillText(labelMap[pw.type], pw.x, py + 0.5);
-    }
-
-    for (const o of obstacles) {
-      const warningPhase = o.cycleTimer > 3.1;
-      ctx.save(); ctx.translate(o.x, o.y);
-      if (warningPhase) {
-        ctx.strokeStyle = 'rgba(251, 191, 36, 0.75)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
-        ctx.beginPath(); ctx.arc(0, 0, o.r + 4, 0, Math.PI * 2); ctx.stroke();
-      } else {
-        ctx.rotate(o.angle); ctx.fillStyle = '#f43f5e';
-        for (let i = 0; i < 4; i++) { ctx.rotate(Math.PI / 4); ctx.fillRect(-o.r, -2.5, o.r * 2, 5); }
-      }
-      ctx.restore();
+      const progress = 1 - (sonarPulseTimer / 0.65);
+      const radius = 35 + progress * getMaxGrappleRange();
+      ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - progress) * 0.7})`;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(hero.x, hero.y, radius, 0, Math.PI * 2);
+      ctx.stroke();
     }
 
     for (const p of platforms) {
-      const jitterX = (p.type === 'cracked' && p.crackedTimer > 0 && !p.falling) ? (Math.random() - 0.5) * 5 : 0;
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)'; ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)'; ctx.lineWidth = 1;
-      roundRect(ctx, p.x + jitterX, p.y, p.w, p.h, 8); ctx.fill(); ctx.stroke();
-      let barColor = p.cleared ? skin.primary : '#fbbf24';
-      if (p.type === 'boost') barColor = '#10b981';
-      else if (p.type === 'cracked') barColor = '#f97316';
-      ctx.fillStyle = barColor;
-      roundRect(ctx, p.x + 2 + jitterX, p.y, p.w - 4, 4, 2); ctx.fill();
+      if (p.x + p.w < cameraX - 80 || p.x > cameraX + width + 80) continue;
+      ctx.fillStyle = p.type === 'boost' ? '#064e3b' : p.type === 'cracked' ? '#451a03' : '#1e293b';
+      ctx.fillRect(p.x, p.y, p.w, p.h);
+
+      ctx.fillStyle = p.type === 'boost' ? '#10b981' : p.type === 'cracked' ? '#f59e0b' : (p.moveAmp > 0 ? '#a855f7' : skin.primary);
+      ctx.fillRect(p.x, p.y, p.w, 4);
+
+      if (p.id > 0 && p.id % 10 === 0) {
+        ctx.font = 'bold 10px system-ui, sans-serif';
+        ctx.fillStyle = '#fde047';
+        ctx.textAlign = 'center';
+        ctx.fillText(`منصة ${p.id}`, p.x + p.w / 2, p.y - 8);
+      }
+    }
+
+    for (const g of dashGates) {
+      if (g.used || g.x < cameraX - 60 || g.x > cameraX + width + 60) continue;
+      const rPulse = g.r + Math.sin(g.pulse) * 2.5;
+      ctx.strokeStyle = '#34d399';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(g.x, g.y, rPulse, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    for (const c of coins) {
+      if (c.collected || c.x < cameraX - 50 || c.x > cameraX + width + 50) continue;
+      const rx = Math.max(2.5, Math.abs(Math.cos(c.spin)) * 8);
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath(); ctx.ellipse(c.x, c.y, rx, 8, 0, 0, Math.PI * 2); ctx.fill();
+    }
+
+    for (const pw of powerups) {
+      if (pw.collected || pw.x < cameraX - 50 || pw.x > cameraX + width + 50) continue;
+      const py = pw.y + Math.sin(pw.bob) * 5;
+      const col = pw.type === 'shield' ? '#10b981' : pw.type === 'magnet' ? '#f59e0b' : '#a855f7';
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(pw.x, py, 11, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(pw.type === 'shield' ? 'S' : pw.type === 'magnet' ? 'M' : 'T', pw.x, py + 3.5);
+    }
+
+    for (const o of obstacles) {
+      if (o.x < cameraX - 60 || o.x > cameraX + width + 60) continue;
+      const obsActive = o.cycleTimer < 2.35;
+      ctx.save();
+      ctx.translate(o.x, o.y);
+      ctx.rotate(o.angle);
+      ctx.globalAlpha = obsActive ? 1 : 0.25;
+      ctx.fillStyle = obsActive ? '#f43f5e' : '#64748b';
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) {
+        const rad = i % 2 === 0 ? o.r : o.r * 0.45;
+        const a = (i * Math.PI) / 4;
+        if (i === 0) ctx.moveTo(Math.cos(a) * rad, Math.sin(a) * rad);
+        else ctx.lineTo(Math.cos(a) * rad, Math.sin(a) * rad);
+      }
+      ctx.closePath(); ctx.fill();
+      ctx.restore();
+    }
+
+    const maxRange = getMaxGrappleRange();
+    for (const a of anchors) {
+      if (a.broken || a.x < cameraX - 80 || a.x > cameraX + width + 80) continue;
+      const dist = Math.hypot(a.x - hero.x, a.y - hero.y);
+      const inRange = dist <= maxRange && a.x >= hero.x - 85;
+      const aColor = a.kind === 'slingshot' ? '#a855f7' : a.kind === 'moving' ? '#38bdf8' : a.kind === 'timed' ? '#f59e0b' : skin.primary;
+
+      if (inRange) {
+        ctx.strokeStyle = aColor; ctx.globalAlpha = 0.24; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(a.x, a.y, 18 + Math.sin(a.pulse) * 3, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.fillStyle = inRange ? aColor : '#475569';
+      ctx.beginPath(); ctx.arc(a.x, a.y, 7.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(a.x, a.y, 2.5, 0, Math.PI * 2); ctx.fill();
     }
 
     if (aiModeActive) {
-      const aiSkin = getSkinById('violet');
-      if (aiRacer.anchored) {
-        ctx.strokeStyle = aiSkin.rope;
-        ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(aiRacer.x, aiRacer.y - 6); ctx.lineTo(aiRacer.anchorX, aiRacer.anchorY); ctx.stroke();
-      }
-      drawHero(ctx, aiRacer.x, aiRacer.y, aiSkin, aiRacer.legSwing, aiRacer.anchored ? { x: aiRacer.anchorX, y: aiRacer.anchorY } : null, `AI • م${aiLevel}`, 0.72);
+      const aiSkin = HEROES[3];
+      ctx.globalAlpha = 0.9;
+      drawStickmanCharacter(
+        ctx,
+        aiRacer.x,
+        aiRacer.y,
+        aiSkin,
+        aiRacer.legSwing,
+        aiRacer.anchored,
+        aiRacer.anchorX,
+        aiRacer.anchorY,
+        0.96,
+        `AI (م${aiLevel}/20)`
+      );
+      ctx.globalAlpha = 1;
     }
 
     if (selectedGameMode === 'friends' && friendActive) {
       const fSkin = getSkinById(friendSkinId);
-      if (friendMotion.anchored) {
-        ctx.strokeStyle = fSkin.rope;
-        ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(friendMotion.x, friendMotion.y - 6); ctx.lineTo(friendMotion.anchorX, friendMotion.anchorY); ctx.stroke();
-      }
-      drawHero(
+      ctx.globalAlpha = 0.92;
+      drawStickmanCharacter(
         ctx,
         friendMotion.x,
         friendMotion.y,
         fSkin,
         friendMotion.legSwing,
-        friendMotion.anchored ? { x: friendMotion.anchorX, y: friendMotion.anchorY } : null,
-        `${friendProfile.nickname || 'صديق'} • م${friendLevel}`,
-        0.82
+        friendMotion.anchored,
+        friendMotion.anchorX,
+        friendMotion.anchorY,
+        0.96,
+        `${friendProfile.nickname} (${friendScore})`
       );
+      ctx.globalAlpha = 1;
     }
 
     if (hero.anchor) {
-      ctx.strokeStyle = hero.anchor.kind === 'slingshot' ? '#d8b4fe' : skin.rope;
-      ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.moveTo(hero.x, hero.y - 6); ctx.lineTo(hero.anchor.x, hero.anchor.y); ctx.stroke();
+      const tension = Math.max(0, Math.min(1, 1 - (hero.ropeLength - MIN_ROPE_DIST) / Math.max(1, maxRange - MIN_ROPE_DIST)));
+      ctx.strokeStyle = hero.anchor.kind === 'slingshot' ? '#c084fc' : (tension > 0.65 ? '#fbbf24' : skin.rope);
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(hero.x, hero.y - 4); ctx.lineTo(hero.anchor.x, hero.anchor.y); ctx.stroke();
     }
 
-    for (const t of trail) {
-      ctx.fillStyle = skin.glow.replace('0.65', (t.life * 0.35).toFixed(2));
-      ctx.beginPath(); ctx.arc(t.x, t.y, 7 * t.life, 0, Math.PI * 2); ctx.fill();
+    for (let i = 0; i < trail.length; i++) {
+      const t = trail[i];
+      ctx.globalAlpha = (i / trail.length) * 0.25;
+      ctx.fillStyle = skin.primary;
+      ctx.beginPath(); ctx.arc(t.x, t.y, 6, 0, Math.PI * 2); ctx.fill();
     }
-
-    drawHero(ctx, hero.x, hero.y, skin, hero.grounded ? Math.sin(hero.runCycle) * 6.5 : 5, hero.anchor, saveData.profile.nickname || 'أنت', 1);
-
-    if (shieldActive) {
-      ctx.strokeStyle = 'rgba(16, 185, 129, 0.7)'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(hero.x, hero.y + 2, 24, 0, Math.PI * 2); ctx.stroke();
-    }
+    ctx.globalAlpha = 1;
 
     for (const p of particles) {
       ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
@@ -5067,127 +5764,110 @@
     }
     ctx.globalAlpha = 1;
 
+    if (shieldActive) {
+      ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(hero.x, hero.y, 26, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    const legSwing = hero.grounded ? Math.sin(hero.runCycle) * 6.5 : 5;
+    drawStickmanCharacter(
+      ctx,
+      hero.x,
+      hero.y,
+      skin,
+      legSwing,
+      false,
+      0,
+      0,
+      1,
+      saveData.profile.nickname || ''
+    );
+
     if (chaseActive) {
-      const wallGrad = ctx.createLinearGradient(chaseWallX - 90, 0, chaseWallX + 18, 0);
+      const wallGrad = ctx.createLinearGradient(chaseWallX - 50, 0, chaseWallX + 20, 0);
       wallGrad.addColorStop(0, 'rgba(244, 63, 94, 0)');
-      wallGrad.addColorStop(0.75, 'rgba(244, 63, 94, 0.45)');
-      wallGrad.addColorStop(1, 'rgba(255, 255, 255, 0.95)');
+      wallGrad.addColorStop(1, 'rgba(244, 63, 94, 0.85)');
       ctx.fillStyle = wallGrad;
-      ctx.fillRect(chaseWallX - 90, 0, 108, height);
+      ctx.fillRect(chaseWallX - 50, 0, 70, height);
     }
 
     ctx.restore();
-    drawSpeedLines();
+
+    if (speedLinesTimer > 0) {
+      ctx.save();
+      ctx.strokeStyle = speedLinesColor;
+      ctx.globalAlpha = Math.min(0.45, speedLinesTimer * 1.4);
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 8; i++) {
+        const ly = ((i * 97 + performance.now() * 0.2) % height);
+        const lx = ((performance.now() * 1.4 + i * 160) % width);
+        ctx.beginPath();
+        ctx.moveTo(lx, ly);
+        ctx.lineTo(lx - 75, ly);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
   }
 
-  function drawPreview(now) {
+  let previewT = 0;
+  function renderHomePreview() {
     if (screenHome.classList.contains('hidden')) return;
-    const pw = previewCanvas.width;
-    const ph = previewCanvas.height;
-    if (!pw || !ph) return;
+    const w = previewCanvas.width || 320;
+    const h = previewCanvas.height || 112;
+    previewT += 0.035;
+
+    pCtx.fillStyle = '#070d1f';
+    pCtx.fillRect(0, 0, w, h);
+
     const skin = getActiveSkin();
-    const t = now * 0.0025;
+    const p1X = 35; const p2X = w - 105; const platY = h - 22;
+    pCtx.fillStyle = '#1e293b'; pCtx.fillRect(p1X, platY, 70, 12); pCtx.fillRect(p2X, platY, 70, 12);
+    pCtx.fillStyle = skin.primary; pCtx.fillRect(p1X, platY, 70, 3); pCtx.fillRect(p2X, platY, 70, 3);
 
-    pCtx.fillStyle = '#071024'; pCtx.fillRect(0, 0, pw, ph);
-    pCtx.fillStyle = 'rgba(15,23,42,0.9)';
-    roundRect(pCtx, 18, ph * 0.74, 72, 12, 5); pCtx.fill();
-    pCtx.fillStyle = skin.primary; pCtx.fillRect(20, ph * 0.74, 68, 3);
+    const ax = w * 0.5; const ay = 22;
+    pCtx.fillStyle = skin.primary; pCtx.beginPath(); pCtx.arc(ax, ay, 5.5, 0, Math.PI * 2); pCtx.fill();
 
-    roundRect(pCtx, pw - 96, ph * 0.68, 76, 12, 5); pCtx.fill();
-    pCtx.fillStyle = '#fbbf24'; pCtx.fillRect(pw - 94, ph * 0.68, 72, 3);
-
-    const ax = pw * 0.54;
-    const ay = ph * 0.24;
-    pCtx.strokeStyle = '#a855f7'; pCtx.lineWidth = 2.4;
-    pCtx.beginPath(); pCtx.arc(ax, ay, 11, 0, Math.PI * 2); pCtx.stroke();
-    pCtx.fillStyle = '#c084fc'; pCtx.beginPath(); pCtx.arc(ax, ay, 4, 0, Math.PI * 2); pCtx.fill();
-
-    const angle = Math.sin(t) * 0.55 + 0.35;
-    const ropeLen = 68;
+    const angle = Math.sin(previewT) * 0.65;
+    const ropeLen = Math.min(62, h * 0.52);
     const hx = ax + Math.sin(angle) * ropeLen;
     const hy = ay + Math.cos(angle) * ropeLen;
 
-    pCtx.strokeStyle = '#d8b4fe'; pCtx.lineWidth = 2;
-    pCtx.beginPath(); pCtx.moveTo(hx, hy - 5); pCtx.lineTo(ax, ay); pCtx.stroke();
+    pCtx.strokeStyle = skin.rope; pCtx.lineWidth = 2.2;
+    pCtx.beginPath(); pCtx.moveTo(hx, hy - 3); pCtx.lineTo(ax, ay); pCtx.stroke();
 
-    drawHero(pCtx, hx, hy, skin, 4, { x: ax, y: ay }, '', 1);
+    drawStickmanCharacter(pCtx, hx, hy, skin, 4, false, 0, 0, 0.85, skin.name);
   }
 
-  function roundRect(c, x, y, w, h, r) {
-    c.beginPath();
-    c.moveTo(x + r, y); c.lineTo(x + w - r, y); c.quadraticCurveTo(x + w, y, x + w, y + r);
-    c.lineTo(x + w, y + h - r); c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    c.lineTo(x + r, y + h); c.quadraticCurveTo(x, y + h, x, y + h - r);
-    c.lineTo(x, y + r); c.quadraticCurveTo(x, y, x + r, y);
-    c.closePath();
+  function loop(now) {
+    update(now);
+    render();
+    renderHomePreview();
+    requestAnimationFrame(loop);
   }
 
-  function drawHero(c, x, y, skin, legSwing, anchorObj, labelText = '', alphaVal = 1) {
-    c.save();
-    c.globalAlpha = alphaVal;
-    c.strokeStyle = skin.primary; c.fillStyle = '#ffffff'; c.lineWidth = 3; c.lineCap = 'round';
-
-    c.beginPath(); c.arc(x, y - 14, 5.5, 0, Math.PI * 2); c.fill();
-    c.beginPath(); c.moveTo(x, y - 8); c.lineTo(x, y + 7); c.stroke();
-
-    c.beginPath();
-    c.moveTo(x, y + 7); c.lineTo(x - legSwing, y + 21);
-    c.moveTo(x, y + 7); c.lineTo(x + legSwing, y + 21);
-    c.stroke();
-
-    c.beginPath(); c.moveTo(x, y - 4);
-    if (anchorObj) {
-      const ang = Math.atan2(anchorObj.y - y, anchorObj.x - x);
-      c.lineTo(x + Math.cos(ang) * 14, y - 4 + Math.sin(ang) * 14);
-    } else {
-      c.lineTo(x + 8, y + 3);
-    }
-    c.stroke();
-
-    if (labelText) {
-      c.font = 'bold 10.5px system-ui, sans-serif';
-      c.textAlign = 'center';
-      c.fillStyle = skin.primary;
-      c.fillText(labelText, x, y - 25);
-    }
-    c.restore();
-  }
-
-  function checkUrlRoomInvite() {
+  function initUrlRoomAutoJoin() {
     try {
       const params = new URLSearchParams(window.location.search);
       const roomParam = params.get('room');
-      const hostParam = params.get('host');
+      const hostParam = params.get('host') || '';
       if (roomParam) {
         const cleanRoom = roomParam.trim().toUpperCase();
-        roomCodeInput.value = cleanRoom;
-        if (splashScreen) splashScreen.classList.add('hidden');
         setMode('friends');
         setFriendSubTab('join');
-        connectRoom(cleanRoom, false, true, hostParam ? decodeURIComponent(hostParam) : '').catch(() => {});
-        roomStatusMsg.textContent = `تم فتح رابط دعوة الغرفة ${cleanRoom} — اضغط "العب الآن" للانطلاق مع صاحبك.`;
+        roomCodeInput.value = cleanRoom;
+        connectRoom(cleanRoom, false, true, hostParam).catch(() => {});
+        roomStatusMsg.textContent = `فتحت رابط الدعوة للغرفة ${cleanRoom} — اضغط "العب الآن"!`;
       }
     } catch (e) {}
   }
 
-  function loop(now) {
-    try {
-      update(now);
-      draw();
-      drawPreview(now);
-    } catch (e) {}
-    requestAnimationFrame(loop);
-  }
-
-  try { renderAllUI(); } catch (e) {}
-  try { resetGame(); } catch (e) {}
+  updateInviteLinkUI();
+  renderAllUI();
+  initUrlRoomAutoJoin();
+  testFirebaseReachability().catch(() => {});
+  resetGame();
   requestAnimationFrame(loop);
-
-  setTimeout(() => {
-    connectRoom(activeRoomCode, true, false).catch(() => {});
-    testFirebaseReachability().catch(() => {});
-    checkUrlRoomInvite();
-  }, 150);
 })();
 </script>
 </body>
